@@ -31,7 +31,7 @@ int main()
     }
 
     std::cout << std::setw(10) << t.type_string()
-        << std::setw(10) << t << std::endl;
+              << std::setw(10) << t << std::endl;
 
 	return 0;
 }
