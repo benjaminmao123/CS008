@@ -1,8 +1,7 @@
 /*
  * Author: Benjamin Mao
- * Project: Queue
- * Purpose: Implementation a FIFO container called
- *		a stack.
+ * Project: Deque
+ * Purpose: Double ended queue
  *
  * Notes: None.
  */
@@ -96,6 +95,8 @@ public:
 
 	const T& front() const;
 	T& front();
+	const T& back() const;
+	T& back();
 	size_t size() const;
 	bool empty() const;
 
@@ -263,6 +264,28 @@ inline T& deque<T>::front()
 	return *list.begin();
 }
 
+template<typename T>
+inline const T& deque<T>::back() const
+{
+	if (empty())
+	{
+		throw std::out_of_range("Back called on empty queue.");
+	}
+
+	return *tail;
+}
+
+template<typename T>
+inline T& deque<T>::back()
+{
+	if (empty())
+	{
+		throw std::out_of_range("Back called on empty queue.");
+	}
+
+	return *tail;
+}
+
 /*
 	@summary: Returns the size of the queue.
 
@@ -282,7 +305,7 @@ inline size_t deque<T>::size() const
 template<typename T>
 inline bool deque<T>::empty() const
 {
-	return sz == 0;
+	return !tail;
 }
 
 /*
