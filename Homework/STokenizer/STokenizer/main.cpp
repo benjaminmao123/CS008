@@ -14,7 +14,7 @@
 int main()
 {
     char s[] = "it was the night of october 17th. pi was still 3.14.";
-    
+
     STokenizer stk(s);
     Token t;
 
@@ -24,11 +24,11 @@ int main()
 
         //process token here...
         std::cout << std::setw(10) << t.type_string()
-            << std::setw(10) << t << std::endl;
+                  << std::setw(10) << t << std::endl;
 
         t = Token();
 
     } while (stk.more());
 
-	return 0;
+    return 0;
 }
