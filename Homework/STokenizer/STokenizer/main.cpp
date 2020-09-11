@@ -18,20 +18,17 @@ int main()
     STokenizer stk(s);
     Token t;
 
-    stk >> t;
-
-    while (stk.more()) 
+    do
     {
+        stk >> t;
+
         //process token here...
-        std::cout << std::setw(10) << t.type_string() 
-                  << std::setw(10) << t << std::endl;
+        std::cout << std::setw(10) << t.type_string()
+            << std::setw(10) << t << std::endl;
 
         t = Token();
-        stk >> t;
-    }
 
-    std::cout << std::setw(10) << t.type_string()
-        << std::setw(10) << t << std::endl;
+    } while (stk.more());
 
 	return 0;
 }

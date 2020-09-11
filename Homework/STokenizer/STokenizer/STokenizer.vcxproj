@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{7538B831-6988-4072-B1E0-E27F2CACAA2E}</ProjectGuid>
+    <ProjectGuid>{55D4BF6B-2E2E-46E9-92ED-F4F061AA0D84}</ProjectGuid>
     <RootNamespace>Tokenizer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
