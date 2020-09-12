@@ -29,22 +29,31 @@ int Token::type() const
 
 std::string Token::type_string() const
 {
+	std::string res;
+
 	switch (_type)
 	{
 	case ALPHA:
-		return "ALPHA";
+		res = "ALPHA";
+		break;
 	case DIGIT:
 	case SUB_DIGIT:
-		return "DIGIT";
+		res = "DIGIT";
+		break;
 	case PUNCT:
-		return "PUNCT";
+		res = "PUNCT";
+		break;
 	case SPACE:
-		return "SPACE";
+		res = "SPACE";
+		break;
+	case UNKNOWN:
+		res = "UNKNOWN";
+		break;
 	default:
 		break;
 	}
 
-	return "UNKNOWN";
+	return res;
 }
 
 const std::string &Token::token_str() const

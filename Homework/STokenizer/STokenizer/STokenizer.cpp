@@ -19,7 +19,7 @@ STokenizer::STokenizer() :
 	make_table(_table);
 }
 
-STokenizer::STokenizer(char str[]) :
+STokenizer::STokenizer(const char str[]) :
 	_pos(0)
 {
 	set_string(str);
@@ -36,7 +36,7 @@ bool STokenizer::more()
 	return _pos < strlen(_buffer);
 }
 
-void STokenizer::set_string(char str[])
+void STokenizer::set_string(const char str[])
 {
 	strcpy_s(_buffer, MAX_BUFFER, str);
 }
@@ -46,68 +46,55 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	for (int i = 0; i < MAX_ROWS; ++i)
 	{
 		for (int j = 0; j < MAX_COLUMNS; ++j)
-			this->_table[i][j] = -1;
+			_table[i][j] = -1;
 	}
 
 	//init start 
-	mark_table(START, 'a', 'z', ALPHA);
-	mark_table(START, 'A', 'Z', ALPHA);
-	
-	mark_table(START, '0', '9', DIGIT);
-	
-	mark_table(START, '.', '.', PUNCT);
-	mark_table(START, ',', ',', PUNCT);
-	mark_table(START, '\'', '\'', PUNCT);
-	mark_table(START, '?', '?', PUNCT);
-	mark_table(START, '!', '!', PUNCT);
-	mark_table(START, '\"', '\"', PUNCT);
-	mark_table(START, '-', '-', PUNCT);
-	mark_table(START, ';', ';', PUNCT);
-	mark_table(START, ':', ':', PUNCT);
-	mark_table(START, '/', '/', PUNCT);
-	mark_table(START, '@', '@', PUNCT);
-	mark_table(START, '(', '(', PUNCT);
-	mark_table(START, ')', ')', PUNCT);
-	mark_table(START, '[', '[', PUNCT);
-	mark_table(START, ']', ']', PUNCT);
-	mark_table(START, '*', '*', PUNCT);
+	mark_table(_table, START, 'a', 'z', ALPHA);
+	mark_table(_table, START, 'A', 'Z', ALPHA);
 
-	mark_table(START, ' ', ' ', SPACE);
+	mark_table(_table, START, '0', '9', DIGIT);
+
+	mark_table(_table, START, '.', '.', PUNCT);
+	mark_table(_table, START, ',', ',', PUNCT);
+	mark_table(_table, START, '\'', '\'', PUNCT);
+	mark_table(_table, START, '?', '?', PUNCT);
+	mark_table(_table, START, '!', '!', PUNCT);
+	mark_table(_table, START, '\"', '\"', PUNCT);
+	mark_table(_table, START, '-', '-', PUNCT);
+	mark_table(_table, START, ';', ';', PUNCT);
+	mark_table(_table, START, ':', ':', PUNCT);
+	mark_table(_table, START, '/', '/', PUNCT);
+	mark_table(_table, START, '@', '@', PUNCT);
+	mark_table(_table, START, '(', '(', PUNCT);
+	mark_table(_table, START, ')', ')', PUNCT);
+	mark_table(_table, START, '[', '[', PUNCT);
+	mark_table(_table, START, ']', ']', PUNCT);
+	mark_table(_table, START, '*', '*', PUNCT);
+
+	mark_table(_table, START, ' ', ' ', SPACE);
+
+	for (int i = 0; i < MAX_COLUMNS; ++i)
+		if (_table[START][i] == -1)
+			_table[START][i] = UNKNOWN;
 
 	//init alpha
-	mark_table(ALPHA, 'a', 'z', ALPHA);
-	mark_table(ALPHA, 'A', 'Z', ALPHA);
+	mark_table(_table, ALPHA, 'a', 'z', ALPHA);
+	mark_table(_table, ALPHA, 'A', 'Z', ALPHA);
 
 	//init digit
-	mark_table(DIGIT, '0', '9', DIGIT);
-	mark_table(DIGIT, '.', '.', SUB_DIGIT);
+	mark_table(_table, DIGIT, '0', '9', DIGIT);
+	mark_table(_table, DIGIT, '.', '.', SUB_DIGIT);
 	
-	//init sub_punct
-	mark_table(SUB_DIGIT, '0', '9', SUB_DIGIT);
-
-	//init punct
-	mark_table(PUNCT, '.', '.', PUNCT);
-	mark_table(PUNCT, ',', ',', PUNCT);
-	mark_table(PUNCT, '\'', '\'', PUNCT);
-	mark_table(PUNCT, '?', '?', PUNCT);
-	mark_table(PUNCT, '!', '!', PUNCT);
-	mark_table(PUNCT, '\"', '\"', PUNCT);
-	mark_table(PUNCT, '-', '-', PUNCT);
-	mark_table(PUNCT, ';', ';', PUNCT);
-	mark_table(PUNCT, ':', ':', PUNCT);
-	mark_table(PUNCT, '/', '/', PUNCT);
-	mark_table(PUNCT, '@', '@', PUNCT);
-	mark_table(PUNCT, '(', '(', PUNCT);
-	mark_table(PUNCT, ')', ')', PUNCT);
-	mark_table(PUNCT, '[', '[', PUNCT);
-	mark_table(PUNCT, ']', ']', PUNCT);
-	mark_table(PUNCT, '*', '*', PUNCT);
+	//init sub_digit
+	mark_table(_table, SUB_DIGIT, '0', '9', SUB_DIGIT);
 
 	//init space
-	mark_table(SPACE, ' ', ' ', SPACE);
+	mark_table(_table, SPACE, ' ', ' ', SPACE);
 }
 
-void STokenizer::mark_table(int startState, char from, char to, int endState)
+void STokenizer::mark_table(int _table[][MAX_COLUMNS], int startState, 
+							char from, char to, int endState)
 {
 	while (from <= to)
 	{

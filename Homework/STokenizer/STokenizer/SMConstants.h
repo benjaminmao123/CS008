@@ -17,3 +17,4 @@
 #define PUNCT 3
 #define SPACE 4
 #define SUB_DIGIT 5
+#define UNKNOWN 6

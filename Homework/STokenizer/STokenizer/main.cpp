@@ -13,19 +13,25 @@
 
 int main()
 {
-    char s[] = "it was the night of october 17th. pi was still 3.14.";
+    std::string input = "it was the night of october 17th. pi was still 3.14.";
 
-    STokenizer stk(s);
-    Token t;
-
-    while (stk.more())
+    while (true)
     {
-        stk >> t;
+        STokenizer stk(input.c_str());
+        Token t;
 
-        std::cout << std::setw(10) << t.type_string()
-                  << std::setw(10) << t << std::endl;
+        while (stk.more())
+        {
+            stk >> t;
 
-        t = Token();
+            std::cout << std::setw(10) << t.type_string()
+                << std::setw(10) << t << std::endl;
+
+            t = Token();
+        }
+
+        std::cout << std::endl;
+        std::getline(std::cin, input);
     }
 
     return 0;
