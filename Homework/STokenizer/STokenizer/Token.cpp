@@ -34,13 +34,12 @@ std::string Token::type_string() const
 	case ALPHA:
 		return "ALPHA";
 	case DIGIT:
+	case SUB_DIGIT:
 		return "DIGIT";
 	case PUNCT:
 		return "PUNCT";
 	case SPACE:
 		return "SPACE";
-	case SUB_DIGIT:
-		return "DIGIT";
 	default:
 		break;
 	}
