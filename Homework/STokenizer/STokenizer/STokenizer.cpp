@@ -33,16 +33,19 @@ bool STokenizer::done()
 
 bool STokenizer::more()
 {
-	return _pos < strlen(_buffer);
+	return _buffer[_pos] != '\0';
 }
 
 void STokenizer::set_string(const char str[])
 {
 	strcpy_s(_buffer, MAX_BUFFER, str);
+	_pos = 0;
 }
 
 void STokenizer::make_table(int _table[][MAX_COLUMNS])
 {
+	char punc[] = ".,\'?!\"-;:/@()[]*";
+
 	for (int i = 0; i < MAX_ROWS; ++i)
 	{
 		for (int j = 0; j < MAX_COLUMNS; ++j)
@@ -55,22 +58,8 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 
 	mark_table(_table, START, '0', '9', DIGIT);
 
-	mark_table(_table, START, '.', '.', PUNCT);
-	mark_table(_table, START, ',', ',', PUNCT);
-	mark_table(_table, START, '\'', '\'', PUNCT);
-	mark_table(_table, START, '?', '?', PUNCT);
-	mark_table(_table, START, '!', '!', PUNCT);
-	mark_table(_table, START, '\"', '\"', PUNCT);
-	mark_table(_table, START, '-', '-', PUNCT);
-	mark_table(_table, START, ';', ';', PUNCT);
-	mark_table(_table, START, ':', ':', PUNCT);
-	mark_table(_table, START, '/', '/', PUNCT);
-	mark_table(_table, START, '@', '@', PUNCT);
-	mark_table(_table, START, '(', '(', PUNCT);
-	mark_table(_table, START, ')', ')', PUNCT);
-	mark_table(_table, START, '[', '[', PUNCT);
-	mark_table(_table, START, ']', ']', PUNCT);
-	mark_table(_table, START, '*', '*', PUNCT);
+	for (int i = 0; i < strlen(punc); ++i)
+		mark_table(_table, START, punc[i], punc[i], PUNCT);
 
 	mark_table(_table, START, ' ', ' ', SPACE);
 
@@ -88,6 +77,10 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	
 	//init sub_digit
 	mark_table(_table, SUB_DIGIT, '0', '9', SUB_DIGIT);
+
+	//init punct
+	for (int i = 0; i < strlen(punc); ++i)
+		mark_table(_table, PUNCT, punc[i], punc[i], PUNCT);
 
 	//init space
 	mark_table(_table, SPACE, ' ', ' ', SPACE);

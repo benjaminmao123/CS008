@@ -14,12 +14,11 @@
 int main()
 {
     std::string input = "it was the night of october 17th. pi was still 3.14.";
+    STokenizer stk(input.c_str());
+    Token t;
 
     while (true)
     {
-        STokenizer stk(input.c_str());
-        Token t;
-
         while (stk.more())
         {
             stk >> t;
@@ -32,6 +31,7 @@ int main()
 
         std::cout << std::endl;
         std::getline(std::cin, input);
+        stk.set_string(input.c_str());
     }
 
     return 0;
