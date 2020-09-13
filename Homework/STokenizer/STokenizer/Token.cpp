@@ -37,8 +37,11 @@ std::string Token::type_string() const
 		res = "ALPHA";
 		break;
 	case DIGIT:
-	case SUB_DIGIT:
 		res = "DIGIT";
+		break;
+	case DECIMAL:
+	case DECIMAL_SUCCESS:
+		res = "DECIMAL";
 		break;
 	case PUNCT:
 		res = "PUNCT";

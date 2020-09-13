@@ -29,6 +29,9 @@ private:
 
     void mark_table(int _table[][MAX_COLUMNS], int startState, 
                     char from, char to, int endState);
+    
+    void mark_success(int state);
+    int get_success(int state) const;
 
     //extract the longest string that match
     //     one of the acceptable token types

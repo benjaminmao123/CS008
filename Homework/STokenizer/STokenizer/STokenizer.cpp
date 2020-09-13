@@ -49,7 +49,12 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	for (int i = 0; i < MAX_ROWS; ++i)
 	{
 		for (int j = 0; j < MAX_COLUMNS; ++j)
-			_table[i][j] = -1;
+		{
+			if (!j) 
+				_table[i][j] = 0;
+			else 
+				_table[i][j] = -1;
+		}
 	}
 
 	//init start 
@@ -73,10 +78,11 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 
 	//init digit
 	mark_table(_table, DIGIT, '0', '9', DIGIT);
-	mark_table(_table, DIGIT, '.', '.', SUB_DIGIT);
+	mark_table(_table, DIGIT, '.', '.', DECIMAL);
 	
 	//init sub_digit
-	mark_table(_table, SUB_DIGIT, '0', '9', SUB_DIGIT);
+	mark_table(_table, DECIMAL, '0', '9', DECIMAL_SUCCESS);
+	mark_table(_table, DECIMAL_SUCCESS, '0', '9', DECIMAL_SUCCESS);
 
 	//init punct
 	for (int i = 0; i < strlen(punc); ++i)
@@ -84,6 +90,14 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 
 	//init space
 	mark_table(_table, SPACE, ' ', ' ', SPACE);
+
+	mark_success(0);
+	mark_success(1);
+	mark_success(2);
+	mark_success(3);
+	mark_success(4);
+	mark_success(6);
+	mark_success(7);
 }
 
 void STokenizer::mark_table(int _table[][MAX_COLUMNS], int startState, 
@@ -96,16 +110,70 @@ void STokenizer::mark_table(int _table[][MAX_COLUMNS], int startState,
 	}
 }
 
+void STokenizer::mark_success(int state)
+{
+	_table[state][0] = 1;
+}
+
+int STokenizer::get_success(int state) const
+{
+	return _table[state][0];
+}
+
 bool STokenizer::get_token(int& start_state, std::string& token)
 {
-	int endState = _table[start_state][_buffer[_pos]];
+	std::string temp;
+	char c = _buffer[_pos];
+	int end_state = _table[start_state][c];
+	int tempPos = _pos;
 
-	if (endState == -1)
-		return false;
+	while (_buffer[tempPos] != '\0' && end_state != -1)
+	{
+		if (!get_success(end_state))
+		{
+			temp += c;
+			++tempPos;
+			start_state = end_state;
+			c = _buffer[tempPos];
+			end_state = _table[start_state][c];
 
-	start_state = endState;
-	token += _buffer[_pos];
-	++_pos;
+			if (c != '\0' && 
+				end_state != -1 && 
+				get_success(end_state))
+			{
+				while (_buffer[tempPos] != '\0' && 
+					   end_state != -1 && 
+					   get_success(end_state))
+				{
+					temp += c;
+					++tempPos;
+					start_state = end_state;
+					c = _buffer[tempPos];
+					end_state = _table[start_state][c];
+				}
+
+				if (end_state == -1 || c == '\0')
+				{
+					token += temp;
+					_pos = tempPos++;
+
+					return true;
+				}
+			}
+			else
+				return true;
+		}
+		else
+		{
+			token += c;
+			++_pos;
+			start_state = end_state;
+		}
+
+		c = _buffer[_pos];
+		end_state = _table[start_state][c];
+		tempPos = _pos;
+	}
 
 	return true;
 }
@@ -115,7 +183,7 @@ STokenizer& operator>>(STokenizer& s, Token& t)
 	std::string tokenStr;
 	int state = 0;
 
-	while (s.get_token(state, tokenStr));
+	s.get_token(state, tokenStr);
 
 	t = Token(tokenStr, state);
 
