@@ -50,9 +50,9 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	{
 		for (int j = 0; j < MAX_COLUMNS; ++j)
 		{
-			if (!j) 
+			if (!j)
 				_table[i][j] = 0;
-			else 
+			else
 				_table[i][j] = -1;
 		}
 	}
@@ -79,7 +79,7 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	//init digit
 	mark_table(_table, DIGIT, '0', '9', DIGIT);
 	mark_table(_table, DIGIT, '.', '.', DECIMAL);
-	
+
 	//init sub_digit
 	mark_table(_table, DECIMAL, '0', '9', DECIMAL_SUCCESS);
 	mark_table(_table, DECIMAL_SUCCESS, '0', '9', DECIMAL_SUCCESS);
@@ -100,7 +100,7 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	mark_success(7);
 }
 
-void STokenizer::mark_table(int _table[][MAX_COLUMNS], int startState, 
+void STokenizer::mark_table(int _table[][MAX_COLUMNS], int startState,
 							char from, char to, int endState)
 {
 	while (from <= to)
@@ -125,59 +125,56 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 	if (done())
 		return false;
 
-	std::string temp;
-	char c = _buffer[_pos];
-	int end_state = _table[start_state][c];
-	int tempPos = _pos;
+	std::string tokenBuffer;
+	int tokenBufferPos = _pos;
 
-	auto increment = [&]() {
-		temp += c;
-		++tempPos;
-		start_state = end_state;
-		c = _buffer[tempPos];
-		end_state = _table[start_state][c];
+	char ch = _buffer[_pos];
+	int endState = _table[start_state][ch];
+
+	auto increment = [&]()
+	{
+		tokenBuffer += ch;
+		start_state = endState;
+		ch = _buffer[++tokenBufferPos];
+		endState = _table[start_state][ch];
 	};
 
-	while (_buffer[tempPos] != '\0' && end_state != -1)
+	while (_buffer[tokenBufferPos] != '\0' && endState != -1)
 	{
-		if (!get_success(end_state))
+		if (!get_success(endState))
 		{
 			increment();
 
-			bool success = c != '\0' && 
-				end_state != -1 && 
-				get_success(end_state);
-
-			if (!success)
+			if (!(ch != '\0' &&
+				endState != -1 &&
+				get_success(endState)))
 				return true;
 
-			while (success)
+			while (ch != '\0' &&
+				   endState != -1 &&
+				   get_success(endState))
 			{
 				increment();
-
-				success = c != '\0' &&
-					end_state != -1 &&
-					get_success(end_state);
 			}
 
-			if (end_state == -1 || c == '\0')
+			if (endState == -1 || ch == '\0')
 			{
-				token += temp;
-				_pos = tempPos++;
+				token += tokenBuffer;
+				_pos = tokenBufferPos++;
 
 				return true;
 			}
 		}
 		else
 		{
-			token += c;
+			token += ch;
 			++_pos;
-			start_state = end_state;
+			start_state = endState;
 		}
 
-		c = _buffer[_pos];
-		end_state = _table[start_state][c];
-		tempPos = _pos;
+		ch = _buffer[_pos];
+		endState = _table[start_state][ch];
+		tokenBufferPos = _pos;
 	}
 
 	return true;
