@@ -122,46 +122,51 @@ int STokenizer::get_success(int state) const
 
 bool STokenizer::get_token(int& start_state, std::string& token)
 {
+	if (done())
+		return false;
+
 	std::string temp;
 	char c = _buffer[_pos];
 	int end_state = _table[start_state][c];
 	int tempPos = _pos;
 
+	auto increment = [&]() {
+		temp += c;
+		++tempPos;
+		start_state = end_state;
+		c = _buffer[tempPos];
+		end_state = _table[start_state][c];
+	};
+
 	while (_buffer[tempPos] != '\0' && end_state != -1)
 	{
 		if (!get_success(end_state))
 		{
-			temp += c;
-			++tempPos;
-			start_state = end_state;
-			c = _buffer[tempPos];
-			end_state = _table[start_state][c];
+			increment();
 
-			if (c != '\0' && 
+			bool success = c != '\0' && 
 				end_state != -1 && 
-				get_success(end_state))
-			{
-				while (_buffer[tempPos] != '\0' && 
-					   end_state != -1 && 
-					   get_success(end_state))
-				{
-					temp += c;
-					++tempPos;
-					start_state = end_state;
-					c = _buffer[tempPos];
-					end_state = _table[start_state][c];
-				}
+				get_success(end_state);
 
-				if (end_state == -1 || c == '\0')
-				{
-					token += temp;
-					_pos = tempPos++;
-
-					return true;
-				}
-			}
-			else
+			if (!success)
 				return true;
+
+			while (success)
+			{
+				increment();
+
+				success = c != '\0' &&
+					end_state != -1 &&
+					get_success(end_state);
+			}
+
+			if (end_state == -1 || c == '\0')
+			{
+				token += temp;
+				_pos = tempPos++;
+
+				return true;
+			}
 		}
 		else
 		{
