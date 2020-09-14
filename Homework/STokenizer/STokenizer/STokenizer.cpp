@@ -153,9 +153,7 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 			while (ch != '\0' &&
 				   endState != -1 &&
 				   get_success(endState))
-			{
 				increment();
-			}
 
 			if (endState == -1 || ch == '\0')
 			{
