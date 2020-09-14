@@ -7,6 +7,7 @@
  */
 
 #include "STokenizer.h"
+#include "SMLibrary.h"
 
 #include <algorithm>
 
@@ -46,78 +47,49 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 {
 	char punc[] = ".,\'?!\"-;:/@()[]*";
 
-	for (int i = 0; i < MAX_ROWS; ++i)
-	{
-		for (int j = 0; j < MAX_COLUMNS; ++j)
-		{
-			if (!j)
-				_table[i][j] = 0;
-			else
-				_table[i][j] = -1;
-		}
-	}
+	init_table(_table);
 
 	//init start 
-	mark_table(_table, START, 'a', 'z', ALPHA);
-	mark_table(_table, START, 'A', 'Z', ALPHA);
+	mark_cells(START, _table, 'a', 'z', ALPHA);
+	mark_cells(START, _table, 'A', 'Z', ALPHA);
 
-	mark_table(_table, START, '0', '9', DIGIT);
+	mark_cells(START, _table, '0', '9', DIGIT);
 
 	for (int i = 0; i < strlen(punc); ++i)
-		mark_table(_table, START, punc[i], punc[i], PUNCT);
+		mark_cells(START, _table, punc[i], punc[i], PUNCT);
 
-	mark_table(_table, START, ' ', ' ', SPACE);
+	mark_cell(START, _table, ' ', SPACE);
 
 	for (int i = 0; i < MAX_COLUMNS; ++i)
 		if (_table[START][i] == -1)
 			_table[START][i] = UNKNOWN;
 
 	//init alpha
-	mark_table(_table, ALPHA, 'a', 'z', ALPHA);
-	mark_table(_table, ALPHA, 'A', 'Z', ALPHA);
+	mark_cells(ALPHA, _table, 'a', 'z', ALPHA);
+	mark_cells(ALPHA, _table, 'A', 'Z', ALPHA);
 
 	//init digit
-	mark_table(_table, DIGIT, '0', '9', DIGIT);
-	mark_table(_table, DIGIT, '.', '.', DECIMAL);
+	mark_cells(DIGIT, _table, '0', '9', DIGIT);
+	mark_cell(DIGIT, _table, '.', DECIMAL);
 
 	//init sub_digit
-	mark_table(_table, DECIMAL, '0', '9', DECIMAL_SUCCESS);
-	mark_table(_table, DECIMAL_SUCCESS, '0', '9', DECIMAL_SUCCESS);
+	mark_cells(DECIMAL, _table, '0', '9', DECIMAL_SUCCESS);
+	mark_cells(DECIMAL_SUCCESS, _table, '0', '9', DECIMAL_SUCCESS);
 
 	//init punct
-	for (int i = 0; i < strlen(punc); ++i)
-		mark_table(_table, PUNCT, punc[i], punc[i], PUNCT);
+	mark_cells(PUNCT, _table, punc, PUNCT);
 
 	//init space
-	mark_table(_table, SPACE, ' ', ' ', SPACE);
+	mark_cell(SPACE, _table, ' ', SPACE);
 
-	mark_success(0);
-	mark_success(1);
-	mark_success(2);
-	mark_success(3);
-	mark_success(4);
-	mark_success(6);
-	mark_success(7);
-}
-
-void STokenizer::mark_table(int _table[][MAX_COLUMNS], int startState,
-							char from, char to, int endState)
-{
-	while (from <= to)
-	{
-		_table[startState][from] = endState;
-		++from;
-	}
-}
-
-void STokenizer::mark_success(int state)
-{
-	_table[state][0] = 1;
-}
-
-int STokenizer::get_success(int state) const
-{
-	return _table[state][0];
+	mark_success(_table, 0);
+	mark_success(_table, 1);
+	mark_success(_table, 2);
+	mark_success(_table, 3);
+	mark_success(_table, 4);
+	mark_fail(_table, 5);
+	mark_success(_table, 6);
+	mark_success(_table, 7);
 }
 
 bool STokenizer::get_token(int& start_state, std::string& token)
@@ -141,18 +113,18 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 
 	while (_buffer[tokenBufferPos] != '\0' && endState != -1)
 	{
-		if (!get_success(endState))
+		if (!is_success(_table, endState))
 		{
 			increment();
 
 			if (!(ch != '\0' &&
 				endState != -1 &&
-				get_success(endState)))
+				is_success(_table, endState)))
 				return true;
 
 			while (ch != '\0' &&
 				   endState != -1 &&
-				   get_success(endState))
+				   is_success(_table, endState))
 				increment();
 
 			if (endState == -1 || ch == '\0')

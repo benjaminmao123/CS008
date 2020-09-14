@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{55D4BF6B-2E2E-46E9-92ED-F4F061AA0D84}</ProjectGuid>
-    <RootNamespace>Tokenizer</RootNamespace>
+    <ProjectGuid>{26F67A30-3A01-4D53-8670-75BC0BEC4EB9}</ProjectGuid>
+    <RootNamespace>FileTokenizer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -138,17 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="SMConstants.h" />
-    <ClInclude Include="SMLibrary.h" />
-    <ClInclude Include="STokenizer.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="STokenizer.cpp" />
-    <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
