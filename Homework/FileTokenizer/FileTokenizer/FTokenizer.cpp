@@ -11,7 +11,6 @@
 #include <string>
 
 FTokenizer::FTokenizer(const char* fname) :
-	_more(true),
 	_f(fname)
 {
 	if (!_f.is_open())
@@ -28,12 +27,7 @@ Token FTokenizer::next_token()
 
 bool FTokenizer::more()
 {
-	if (_f.eof() && _stk.done())
-		_more = false;
-	else
-		_more = true;
-
-	return _more;
+	return !(_f.eof() && _stk.done());
 }
 
 bool FTokenizer::get_new_block()
