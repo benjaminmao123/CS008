@@ -16,7 +16,7 @@ void R2_box(const string& prefix, unsigned int levels);
 void R3_first_second(string first, string second);
 unsigned int R4_boxes(string label);
 double R5_sumover(unsigned int n);
-void R6_guess(unsigned int low, unsigned int high);
+void R16_guess(unsigned int low, unsigned int high);
 
 int main()
 {
@@ -28,7 +28,7 @@ int main()
 	cout << endl;
 	cout << "Total boxes: " << R4_boxes("") << endl << endl;
 	cout << R5_sumover(3) << endl << endl;
-	R6_guess(1, 1000000);
+	R16_guess(1, 1000000);
 
 	return 0;
 }
@@ -111,7 +111,7 @@ double R5_sumover(unsigned int n)
 	return (double)1 / n + R5_sumover(n - 1);
 }
 
-void R6_guess(unsigned int low, unsigned int high)
+void R16_guess(unsigned int low, unsigned int high)
 {
 	string input;
 
@@ -133,9 +133,9 @@ void R6_guess(unsigned int low, unsigned int high)
 		while (input != "l" && input != "h");
 
 		if (input == "l")
-			R6_guess(low, mid - 1);
+			R16_guess(low, mid - 1);
 		else
-			R6_guess(mid + 1, high);
+			R16_guess(mid + 1, high);
 	}
 	else
 		cout << "You're a big fat liar." << endl;
