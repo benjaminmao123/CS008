@@ -58,8 +58,7 @@ void R2_box(const string& prefix, unsigned int levels)
 
 	for (int i = 1; i <= 9; ++i)
 	{
-		string dot;
-		levels == 1 ? dot = "" : dot = ".";
+		string dot = (levels == 1) ? "" : ".";
 		string s = prefix + std::to_string(i) + dot;
 
 		R2_box(s, levels - 1);
