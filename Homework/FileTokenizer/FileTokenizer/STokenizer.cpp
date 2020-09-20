@@ -103,7 +103,7 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 
 	char ch = _buffer[_pos];
 	
-	if (ch < 0)
+	if (ch < 0 || ch > 127)
 	{
 		++_pos;
 		start_state = UNKNOWN;

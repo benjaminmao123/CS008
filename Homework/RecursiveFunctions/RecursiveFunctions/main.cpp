@@ -82,7 +82,7 @@ void R3_first_second(string first, string second)
 
 unsigned int R4_boxes(string label)
 {
-	static unsigned int numBoxes = 0;
+	unsigned int numBoxes = 0;
 	unsigned int input;
 
 	if (!label.empty())
@@ -92,14 +92,12 @@ unsigned int R4_boxes(string label)
 	cin >> input;
 	cout << endl;
 
-	numBoxes += input;
-
 	label += label.empty() ? "" : ".";
 
 	for (unsigned int i = 1; i <= input; ++i)
-		R4_boxes(label + to_string(i));
+		numBoxes += R4_boxes(label + to_string(i));
 
-	return numBoxes;
+	return numBoxes + input;
 }
 
 double R5_sumover(unsigned int n)
