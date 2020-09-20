@@ -140,5 +140,5 @@ void R16_guess(unsigned int low, unsigned int high)
 			R16_guess(mid + 1, high);
 	}
 	else
-		cout << "You're a big fat liar." << endl;
+		cout << "KYS LIAR." << endl;
 }
