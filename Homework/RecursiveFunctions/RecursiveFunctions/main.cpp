@@ -22,12 +22,17 @@ int main()
 {
 	R1_levels(1, 4);
 	cout << endl;
+
 	R2_box("BOX:", 3);
 	cout << endl;
-	R3_first_second("CAT", "MAN");
+
+	R3_first_second("CART", "MAN");
 	cout << endl;
+
 	cout << "Total boxes: " << R4_boxes("") << endl << endl;
+
 	cout << R5_sumover(3) << endl << endl;
+
 	R16_guess(1, 1000000);
 
 	return 0;

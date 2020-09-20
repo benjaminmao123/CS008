@@ -3,12 +3,13 @@
 /*
     Features:
         -Not Implemented: None
-        -Implemented: All problems in the set.
+        -Implemented: All functions in Token.h and STokenizer.h
         -Partly implemented: None
 
     Bugs    : features that are implemented are bug-free.
 
     Reflections:
-        I learned more about recursion.
+        This assignment let me practice some more with
+        finite state machines.
 */
 #endif // Z_WORK_REPORT_H
