@@ -37,7 +37,7 @@ bool FTokenizer::get_new_block()
 
 	char block[MAX_BUFFER];
 	_f.read(block, MAX_BLOCK - 1);
-	block[MAX_BLOCK] = '\0';
+	block[_f.gcount()] = '\0';
 
 	_stk.set_string(block);
 	
