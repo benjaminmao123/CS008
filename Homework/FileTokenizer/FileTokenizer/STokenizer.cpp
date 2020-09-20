@@ -40,6 +40,7 @@ bool STokenizer::more()
 
 void STokenizer::set_string(const char str[])
 {
+	std::cout << strlen(str) << std::endl;
 	strcpy_s(_buffer, MAX_BUFFER, str);
 	_pos = 0;
 }

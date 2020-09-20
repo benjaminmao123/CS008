@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-#define MAX_BLOCK MAX_BUFFER
+#define MAX_BLOCK MAX_BUFFER - 1
 
 class FTokenizer
 {

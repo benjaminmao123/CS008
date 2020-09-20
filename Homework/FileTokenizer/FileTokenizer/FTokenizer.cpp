@@ -11,7 +11,7 @@
 #include <string>
 
 FTokenizer::FTokenizer(const char* fname) :
-	_f(fname)
+	_f(fname, std::ifstream::binary)
 {
 	if (!_f.is_open())
 		std::cout << "Failed to open file." << std::endl;
@@ -35,13 +35,11 @@ bool FTokenizer::get_new_block()
 	if (!more())
 		return false;
 
-	std::string block;
-	char charBuf;
+	char block[MAX_BUFFER];
+	_f.read(block, MAX_BLOCK - 1);
+	block[MAX_BLOCK] = '\0';
 
-	while ((block.size() < MAX_BLOCK - 1) && _f.get(charBuf))
-		block += charBuf;
-
-	_stk.set_string(block.c_str());
+	_stk.set_string(block);
 	
 	return true;
 }
