@@ -20,14 +20,14 @@ void R16_guess(unsigned int low, unsigned int high);
 
 int main()
 {
-	R1_levels(1, 4);
-	cout << endl;
-	R2_box("BOX:", 3);
-	cout << endl;
-	R3_first_second("CAT", "MAN");
-	cout << endl;
-	cout << "Total boxes: " << R4_boxes("") << endl << endl;
-	cout << R5_sumover(3) << endl << endl;
+	//R1_levels(1, 4);
+	//cout << endl;
+	//R2_box("BOX:", 3);
+	//cout << endl;
+	//R3_first_second("CAT", "MAN");
+	//cout << endl;
+	//cout << "Total boxes: " << R4_boxes("") << endl << endl;
+	//cout << R5_sumover(3) << endl << endl;
 	R16_guess(1, 1000000);
 
 	return 0;
@@ -119,18 +119,20 @@ void R16_guess(unsigned int low, unsigned int high)
 	{
 		unsigned int mid = low + (high - low) / 2;
 
-		cout << "Is your number " << mid << "? (y/n): ";
-		cin >> input;
-
-		while (input != "y" && input != "n");
+		while (input != "y" && input != "n")
+		{
+			cout << "Is your number " << mid << "? (y/n): ";
+			cin >> input;
+		}
 
 		if (input == "y")
 			return;
 
-		cout << "Is your number lower or higher than " << mid << "? (l/h): ";
-		cin >> input;
-
-		while (input != "l" && input != "h");
+		while (input != "l" && input != "h")
+		{
+			cout << "Is your number lower or higher than " << mid << "? (l/h): ";
+			cin >> input;
+		}
 
 		if (input == "l")
 			R16_guess(low, mid - 1);
