@@ -10,6 +10,7 @@
 #include "SMLibrary.h"
 
 #include <algorithm>
+#include <cmath>
 
 int STokenizer::_table[MAX_ROWS][MAX_COLUMNS];
 
@@ -55,8 +56,7 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 
 	mark_cells(START, _table, '0', '9', DIGIT);
 
-	for (int i = 0; i < strlen(punc); ++i)
-		mark_cells(START, _table, punc[i], punc[i], PUNCT);
+	mark_cells(START, _table, punc, PUNCT);
 
 	mark_cell(START, _table, ' ', SPACE);
 
@@ -101,6 +101,16 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 	int tokenBufferPos = _pos;
 
 	char ch = _buffer[_pos];
+	
+	if (ch < 0)
+	{
+		++_pos;
+		start_state = UNKNOWN;
+		token += ch;
+
+		return true;
+	}
+
 	int endState = _table[start_state][ch];
 
 	auto increment = [&]()

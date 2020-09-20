@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: STokenizer
+ * Purpose: Driver for FTokenizer
+ *
+ * Notes: None.
+ */
+
 #include "FTokenizer.h"
 
 #include <iostream>

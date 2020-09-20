@@ -1,55 +1,64 @@
+/*
+ * Author: Benjamin Mao
+ * Project: STokenizer
+ * Purpose: Functions to implement FTokenizer
+ *
+ * Notes: None.
+ */
+
 #include "FTokenizer.h"
 
 #include <string>
 
 FTokenizer::FTokenizer(const char* fname) :
-	_f(fname),
-	_pos(0),
-	_blockPos(0),
-	_more(true)
+	_more(true),
+	_f(fname)
 {
 	if (!_f.is_open())
-	{
 		std::cout << "Failed to open file." << std::endl;
-		_more = false;
-	}
 }
 
 Token FTokenizer::next_token()
 {
-	std::string buffer;
+	Token t;
+	_stk >> t;
 
-	//while (buffer.size() <= MAX_BLOCK && _f >> buffer)
-	//{
-	//	buffer += 
-	//}
-
-	return Token();
+	return t;
 }
 
 bool FTokenizer::more()
 {
+	if (_f.eof() && _stk.done())
+		_more = false;
+	else
+		_more = true;
+
 	return _more;
-}
-
-int FTokenizer::pos()
-{
-	return _pos;
-}
-
-int FTokenizer::block_pos()
-{
-	return _blockPos;
 }
 
 bool FTokenizer::get_new_block()
 {
-	return false;
+	if (!more())
+		return false;
+
+	std::string block;
+	char charBuf;
+
+	while ((block.size() < MAX_BLOCK - 1) && _f.get(charBuf))
+		block += charBuf;
+
+	_stk.set_string(block.c_str());
+	
+	return true;
 }
 
 FTokenizer& operator>>(FTokenizer& f, Token& t)
 {
 	t = f.next_token();
+
+	if (t.token_str().empty())
+		if (f.get_new_block())
+			t = f.next_token();
 
 	return f;
 }

@@ -40,6 +40,11 @@ void mark_fail(int _table[][MAX_COLUMNS], int state)
 //true if state is a success state
 bool is_success(int _table[][MAX_COLUMNS], int state)
 {
+	if (state >= MAX_COLUMNS || state < 0)
+	{
+		std::cout << state << std::endl;
+	}
+
 	return _table[state][0];
 }
 

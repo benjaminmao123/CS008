@@ -1,25 +1,39 @@
+/*
+ * Author: Benjamin Mao
+ * Project: Recursive Functions
+ * Purpose: Driver class
+ *
+ * Notes: None.
+ */
+
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-void problem9_1(int current, int max);
-void problem9_2(const string& prefix, unsigned int levels);
-void problem9_3(string first, string second);
-void problem9_4();
-void problem9_5();
-void problem9_16();
+void R1_levels(int current, int max);
+void R2_box(const string& prefix, unsigned int levels);
+void R3_first_second(string first, string second);
+unsigned int R4_boxes(string label);
+double R5_sumover(unsigned int n);
+void R6_guess(unsigned int low, unsigned int high);
 
 int main()
 {
-	//problem9_1(1, 4);
-	//problem9_2("BOX:", 3);
-	problem9_3("CAT", "MAN");
+	//R1_levels(1, 4);
+	//cout << endl;
+	//R2_box("BOX:", 3);
+	//cout << endl;
+	//R3_first_second("CAT", "MAN");
+	//cout << endl;
+	//cout << "Total boxes: " << R4_boxes("") << endl << endl;
+	//cout << R5_sumover(3) << endl << endl;
+	R6_guess(1, 1000000);
 
 	return 0;
 }
 
-void problem9_1(int current, int max)
+void R1_levels(int current, int max)
 {
 	cout << "This was written by call number " << current << endl;
 
@@ -29,12 +43,12 @@ void problem9_1(int current, int max)
 		return;
 	}
 
-	problem9_1(current + 1, max);
+	R1_levels(current + 1, max);
 
 	cout << "This was ALSO written by call number " << current << endl;
 }
 
-void problem9_2(const string& prefix, unsigned int levels)
+void R2_box(const string& prefix, unsigned int levels)
 {
 	if (!levels)
 	{
@@ -45,23 +59,84 @@ void problem9_2(const string& prefix, unsigned int levels)
 	for (int i = 1; i <= 9; ++i)
 	{
 		string dot;
-
-		if (levels == 1) dot = "";
-		else dot = ".";
-
+		levels == 1 ? dot = "" : dot = ".";
 		string s = prefix + std::to_string(i) + dot;
 
-		problem9_2(s, levels - 1);
+		R2_box(s, levels - 1);
 	}
 }
 
-void problem9_3(string first, string second)
+void R3_first_second(string first, string second)
 {
 	if (first.empty())
 	{
-		std::cout << second << std::endl;
+		cout << second << endl;
 		return;
 	}
 
-	
+	for (unsigned int i = 0; i < first.size(); ++i)
+	{
+		R3_first_second(first.substr(1), first[0] + second);
+		rotate(first.begin(), first.begin() + 1, first.end());
+	}
+}
+
+unsigned int R4_boxes(string label)
+{
+	static unsigned int numBoxes = 0;
+	unsigned int input;
+
+	if (!label.empty())
+		cout << "You are in box: " << label << endl;
+
+	cout << "How many boxes do you see?: ";
+	cin >> input;
+	cout << endl;
+
+	numBoxes += input;
+
+	label += label.empty() ? "" : ".";
+
+	for (unsigned int i = 1; i <= input; ++i)
+		R4_boxes(label + to_string(i));
+
+	return numBoxes;
+}
+
+double R5_sumover(unsigned int n)
+{
+	if (!n)
+		return 0.0;
+
+	return (double)1 / n + R5_sumover(n - 1);
+}
+
+void R6_guess(unsigned int low, unsigned int high)
+{
+	string input;
+
+	if (high >= low)
+	{
+		unsigned int mid = low + (high - low) / 2;
+
+		cout << "Is your number " << mid << "? (y/n): ";
+		cin >> input;
+
+		while (input != "y" && input != "n");
+
+		if (input == "y")
+			return;
+
+		cout << "Is your number lower or higher than " << mid << "? (l/h): ";
+		cin >> input;
+
+		while (input != "l" && input != "h");
+
+		if (input == "l")
+			R6_guess(low, mid - 1);
+		else
+			R6_guess(mid + 1, high);
+	}
+	else
+		cout << "You're a big fat liar." << endl;
 }
