@@ -1,5 +1,7 @@
 #include "BSTLibrary.h"
 
+#include <iostream>
+
 int main()
 {
 	//tree_node<int>* root = new tree_node<int>(10);
