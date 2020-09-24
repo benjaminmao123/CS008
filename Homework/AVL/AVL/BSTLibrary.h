@@ -113,6 +113,14 @@ tree_node<T>* tree_from_sorted_list(const T* a, int size);
 template <typename T>
 tree_node<T>* tree_from_sorted_list(const T* a, int l, int r);
 
+// ---------------- ROTATIONS --------------------------
+template <typename T>
+tree_node<T>* rotate_right(tree_node<T>*& root);
+template <typename T>
+tree_node<T>* rotate_left(tree_node<T>*& root);
+template <typename T>
+tree_node<T>* rotate(tree_node<T>*& root); //decide which rotate is needed based on balance factor
+
 template<typename T>
 inline void tree_insert(tree_node<T>*& root, const T& insert_me)
 {
@@ -128,6 +136,8 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         tree_insert(root->_right, insert_me);
     else
         std::cout << "Item exists." << std::endl;
+
+    root->height();
 }
 
 template<typename T>
@@ -227,11 +237,12 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         {
             delete root;
             root = nullptr;
+
             return true;
         }
         else if (!root->_left)
         {
-            tree_node<T> *temp = root->_right;
+            tree_node<T>* temp = root->_right;
             delete root;
             root = temp;
         }
@@ -254,6 +265,8 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
     }
 
+    root->update_height();
+
     return true;
 }
 
@@ -273,6 +286,8 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
 
         return;
     }
+
+    root->update_height();
 }
 
 template<typename T>
@@ -300,8 +315,8 @@ inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 
     dest->_item += src->_item;
 
-    dest->_left = MergeTrees(dest->_left, src->_left);
-    dest->_right = MergeTrees(dest->_right, src->_right);
+    dest->_left = tree_add(dest->_left, src->_left);
+    dest->_right = tree_add(dest->_right, src->_right);
 
     return dest;
 }
@@ -329,4 +344,36 @@ inline tree_node<T>* tree_from_sorted_list(const T* a, int l, int r)
     root->_right = tree_from_sorted_list(a, mid + 1, r);
 
     return root;
+}
+
+template<typename T>
+inline tree_node<T>* rotate_right(tree_node<T>*& root)
+{
+    tree_node<T>* middleNode = root->_left;
+    root->_left = middleNode->_right;
+    middleNode->_right = root;
+
+    root->update_height();
+    middleNode->update_height();
+
+    return middleNode;
+}
+
+template<typename T>
+inline tree_node<T>* rotate_left(tree_node<T>*& root)
+{
+    tree_node<T>* middleNode = root->_right;
+    root->_right = middleNode->_left;
+    middleNode->_left = root;
+
+    root->update_height();
+    middleNode->update_height();
+
+    return middleNode;
+}
+
+template<typename T>
+inline tree_node<T>* rotate(tree_node<T>*& root)
+{
+    return NULL;
 }

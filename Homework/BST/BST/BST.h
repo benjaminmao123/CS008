@@ -72,13 +72,20 @@ template<typename T>
 inline void BST<T>::insert(const T& insert_me)
 {
     tree_insert(root, insert_me);
+    root->update_height();
 }
 
 template<typename T>
 inline void BST<T>::erase(const T& target)
 {
     if (!tree_erase(root, target))
+    {
         std::cout << "Item does not exist." << std::endl;
+
+        return;
+    }
+
+    root->update_height();
 }
 
 template<typename T>
@@ -97,6 +104,7 @@ template<typename T>
 inline BST<T>& BST<T>::operator+=(const BST<T>& rhs)
 {
     tree_add(root, rhs.root);
+    root->update_height();
 
     return *this;
 }
