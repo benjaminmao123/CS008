@@ -234,15 +234,15 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
         else if (!root->_left)
         {
-            root->_item = root->_right->_item;
-            delete root->_right;
-            root->_right = nullptr;
+            tree_node<T>* temp = root->_right;
+            delete root;
+            root = temp;
         }
         else if (!root->_right)
         {
-            root->_item = root->_left->_item;
-            delete root->_left;
-            root->_left = nullptr;
+            tree_node<T>* temp = root->_left;
+            delete root;
+            root = temp;
         }
         else
         {
