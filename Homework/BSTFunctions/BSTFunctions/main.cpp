@@ -27,6 +27,10 @@ int main()
 	tree_node<int> *root = tree_from_sorted_list(a, 5);
 
 	tree_print(root);
+	
+	tree_clear(root);
+
+	tree_print(root);
 
 	return 0;
 }
