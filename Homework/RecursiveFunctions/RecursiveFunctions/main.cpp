@@ -20,20 +20,20 @@ void R16_guess(unsigned int low, unsigned int high);
 
 int main()
 {
-	R1_levels(1, 4);
-	cout << endl;
+	//R1_levels(1, 4);
+	//cout << endl;
 
-	R2_box("BOX:", 3);
-	cout << endl;
+	//R2_box("BOX:", 3);
+	//cout << endl;
 
-	R3_first_second("CART", "MAN");
-	cout << endl;
+	//R3_first_second("CAT", "MAN");
+	//cout << endl;
 
 	cout << "Total boxes: " << R4_boxes("") << endl << endl;
 
-	cout << R5_sumover(3) << endl << endl;
+	//cout << R5_sumover(3) << endl << endl;
 
-	R16_guess(1, 1000000);
+	//R16_guess(1, 1000000);
 
 	return 0;
 }
@@ -91,13 +91,14 @@ unsigned int R4_boxes(string label)
 	unsigned int input;
 
 	if (!label.empty())
+	{
 		cout << "You are in box: " << label << endl;
+		label += ".";
+	}
 
 	cout << "How many boxes do you see?: ";
 	cin >> input;
 	cout << endl;
-
-	label += label.empty() ? "" : ".";
 
 	for (unsigned int i = 1; i <= input; ++i)
 		numBoxes += R4_boxes(label + to_string(i));
