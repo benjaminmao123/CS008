@@ -111,7 +111,7 @@ inline BST<T>& BST<T>::operator+=(const BST<T>& rhs)
 template <typename U>
 std::ostream& operator<<(std::ostream& outs, const BST<U>& tree)
 {
-    tree_print(tree.root, outs);
+    tree_print(tree.root, 0, outs);
 
     return outs;
 }

@@ -13,7 +13,7 @@ struct tree_node
 
     int balance_factor() 
     {
-        //balance factor = height of the right subtree 
+        //root->balance_factor() factor = height of the right subtree 
         //                        - the height of the left subtree
         //a NULL child has a height of -1
         //a leaf has a height of 0
@@ -31,8 +31,8 @@ struct tree_node
 
     int height()
     {
-        // Height of a node is 1 + height of the "taller" child
-        //A leaf node has a height of zero: 1 + max(-1,-1)
+        // Height of a root is 1 + height of the "taller" child
+        //A leaf root has a height of zero: 1 + max(-1,-1)
         if (_left && _right)
             _height = std::max(_left->height(), _right->height()) + 1;
         else if (_left)
@@ -81,7 +81,7 @@ template<typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
 
-//prints detailes info about each node
+//prints detailes info about each root
 template<typename T>       
 void tree_print_debug(tree_node<T>* root, int level = 0,
                       std::ostream& outs = std::cout);
@@ -94,7 +94,7 @@ void tree_clear(tree_node<T>*& root);
 template <typename T>       
 bool tree_erase(tree_node<T>*& root, const T& target);
 
-//erase rightmost node from the tree
+//erase rightmost root from the tree
 // store the item in max_value
 template <typename T>       
 void tree_remove_max(tree_node<T>*& root, T& max_value); 
@@ -119,7 +119,7 @@ tree_node<T>* rotate_right(tree_node<T>*& root);
 template <typename T>
 tree_node<T>* rotate_left(tree_node<T>*& root);
 template <typename T>
-tree_node<T>* rotate(tree_node<T>*& root); //decide which rotate is needed based on balance factor
+tree_node<T>* rotate(tree_node<T>*& root); //decide which rotate is needed based on root->balance_factor() factor
 
 template<typename T>
 inline void tree_insert(tree_node<T>*& root, const T& insert_me)
@@ -368,7 +368,28 @@ inline tree_node<T>* rotate_left(tree_node<T>*& root)
 template<typename T>
 inline tree_node<T>* rotate(tree_node<T>*& root)
 {
-    
+    if (root->balance_factor() > 1 && 
+        root->_item < root->_left->_item)
+    {
+        return rotate_right(root);
+    }
+    else if (root->balance_factor() < -1 && 
+             root->_item > root->_right->_item)
+    {
+        return rotate_left(root);
+    }
+    else if (root->balance_factor() > 1 && 
+             root->_item > root->_left->_item)
+    {
+        root->_left = rotate_left(root->_left);
+        return rotate_right(root);
+    }
+    else if (root->balance_factor() < -1 && 
+             root->_item < root->_right->_item)
+    {
+        root->_right = rotate_right(root->_right);
+        return rotate_left(root);
+    }
 
-    return NULL;
+    return root;
 }
