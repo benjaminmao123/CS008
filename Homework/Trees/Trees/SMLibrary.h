@@ -61,7 +61,7 @@ void mark_cells(int row, int _table[][MAX_COLUMNS], int from, int to, int state)
 //Mark columns represented by the string columns[] for this row
 void mark_cells(int row, int _table[][MAX_COLUMNS], const char columns[], int state)
 {
-	for (int i = 0; i < strlen(columns); ++i)
+	for (unsigned int i = 0; i < strlen(columns); ++i)
 		mark_cells(row, _table, columns[i], columns[i], state);
 }
 
