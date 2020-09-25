@@ -17,16 +17,14 @@ struct tree_node
         //                        - the height of the left subtree
         //a NULL child has a height of -1
         //a leaf has a height of 0
-        int factor = 0;
-
         if (_left && _right)
-            factor = _right->height() - _left->height();
+            return _left->height() - _right->height();
         else if (_left)
-            factor = -1 - _left->height();
+            return _left->height() - -1;
         else if (_right)
-            factor = _right->height() + 1;
-        
-        return factor;
+            return -1 - _right->height();
+
+        return 0;
     }
 
     int height()
@@ -34,21 +32,21 @@ struct tree_node
         // Height of a node is 1 + height of the "taller" child
         //A leaf node has a height of zero: 1 + max(-1,-1)
         if (_left && _right)
-            _height = std::max(_left->height(), _right->height()) + 1;
+            return std::max(_left->height(), _right->height()) + 1;
         else if (_left)
-            _height = _left->height() + 1;
+            return _left->height() + 1;
         else if (_right)
-            _height = _right->height() + 1;
-        else
-            _height = 0;
+            return _right->height() + 1;
 
-        return _height;
+        return 0;
     }
 
     int update_height() 
     {
         //set the _height member variable (call height();)
-        return height();
+        _height = height();
+
+        return _height;
     }
 
     tree_node(T item = T(), tree_node* left = NULL,
@@ -119,6 +117,7 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
     if (!root)
     {
         root = new tree_node<T>(insert_me);
+
         return;
     }
 
@@ -136,6 +135,7 @@ template<typename T>
 inline tree_node<T>* tree_search(tree_node<T>* root, const T& target)
 {
     tree_node<T>* res = nullptr;
+
     tree_search(root, target, res);
 
     return res;
@@ -150,6 +150,7 @@ inline bool tree_search(tree_node<T>* root, const T& target, tree_node<T>*& foun
     if (target == root->_item)
     {
         found_ptr = root;
+
         return true;
     }
     else if (target < root->_item)
@@ -164,6 +165,7 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
     if (!root)
     {
         std::cout << "Tree is empty" << std::endl;
+        
         return;
     }
 
@@ -185,6 +187,7 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
     if (!root)
     {
         std::cout << "Tree is empty" << std::endl;
+
         return;
     }
 
@@ -229,6 +232,7 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         {
             delete root;
             root = nullptr;
+
             return true;
         }
         else if (!root->_left)
@@ -274,6 +278,7 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
         max_value = root->_item;
         delete root;
         root = nullptr;
+
         return;
     }
 
@@ -287,6 +292,7 @@ inline tree_node<T>* tree_copy(tree_node<T>* root)
         return nullptr;
 
     tree_node<T>* newNode = new tree_node<T>(root->_item);
+
     newNode->_height = root->_height;
 
     newNode->_left = tree_copy(root->_left);
@@ -305,8 +311,8 @@ inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 
     dest->_item += src->_item;
 
-    dest->_left = MergeTrees(dest->_left, src->_left);
-    dest->_right = MergeTrees(dest->_right, src->_right);
+    dest->_left = tree_add(dest->_left, src->_left);
+    dest->_right = tree_add(dest->_right, src->_right);
 
     dest->update_height();
 
@@ -317,6 +323,7 @@ template<typename T>
 inline tree_node<T>* tree_from_sorted_list(const T* a, int size)
 {
     tree_node<T>* root = tree_from_sorted_list(a, 0, size - 1);
+
     root->update_height();
 
     return root;
