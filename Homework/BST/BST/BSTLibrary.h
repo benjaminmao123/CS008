@@ -128,6 +128,8 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         tree_insert(root->_right, insert_me);
     else
         std::cout << "Item exists." << std::endl;
+
+    root->update_height();
 }
 
 template<typename T>
@@ -254,6 +256,8 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
     }
 
+    root->update_height();
+
     return true;
 }
 
@@ -270,9 +274,10 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
         max_value = root->_item;
         delete root;
         root = nullptr;
-
         return;
     }
+
+    root->update_height();
 }
 
 template<typename T>
@@ -302,6 +307,8 @@ inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 
     dest->_left = MergeTrees(dest->_left, src->_left);
     dest->_right = MergeTrees(dest->_right, src->_right);
+
+    dest->update_height();
 
     return dest;
 }

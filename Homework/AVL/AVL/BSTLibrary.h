@@ -20,11 +20,11 @@ struct tree_node
         int factor = 0;
 
         if (_left && _right)
-            factor = _right->height() - _left->height();
+            factor = _left->height() - _right->height();
         else if (_left)
-            factor = -1 - _left->height();
+            factor = _left->height() - -1;
         else if (_right)
-            factor = _right->height() + 1;
+            factor = -1 - _right->height();
         
         return factor;
     }
@@ -136,6 +136,9 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         tree_insert(root->_right, insert_me);
     else
         std::cout << "Item exists." << std::endl;
+
+    root->update_height();
+    root = rotate(root);
 }
 
 template<typename T>
@@ -262,6 +265,9 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
     }
 
+    root->update_height();
+    root = rotate(root);
+
     return true;
 }
 
@@ -278,9 +284,10 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
         max_value = root->_item;
         delete root;
         root = nullptr;
-
         return;
     }
+
+    root->update_height();
 }
 
 template<typename T>
@@ -310,6 +317,8 @@ inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 
     dest->_left = MergeTrees(dest->_left, src->_left);
     dest->_right = MergeTrees(dest->_right, src->_right);
+
+    dest->update_height();
 
     return dest;
 }
@@ -357,7 +366,7 @@ inline tree_node<T>* rotate_left(tree_node<T>*& root)
 {
     tree_node<T>* middleNode = root->_right;
     root->_right = middleNode->_left;
-    middleNode->_left = root;
+    middleNode->_left = root;        
 
     root->update_height();
     middleNode->update_height();
@@ -368,24 +377,23 @@ inline tree_node<T>* rotate_left(tree_node<T>*& root)
 template<typename T>
 inline tree_node<T>* rotate(tree_node<T>*& root)
 {
-    if (root->balance_factor() > 1 && 
-        root->_item < root->_left->_item)
-    {
+    if (!root)
+        return nullptr;
+
+    int balance = root->balance_factor();
+    int balanceLeft = root->_left ? root->_left->balance_factor() : 0;
+    int balanceRight = root->_right ? root->_right->balance_factor() : 0;
+
+    if (balance > 1 && balanceLeft >= 0)
         return rotate_right(root);
-    }
-    else if (root->balance_factor() < -1 && 
-             root->_item > root->_right->_item)
-    {
-        return rotate_left(root);
-    }
-    else if (root->balance_factor() > 1 && 
-             root->_item > root->_left->_item)
+    else if (balance > 1 && balanceLeft < 0)
     {
         root->_left = rotate_left(root->_left);
         return rotate_right(root);
     }
-    else if (root->balance_factor() < -1 && 
-             root->_item < root->_right->_item)
+    else if (balance < -1 && balanceRight <= 0)
+        return rotate_left(root);
+    else if (balance < -1 && balanceRight > 0)
     {
         root->_right = rotate_right(root->_right);
         return rotate_left(root);

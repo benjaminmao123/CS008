@@ -73,8 +73,6 @@ template<typename T>
 inline void AVL<T>::insert(const T& insert_me)
 {
     tree_insert(root, insert_me);
-    root->update_height();
-    root = rotate(root);
 }
 
 template<typename T>
@@ -85,9 +83,6 @@ inline void AVL<T>::erase(const T& target)
         std::cout << "Item does not exist." << std::endl;
         return;
     }
-
-    root->update_height();
-    root = rotate(root);
 }
 
 template<typename T>
@@ -106,7 +101,6 @@ template<typename T>
 inline AVL<T>& AVL<T>::operator+=(const AVL<T>& rhs)
 {
     tree_add(root, rhs.root);
-    root->update_height();
 
     return *this;
 }
