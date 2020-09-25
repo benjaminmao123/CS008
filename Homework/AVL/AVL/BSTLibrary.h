@@ -384,15 +384,19 @@ inline tree_node<T>* rotate(tree_node<T>*& root)
     int balanceLeft = root->_left ? root->_left->balance_factor() : 0;
     int balanceRight = root->_right ? root->_right->balance_factor() : 0;
 
+    //left left case
     if (balance > 1 && balanceLeft >= 0)
         return rotate_right(root);
+    //right right case
+    else if (balance < -1 && balanceRight <= 0)
+        return rotate_left(root);
+    //left right case
     else if (balance > 1 && balanceLeft < 0)
     {
         root->_left = rotate_left(root->_left);
         return rotate_right(root);
     }
-    else if (balance < -1 && balanceRight <= 0)
-        return rotate_left(root);
+    //right left case
     else if (balance < -1 && balanceRight > 0)
     {
         root->_right = rotate_right(root->_right);
