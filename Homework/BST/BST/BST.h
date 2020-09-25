@@ -81,7 +81,6 @@ inline void BST<T>::erase(const T& target)
     if (!tree_erase(root, target))
     {
         std::cout << "Item does not exist." << std::endl;
-
         return;
     }
 
@@ -112,7 +111,7 @@ inline BST<T>& BST<T>::operator+=(const BST<T>& rhs)
 template <typename U>
 std::ostream& operator<<(std::ostream& outs, const BST<U>& tree)
 {
-    tree_print(tree.root, 0, outs);
+    tree_print(tree.root, outs);
 
     return outs;
 }

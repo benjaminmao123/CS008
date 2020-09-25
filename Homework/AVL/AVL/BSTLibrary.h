@@ -136,8 +136,6 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         tree_insert(root->_right, insert_me);
     else
         std::cout << "Item exists." << std::endl;
-
-    root->height();
 }
 
 template<typename T>
@@ -168,7 +166,7 @@ inline bool tree_search(tree_node<T>* root, const T& target, tree_node<T>*& foun
 
 template<typename T>
 inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
-{ 
+{
     if (!root)
     {
         std::cout << "Tree is empty" << std::endl;
@@ -182,7 +180,7 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
     for (int i = 0; i < level; ++i)
         outs << " ";
     outs << "{" << root->_item << "}" << std::endl;
-    
+
     if (root->_left)
         tree_print(root->_left, level + 10, outs);
 }
@@ -237,7 +235,6 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         {
             delete root;
             root = nullptr;
-
             return true;
         }
         else if (!root->_left)
@@ -265,8 +262,6 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
     }
 
-    root->update_height();
-
     return true;
 }
 
@@ -286,8 +281,6 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
 
         return;
     }
-
-    root->update_height();
 }
 
 template<typename T>
@@ -315,8 +308,8 @@ inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 
     dest->_item += src->_item;
 
-    dest->_left = tree_add(dest->_left, src->_left);
-    dest->_right = tree_add(dest->_right, src->_right);
+    dest->_left = MergeTrees(dest->_left, src->_left);
+    dest->_right = MergeTrees(dest->_right, src->_right);
 
     return dest;
 }
@@ -375,5 +368,7 @@ inline tree_node<T>* rotate_left(tree_node<T>*& root)
 template<typename T>
 inline tree_node<T>* rotate(tree_node<T>*& root)
 {
+    
+
     return NULL;
 }

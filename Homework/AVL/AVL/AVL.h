@@ -34,19 +34,22 @@ private:
 };
 
 template<typename T>
-inline AVL<T>::AVL()
+inline AVL<T>::AVL() :
+    root(nullptr)
 {
 
 }
 
 template<typename T>
-inline AVL<T>::AVL(const T* sorted_list, int size)
+inline AVL<T>::AVL(const T* sorted_list, int size) :
+    root(tree_from_sorted_list(sorted_list, size))
 {
 
 }
 
 template<typename T>
-inline AVL<T>::AVL(const AVL<T>& copy_me)
+inline AVL<T>::AVL(const AVL<T>& copy_me) :
+    root(tree_copy(copy_me.root))
 {
 
 }
@@ -54,47 +57,62 @@ inline AVL<T>::AVL(const AVL<T>& copy_me)
 template<typename T>
 inline AVL<T>& AVL<T>::operator=(const AVL<T>& rhs)
 {
+    AVL<T> temp(rhs);
+    swap(temp);
+
     return *this;
 }
 
 template<typename T>
 inline AVL<T>::~AVL()
 {
-
+    tree_clear(root);
 }
 
 template<typename T>
 inline void AVL<T>::insert(const T& insert_me)
 {
-
+    tree_insert(insert_me);
+    root->update_height();
 }
 
 template<typename T>
 inline void AVL<T>::erase(const T& target)
 {
+    if (!tree_erase(target))
+    {
+        std::cout << "Item does not exist." << std::endl;
+        return;
+    }
 
+    root->update_height();
 }
 
 template<typename T>
 inline bool AVL<T>::search(const T& target, tree_node<T>*& found_ptr)
 {
-    return false;
+    return tree_search(root, target, found_ptr);
 }
 
 template<typename T>
 inline void AVL<T>::swap(AVL<T>& other)
 {
-
+    std::swap(root, other.root);
 }
 
 template<typename T>
 inline AVL<T>& AVL<T>::operator+=(const AVL<T>& rhs)
 {
+    tree_add(root, rhs.root);
+    root->update_height();
+
     return *this;
 }
 
 template<typename U>
 inline std::ostream& operator<<(std::ostream& outs, const AVL<U>& tree)
 {
+    tree_print(tree.root, outs);
+
     return outs;
 }
