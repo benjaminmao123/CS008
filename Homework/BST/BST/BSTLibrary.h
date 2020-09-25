@@ -178,7 +178,7 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
     }
 
     if (root->_right)
-        tree_print(root->_right, level + 10, outs);
+        tree_print(root->_right, level + 5, outs);
 
     outs << std::endl;
     for (int i = 0; i < level; ++i)
@@ -186,7 +186,7 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
     outs << "{" << root->_item << "}" << std::endl;
     
     if (root->_left)
-        tree_print(root->_left, level + 10, outs);
+        tree_print(root->_left, level + 5, outs);
 }
 
 template<typename T>
@@ -200,7 +200,7 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
     }
 
     if (root->_right)
-        tree_print_debug(root->_right, level + 10, outs);
+        tree_print_debug(root->_right, level + 5, outs);
 
     outs << std::endl;
     for (int i = 0; i < level; ++i)
@@ -208,7 +208,7 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
     outs << "{" << root->_item << "}" << "H: " << root->_height << std::endl;
 
     if (root->_left)
-        tree_print_debug(root->_left, level + 10, outs);
+        tree_print_debug(root->_left, level + 5, outs);
 }
 
 template<typename T>
