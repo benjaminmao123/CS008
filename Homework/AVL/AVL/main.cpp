@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: AVL
+ * Purpose: Driver
+ *
+ * Notes: None.
+ */
+
 #include "AVL.h"
 
 #include <iostream>

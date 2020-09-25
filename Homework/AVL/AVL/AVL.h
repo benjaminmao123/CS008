@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: AVL
+ * Purpose: AVL class
+ *
+ * Notes: None.
+ */
+
 #pragma once
 
 #include "BSTLibrary.h"
@@ -108,7 +116,7 @@ inline AVL<T>& AVL<T>::operator+=(const AVL<T>& rhs)
 template<typename U>
 inline std::ostream& operator<<(std::ostream& outs, const AVL<U>& tree)
 {
-    tree_print_debug(tree.root, 0, outs);
+    tree_print(tree.root, 0, outs);
 
     return outs;
 }

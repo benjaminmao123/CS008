@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: BST
+ * Purpose: Driver
+ *
+ * Notes: None.
+ */
+
 #include "BST.h"
 
 #include <iostream>

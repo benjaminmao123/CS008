@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClInclude Include="BST.h" />
     <ClInclude Include="BSTLibrary.h" />
+    <ClInclude Include="z_output.h" />
+    <ClInclude Include="z_work_report.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

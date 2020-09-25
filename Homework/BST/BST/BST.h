@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: BST
+ * Purpose: BST class
+ *
+ * Notes: None.
+ */
+
 #pragma once
 
 #include "BSTLibrary.h"

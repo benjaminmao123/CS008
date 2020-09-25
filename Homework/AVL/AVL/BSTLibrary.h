@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: BST Functions
+ * Purpose: Functions to implement BST
+ *
+ * Notes: None.
+ */
+
 #pragma once
 
 #include <iostream>
