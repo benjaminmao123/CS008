@@ -118,8 +118,9 @@ template <typename T>
 tree_node<T>* rotate_right(tree_node<T>*& root);
 template <typename T>
 tree_node<T>* rotate_left(tree_node<T>*& root);
+//decide which rotate is needed based on root->balance_factor() factor
 template <typename T>
-tree_node<T>* rotate(tree_node<T>*& root); //decide which rotate is needed based on root->balance_factor() factor
+tree_node<T>* rotate(tree_node<T>*& root); 
 
 template<typename T>
 inline void tree_insert(tree_node<T>*& root, const T& insert_me)
