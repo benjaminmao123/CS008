@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <fstream>
 #include <vector>
 
 struct Word
@@ -46,7 +45,6 @@ int main()
 	FTokenizer ftk("solitude.txt");
 	AVL<Word> avl;
 	int count = 0;
-	std::ofstream ofs("output.txt");
 
 	auto PrintWordFrequencies = [&](unsigned int n)
 	{
@@ -72,10 +70,6 @@ int main()
 
 		if (t.type_string() == "ALPHA")
 		{
-			ofs << std::setw(10) << count
-				<< std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
-				<< t.type_string() << std::endl;
-
 			std::cout << std::setw(10) << count++
 				<< std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
 				<< t.type_string() << std::endl;
