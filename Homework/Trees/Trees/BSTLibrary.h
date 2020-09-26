@@ -87,10 +87,6 @@ template <typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
 
-template <typename T>
-void tree_print_top_n(const tree_node<T>* root, int& currIt, int maxIt,
-                      std::ostream& outs = std::cout);
-
 //prints detailes info about each root
 template <typename T>       
 void tree_print_debug(tree_node<T>* root, int level = 0,
@@ -146,8 +142,8 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         tree_insert(root->_left, insert_me);
     else if (insert_me > root->_item)
         tree_insert(root->_right, insert_me);
-    else if (insert_me == root->_item)
-        root->_item += insert_me;
+    else
+        return;
 
     root->update_height();
 
@@ -202,23 +198,6 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
 
     if (root->_left)
         tree_print(root->_left, level + 5, outs);
-}
-
-template<typename T>
-inline void tree_print_top_n(const tree_node<T>* root, int& currIt, int maxIt,
-                             std::ostream& outs)
-{
-    if (!root)
-    {
-        --currIt;
-        return;
-    }
-    if (currIt >= maxIt)
-        return;
-
-    tree_print_top_n(root->_right, ++currIt, maxIt);
-    outs << root->_item;
-    tree_print_top_n(root->_left, ++currIt, maxIt);
 }
 
 template<typename T>

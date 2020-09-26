@@ -147,8 +147,12 @@
     <ClInclude Include="AVL.h" />
     <ClInclude Include="BSTLibrary.h" />
     <ClInclude Include="FTokenizer.h" />
+    <ClInclude Include="IteratedList.h" />
+    <ClInclude Include="LinkedListLibrary.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="SMConstants.h" />
     <ClInclude Include="SMLibrary.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="STokenizer.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="z_output.h" />

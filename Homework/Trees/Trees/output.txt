@@ -1,4 +1,4 @@
-0         :  GABRIEL                  ALPHA
+         0:  GABRIEL                  ALPHA
 1         :  GARCIA                   ALPHA
 2         :  MARQUEZ                  ALPHA
 3         :  was                      ALPHA

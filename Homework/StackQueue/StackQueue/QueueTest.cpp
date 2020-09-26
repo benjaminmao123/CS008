@@ -17,7 +17,7 @@ void QueueTest::PushTest()
 {
     cout << "Push Test: " << endl;
 
-    queue<int> testQueue;
+    Queue<int> testQueue;
 
     for (int i = 0; i < 10; ++i)
     {
@@ -35,7 +35,7 @@ void QueueTest::PopTest()
 {
     cout << "Pop Test: " << endl;
 
-    queue<int> testQueue;
+    Queue<int> testQueue;
 
     for (int i = 0; i < 10; ++i)
     {
@@ -78,7 +78,7 @@ void QueueTest::FrontTest()
 {
     cout << "Front Test: " << endl;
 
-    queue<int> testQueue;
+    Queue<int> testQueue;
 
     for (int i = 0; i < 10; ++i)
     {
@@ -105,8 +105,8 @@ void QueueTest::FrontTest()
 
 void QueueTest::Test()
 {
-    queue<int> q;
-    queue<int> q2;
+    Queue<int> q;
+    Queue<int> q2;
 
     for (int i = 0; i < 10; ++i)
     {

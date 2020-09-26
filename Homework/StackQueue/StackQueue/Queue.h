@@ -16,7 +16,7 @@
 #include "IteratedList.h"
 
 template <typename T>
-class queue
+class Queue
 {
 public:
 	class Iterator
@@ -82,9 +82,9 @@ public:
 		typename List<T>::Iterator listIt;
 	};
 
-	queue();
-	queue(const queue &other);
-	queue &operator=(const queue &rhs);
+	Queue();
+	Queue(const Queue &other);
+	Queue &operator=(const Queue &rhs);
 
 	void push(const T &item);
 	T pop();
@@ -97,15 +97,15 @@ public:
 	size_t size() const;
 	bool empty() const;
 	
-	void swap(queue &other) noexcept;
+	void swap(Queue &other) noexcept;
 
 	template <typename U>
-	friend std::ostream &operator<<(std::ostream &os, const queue<U> &q);
-	bool operator==(const queue &rhs) const;
-	bool operator!=(const queue &rhs) const;
+	friend std::ostream &operator<<(std::ostream &os, const Queue<U> &q);
+	bool operator==(const Queue &rhs) const;
+	bool operator!=(const Queue &rhs) const;
 
 private:
-	void swap(queue &s1, queue &s2) noexcept;
+	void swap(Queue &s1, Queue &s2) noexcept;
 
 	List<T> list;
 	typename List<T>::Iterator tail;
@@ -116,7 +116,7 @@ private:
 	@summary: Default constructor, initializes size to 0.
 */
 template<typename T>
-inline queue<T>::queue()
+inline Queue<T>::Queue()
 	: sz(0)
 {
 
@@ -128,7 +128,7 @@ inline queue<T>::queue()
 	@param <const queue &other>: queue object to copy.
 */
 template<typename T>
-inline queue<T>::queue(const queue &other)
+inline Queue<T>::Queue(const Queue &other)
 	: sz(other.sz), list(other.list)
 {
 	
@@ -140,9 +140,9 @@ inline queue<T>::queue(const queue &other)
 	@param <const queue &rhs>: queue object to copy.
 */
 template<typename T>
-inline queue<T> &queue<T>::operator=(const queue &rhs)
+inline Queue<T> &Queue<T>::operator=(const Queue &rhs)
 {
-	queue temp(rhs);
+	Queue temp(rhs);
 	swap(temp);
 
 	return *this;
@@ -154,7 +154,7 @@ inline queue<T> &queue<T>::operator=(const queue &rhs)
 	@param <const reference item>: Item to add to the queue.
 */
 template<typename T>
-inline void queue<T>::push(const T &item)
+inline void Queue<T>::push(const T &item)
 {
 	tail = list.InsertAfter(item, tail);
 	++sz;
@@ -164,7 +164,7 @@ inline void queue<T>::push(const T &item)
 	@summary: Removes an item from the top of the queue and decrements size.
 */
 template<typename T>
-inline T queue<T>::pop()
+inline T Queue<T>::pop()
 {
 	if (empty())
 	{
@@ -182,13 +182,13 @@ inline T queue<T>::pop()
 }
 
 template<typename T>
-inline typename queue<T>::Iterator queue<T>::begin() const
+inline typename Queue<T>::Iterator Queue<T>::begin() const
 {
 	return Iterator(list.begin());
 }
 
 template<typename T>
-inline typename queue<T>::Iterator queue<T>::end() const
+inline typename Queue<T>::Iterator Queue<T>::end() const
 {
 	return Iterator(list.end());
 }
@@ -199,7 +199,7 @@ inline typename queue<T>::Iterator queue<T>::end() const
 	@return <const reference>: Reference to the item at the top of the queue.
 */
 template<typename T>
-inline const T &queue<T>::front() const
+inline const T &Queue<T>::front() const
 {
 	if (empty())
 	{
@@ -215,7 +215,7 @@ inline const T &queue<T>::front() const
 	@return <const reference>: Reference to the item at the top of the queue.
 */
 template<typename T>
-inline T &queue<T>::front()
+inline T &Queue<T>::front()
 {
 	if (empty())
 	{
@@ -231,7 +231,7 @@ inline T &queue<T>::front()
 	@return <size_type>: The size of the queue.
 */
 template<typename T>
-inline size_t queue<T>::size() const
+inline size_t Queue<T>::size() const
 {
 	return sz;
 }
@@ -242,7 +242,7 @@ inline size_t queue<T>::size() const
 	@return <bool>: If queue empty return true, else false.
 */
 template<typename T>
-inline bool queue<T>::empty() const
+inline bool Queue<T>::empty() const
 {
 	return sz == 0;
 }
@@ -253,7 +253,7 @@ inline bool queue<T>::empty() const
 	@param <queue &other>: queue to swap with.
 */
 template<typename T>
-inline void queue<T>::swap(queue &other) noexcept
+inline void Queue<T>::swap(Queue &other) noexcept
 {
 	std::swap(sz, other.sz);
 	std::swap(list, other.list);
@@ -269,7 +269,7 @@ inline void queue<T>::swap(queue &other) noexcept
 	@return <bool>: True if equal, else false.
 */
 template<typename T>
-inline bool queue<T>::operator==(const queue &rhs) const
+inline bool Queue<T>::operator==(const Queue &rhs) const
 {
 	if (sz == rhs.sz)
 	{
@@ -288,7 +288,7 @@ inline bool queue<T>::operator==(const queue &rhs) const
 	@return <bool>: True if not equal, else false.
 */
 template<typename T>
-inline bool queue<T>::operator!=(const queue &rhs) const
+inline bool Queue<T>::operator!=(const Queue &rhs) const
 {
 	if (sz != rhs.sz)
 	{
@@ -305,7 +305,7 @@ inline bool queue<T>::operator!=(const queue &rhs) const
 	@param <queue &s2>: second queue to swap.
 */
 template<typename T>
-inline void queue<T>::swap(queue &s1, queue &s2) noexcept
+inline void Queue<T>::swap(Queue &s1, Queue &s2) noexcept
 {
 	std::swap(s1.sz, s2.sz);
 	std::swap(s1.list, s2.list);
@@ -321,7 +321,7 @@ inline void queue<T>::swap(queue &s1, queue &s2) noexcept
 	@return <std::ostream &>: Reference to the ostream object.
 */
 template<typename U>
-inline std::ostream &operator<<(std::ostream &os, const queue<U> &q)
+inline std::ostream &operator<<(std::ostream &os, const Queue<U> &q)
 {
 	if (!q.empty())
 	{

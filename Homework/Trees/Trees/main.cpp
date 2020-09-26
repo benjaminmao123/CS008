@@ -5,20 +5,14 @@
 #include <string>
 #include <iomanip>
 #include <fstream>
+#include <vector>
 
 struct Word
 {
-	Word(const std::string& data, size_t freq = 1) :
-		data(data), frequency(freq)
+	Word(const std::string& data) :
+		data(data), frequency(1)
 	{
 
-	}
-
-	Word& operator+=(const Word& other)
-	{
-		frequency += 1;
-
-		return *this;
 	}
 
 	bool operator==(const Word& other) const
@@ -28,17 +22,17 @@ struct Word
 
 	bool operator<(const Word& other) const
 	{
-		return frequency < other.frequency;
+		return data < other.data;
 	}
 
 	bool operator>(const Word& other) const
 	{
-		return frequency > other.frequency;
+		return data > other.data;
 	}
 
 	friend std::ostream& operator<<(std::ostream& outs, const Word& rhs)
 	{
-		outs << "(" << rhs.data << ", " << rhs.frequency << ")" << std::endl;
+		outs << "(" << rhs.data << ", " << rhs.frequency << ")";
 
 		return outs;
 	}
@@ -46,6 +40,8 @@ struct Word
 	std::string data;
 	size_t frequency;
 };
+
+void PrintWordFrequencies(int n, AVL<Word>& words);
 
 int main()
 {
@@ -70,13 +66,35 @@ int main()
 				<< t.type_string() << std::endl;
 
 			Word word(t.token_str());
-			avl.insert(word);
+			tree_node<Word>* fptr;
+
+			if (!avl.search(word, fptr))
+				avl.insert(word);
+			else
+				++fptr->_item.frequency;
 		}
 	}
 
 	std::cout << std::endl;
 
-	avl.print_top_n(20);
+	PrintWordFrequencies(20, avl);
 
 	return 0;
+}
+
+void PrintWordFrequencies(int n, AVL<Word>& words)
+{
+	std::vector<Word> wordList;
+
+	for (const auto& i : words)
+		wordList.emplace_back(i);
+
+	std::sort(wordList.begin(), wordList.end(),
+			  [](Word w1, Word w2)
+			  {
+				  return w1.frequency > w2.frequency;
+			  });
+
+	for (unsigned int i = 0; i < 20 && i < wordList.size(); ++i)
+		std::cout << i + 1 << ". " << wordList[i] << std::endl;
 }

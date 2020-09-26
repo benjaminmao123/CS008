@@ -143,7 +143,7 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
     else if (insert_me > root->_item)
         tree_insert(root->_right, insert_me);
     else
-        std::cout << "Item exists." << std::endl;
+        return;
 
     root->update_height();
 
