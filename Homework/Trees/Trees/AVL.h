@@ -26,7 +26,7 @@ public:
         Iterator(tree_node<T>* ptr) :
             curr(ptr)
         {
-            Next();
+            NextInorder();
             SetNext();
         }
 
@@ -73,7 +73,7 @@ public:
                 {
                     curr = stack.pop()->_right;
 
-                    Next();
+                    NextInorder();
                     SetNext();
                 }
                 else
@@ -89,7 +89,7 @@ public:
         }
 
     private:
-        void Next()
+        void NextInorder()
         {
             while (curr)
             {
@@ -196,6 +196,7 @@ inline void AVL<T>::erase(const T& target)
     if (!tree_erase(root, target))
     {
         std::cout << "Item does not exist." << std::endl;
+
         return;
     }
 }
