@@ -32,6 +32,7 @@ public:
     void erase(const T& target);
     bool search(const T& target, tree_node<T>*& found_ptr);
     void swap(AVL<T>& other);
+    void print_top_n(int n) const;
 
     template <typename U>
     friend std::ostream& operator<<(std::ostream& outs, const AVL<U>& tree);
@@ -103,6 +104,13 @@ template<typename T>
 inline void AVL<T>::swap(AVL<T>& other)
 {
     std::swap(root, other.root);
+}
+
+template<typename T>
+inline void AVL<T>::print_top_n(int n) const
+{
+    int currIt = 0;
+    tree_print_top_n(root, currIt, n);
 }
 
 template<typename T>

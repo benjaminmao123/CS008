@@ -14,15 +14,13 @@
 
 int STokenizer::_table[MAX_ROWS][MAX_COLUMNS];
 
-STokenizer::STokenizer() :
-	_buffer(),
-	_pos(0)
+STokenizer::STokenizer() : _buffer(),
+						   _pos(0)
 {
 	make_table(_table);
 }
 
-STokenizer::STokenizer(const char str[]) :
-	_pos(0)
+STokenizer::STokenizer(const char str[]) : _pos(0)
 {
 	set_string(str);
 	make_table(_table);
@@ -40,7 +38,6 @@ bool STokenizer::more()
 
 void STokenizer::set_string(const char str[])
 {
-	std::cout << strlen(str) << std::endl;
 	strcpy_s(_buffer, MAX_BUFFER, str);
 	_pos = 0;
 }
@@ -51,7 +48,7 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 
 	init_table(_table);
 
-	//init start 
+	//init start
 	mark_cells(START, _table, 'a', 'z', ALPHA);
 	mark_cells(START, _table, 'A', 'Z', ALPHA);
 
@@ -93,7 +90,7 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 	mark_success(_table, 7);
 }
 
-bool STokenizer::get_token(int& start_state, std::string& token)
+bool STokenizer::get_token(int &start_state, std::string &token)
 {
 	if (done())
 		return false;
@@ -102,7 +99,7 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 	int tokenBufferPos = _pos;
 
 	char ch = _buffer[_pos];
-	
+
 	if (ch < 0 || ch > 127)
 	{
 		++_pos;
@@ -114,8 +111,7 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 
 	int endState = _table[start_state][ch];
 
-	auto increment = [&]()
-	{
+	auto increment = [&]() {
 		tokenBuffer += ch;
 		start_state = endState;
 		ch = _buffer[++tokenBufferPos];
@@ -129,8 +125,8 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 			increment();
 
 			if (!(ch != '\0' &&
-				endState != -1 &&
-				is_success(_table, endState)))
+				  endState != -1 &&
+				  is_success(_table, endState)))
 				return true;
 
 			while (ch != '\0' &&
@@ -161,7 +157,7 @@ bool STokenizer::get_token(int& start_state, std::string& token)
 	return true;
 }
 
-STokenizer& operator>>(STokenizer& s, Token& t)
+STokenizer &operator>>(STokenizer &s, Token &t)
 {
 	std::string tokenStr;
 	int state = 0;

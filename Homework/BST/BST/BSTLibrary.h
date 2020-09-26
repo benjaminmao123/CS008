@@ -312,19 +312,13 @@ inline tree_node<T>* tree_copy(tree_node<T>* root)
 template<typename T>
 inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 {
-    if (!dest)
-        return src;
     if (!src)
-        return dest;
+        return;
 
-    dest->_item += src->_item;
+    tree_insert(dest, src->_item);
 
-    dest->_left = tree_add(dest->_left, src->_left);
-    dest->_right = tree_add(dest->_right, src->_right);
-
-    dest->update_height();
-
-    return dest;
+    tree_add(dest, src->_left);
+    tree_add(dest, src->_right);
 }
 
 template<typename T>

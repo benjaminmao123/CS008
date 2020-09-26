@@ -83,12 +83,16 @@ template <typename T>
 bool tree_search(tree_node<T>* root, const T& target,
                  tree_node<T>*& found_ptr);
 
-template<typename T>
+template <typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
 
+template <typename T>
+void tree_print_top_n(const tree_node<T>* root, int& currIt, int maxIt,
+                      std::ostream& outs = std::cout);
+
 //prints detailes info about each root
-template<typename T>       
+template <typename T>       
 void tree_print_debug(tree_node<T>* root, int level = 0,
                       std::ostream& outs = std::cout);
 
@@ -142,8 +146,8 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         tree_insert(root->_left, insert_me);
     else if (insert_me > root->_item)
         tree_insert(root->_right, insert_me);
-    else
-        std::cout << "Item exists." << std::endl;
+    else if (insert_me == root->_item)
+        root->_item += insert_me;
 
     root->update_height();
 
@@ -198,6 +202,23 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
 
     if (root->_left)
         tree_print(root->_left, level + 5, outs);
+}
+
+template<typename T>
+inline void tree_print_top_n(const tree_node<T>* root, int& currIt, int maxIt,
+                             std::ostream& outs)
+{
+    if (!root)
+    {
+        --currIt;
+        return;
+    }
+    if (currIt >= maxIt)
+        return;
+
+    tree_print_top_n(root->_right, ++currIt, maxIt);
+    outs << root->_item;
+    tree_print_top_n(root->_left, ++currIt, maxIt);
 }
 
 template<typename T>
@@ -325,19 +346,13 @@ inline tree_node<T>* tree_copy(tree_node<T>* root)
 template<typename T>
 inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 {
-    if (!dest)
-        return src;
     if (!src)
-        return dest;
+        return;
 
-    dest->_item += src->_item;
+    tree_insert(dest, src->_item);
 
-    dest->_left = tree_add(dest->_left, src->_left);
-    dest->_right = tree_add(dest->_right, src->_right);
-
-    dest->update_height();
-
-    return dest;
+    tree_add(dest, src->_left);
+    tree_add(dest, src->_right);
 }
 
 template<typename T>
