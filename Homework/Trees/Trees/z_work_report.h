@@ -3,7 +3,7 @@
 /*
     Features:
         -Not Implemented: None
-        -Implemented: All functions in AVL.h
+        -Implemented: main
         -Partly implemented: None
 
     Bugs    : features that are implemented are bug-free.

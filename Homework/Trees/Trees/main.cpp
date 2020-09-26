@@ -41,14 +41,29 @@ struct Word
 	size_t frequency;
 };
 
-void PrintWordFrequencies(int n, AVL<Word>& words);
-
 int main()
 {
 	FTokenizer ftk("solitude.txt");
 	AVL<Word> avl;
 	int count = 0;
 	std::ofstream ofs("output.txt");
+
+	auto PrintWordFrequencies = [&](unsigned int n)
+	{
+		std::vector<Word> wordList;
+
+		for (const auto& i : avl)
+			wordList.emplace_back(i);
+
+		std::sort(wordList.begin(), wordList.end(),
+				  [](Word w1, Word w2)
+				  {
+					  return w1.frequency > w2.frequency;
+				  });
+
+		for (unsigned int i = 0; i < n && i < wordList.size(); ++i)
+			std::cout << i + 1 << ". " << wordList[i] << std::endl;
+	};
 
 	while (ftk.more())
 	{
@@ -76,25 +91,9 @@ int main()
 	}
 
 	std::cout << std::endl;
+	std::cout << "Top 20 words: " << std::endl;
 
-	PrintWordFrequencies(20, avl);
+	PrintWordFrequencies(20);
 
 	return 0;
-}
-
-void PrintWordFrequencies(int n, AVL<Word>& words)
-{
-	std::vector<Word> wordList;
-
-	for (const auto& i : words)
-		wordList.emplace_back(i);
-
-	std::sort(wordList.begin(), wordList.end(),
-			  [](Word w1, Word w2)
-			  {
-				  return w1.frequency > w2.frequency;
-			  });
-
-	for (unsigned int i = 0; i < 20 && i < wordList.size(); ++i)
-		std::cout << i + 1 << ". " << wordList[i] << std::endl;
 }
