@@ -12,50 +12,94 @@
 #include <iostream>
 #include <cassert>
 
-#include "Node.h"
+template <typename ITEM_TYPE>
+struct list_node
+{
+public:
+    /*
+        @summary: Default constructor for node. Initializes item to default
+            value and next to nullptr.
+    */
+    list_node()
+        : _item(), next(nullptr), prev(nullptr)
+    {
+
+    }
+
+    /*
+        @summary: Overloaded constructor. Initializes item to a given item and
+            next to nullptr.
+
+        @param <const ITEM_TYPE &item>: Item to initialize member variable.
+    */
+    list_node(const ITEM_TYPE& item)
+        : _item(item), next(nullptr), prev(nullptr)
+    {
+
+    }
+
+    /*
+        @summary: Overloaded insertion operator to print contents of node.
+
+        @param <std::ostream &outs>: The ostream object.
+        @param <const node<T> &printMe>: The node to print.
+
+        @return <std::ostream &>: ostream reference.
+    */
+    friend std::ostream& operator<<(std::ostream& outs, const list_node<ITEM_TYPE>& printMe)
+    {
+        outs << printMe._item;
+
+        return outs;
+    }
+
+    ITEM_TYPE _item;
+    list_node* next;
+    list_node* prev;
+};
 
  //Linked List General Functions:
 template <typename ITEM_TYPE>
-void PrintList(const node<ITEM_TYPE>* head);
+void PrintList(const list_node<ITEM_TYPE>* head);
 
 template <typename ITEM_TYPE>
-void PrintList_backwards(const node<ITEM_TYPE>* head,       //recursive fun! :)
+void PrintList_backwards(const list_node<ITEM_TYPE>* head,       //recursive fun! :)
                          const int depth);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* SearchList(node<ITEM_TYPE>* head,          //return ptr to key or NULL
+list_node<ITEM_TYPE>* SearchList(list_node<ITEM_TYPE>* head,          //return ptr to key or NULL
                             const ITEM_TYPE& key);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* InsertHead(node<ITEM_TYPE>*& head,         //insert at the head of list
+list_node<ITEM_TYPE>* InsertHead(list_node<ITEM_TYPE>*& head,         //insert at the head of list
                             const ITEM_TYPE& insertThis);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* InsertAfter(node<ITEM_TYPE>*& head,        //insert after ptr
-                             node<ITEM_TYPE>* afterThis,
+list_node<ITEM_TYPE>* InsertAfter(list_node<ITEM_TYPE>*& head,        //insert after ptr
+                             list_node<ITEM_TYPE>* afterThis,
                              const ITEM_TYPE& insertThis);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* InsertBefore(node<ITEM_TYPE>*& head,       //insert before ptr
-                              const node<ITEM_TYPE>* beforeThis,
+list_node<ITEM_TYPE>* InsertBefore(list_node<ITEM_TYPE>*& head,       //insert before ptr
+                              const list_node<ITEM_TYPE>* beforeThis,
                               const ITEM_TYPE& insertThis);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* PreviousNode(node<ITEM_TYPE>* head,        //ptr to previous node
-                              const node<ITEM_TYPE>* prevToThis);
+list_node<ITEM_TYPE>* PreviousNode(list_node<ITEM_TYPE>* head,        //ptr to previous node
+                              const list_node<ITEM_TYPE>* prevToThis);
 
 template <typename ITEM_TYPE>
-ITEM_TYPE DeleteNode(node<ITEM_TYPE>*& head,                //delete, return item
-                     node<ITEM_TYPE>* deleteThis);
+ITEM_TYPE DeleteNode(list_node<ITEM_TYPE>*& head,                //delete, return item
+                     list_node<ITEM_TYPE>* deleteThis);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* CopyList(node<ITEM_TYPE>* head);           //duplicate the list...
+list_node<ITEM_TYPE>* CopyList(list_node<ITEM_TYPE>* head);           //duplicate the list...
 
 template <typename ITEM_TYPE>
-void ClearList(node<ITEM_TYPE>*& head);                     //delete all the nodes
+void ClearList(list_node<ITEM_TYPE>*& head);                     //delete all the nodes
 
 template <typename ITEM_TYPE>
-ITEM_TYPE& At(node<ITEM_TYPE>* head, const int pos);        //_item at this position
+ITEM_TYPE& At(list_node<ITEM_TYPE>* head, const int pos);        //_item at this position
 
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 //      Sorted List Routines. order: 0: ascending, order: other: descending
@@ -63,22 +107,22 @@ ITEM_TYPE& At(node<ITEM_TYPE>* head, const int pos);        //_item at this posi
 //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* InsertSorted(node<ITEM_TYPE>*& head,           //insert
+list_node<ITEM_TYPE>* InsertSorted(list_node<ITEM_TYPE>*& head,           //insert
                               const ITEM_TYPE& item,
                               const bool ascending = true);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* InsertSorted_and_add(node<ITEM_TYPE>*& head,   //insert or add if a dup
+list_node<ITEM_TYPE>* InsertSorted_and_add(list_node<ITEM_TYPE>*& head,   //insert or add if a dup
                                       const ITEM_TYPE& item,
                                       const bool ascending = true);
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* WhereThisGoes(node<ITEM_TYPE>* head,           //node after which this
+list_node<ITEM_TYPE>* WhereThisGoes(list_node<ITEM_TYPE>* head,           //node after which this
                                const ITEM_TYPE& item,                                      //    item goes
                                const bool ascending = true);                               //order: 0 ascending
 
 template <typename ITEM_TYPE>
-node<ITEM_TYPE>* LastNode(node<ITEM_TYPE>* head);               //Last Node in the list
+list_node<ITEM_TYPE>* LastNode(list_node<ITEM_TYPE>* head);               //Last Node in the list
 
 /*
     @summary: Prints the list forwards
@@ -86,14 +130,14 @@ node<ITEM_TYPE>* LastNode(node<ITEM_TYPE>* head);               //Last Node in t
     @param <const node<ITEM_TYPE> *head>: The head of the list.
 */
 template<typename ITEM_TYPE>
-inline void PrintList(const node<ITEM_TYPE>* head)
+inline void PrintList(const list_node<ITEM_TYPE>* head)
 {
     using std::cout;
     using std::endl;
 
     if (head)
     {
-        for (const node<ITEM_TYPE>* i = head; i != nullptr; i = i->next)
+        for (const list_node<ITEM_TYPE>* i = head; i != nullptr; i = i->next)
         {
             if (!i->next)
             {
@@ -117,7 +161,7 @@ inline void PrintList(const node<ITEM_TYPE>* head)
     @param <const node<ITEM_TYPE> *head>: The head of the list.
 */
 template<typename ITEM_TYPE>
-inline void PrintList_backwards(const node<ITEM_TYPE>* head, const int depth)
+inline void PrintList_backwards(const list_node<ITEM_TYPE>* head, const int depth)
 {
     using std::cout;
     using std::endl;
@@ -150,9 +194,9 @@ inline void PrintList_backwards(const node<ITEM_TYPE>* head, const int depth)
     @return <node<ITEM_TYPE> *>: The node containing the item.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* SearchList(node<ITEM_TYPE>* head, const ITEM_TYPE& key)
+inline list_node<ITEM_TYPE>* SearchList(list_node<ITEM_TYPE>* head, const ITEM_TYPE& key)
 {
-    for (node<ITEM_TYPE>* i = head; i != nullptr; i = i->next)
+    for (list_node<ITEM_TYPE>* i = head; i != nullptr; i = i->next)
     {
         if (i->_item == key)
         {
@@ -172,10 +216,10 @@ inline node<ITEM_TYPE>* SearchList(node<ITEM_TYPE>* head, const ITEM_TYPE& key)
     @return <node<ITEM_TYPE> *>: The node that was inserted.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* InsertHead(node<ITEM_TYPE>*& head,
+inline list_node<ITEM_TYPE>* InsertHead(list_node<ITEM_TYPE>*& head,
                                    const ITEM_TYPE& insertThis)
 {
-    node<ITEM_TYPE>* newNode = new node<ITEM_TYPE>(insertThis);
+    list_node<ITEM_TYPE>* newNode = new list_node<ITEM_TYPE>(insertThis);
 
     if (head)
     {
@@ -198,18 +242,18 @@ inline node<ITEM_TYPE>* InsertHead(node<ITEM_TYPE>*& head,
     @return <node<ITEM_TYPE> *>: The node that was inserted.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* InsertAfter(node<ITEM_TYPE>*& head,
-                                    node<ITEM_TYPE>* afterThis, const ITEM_TYPE& insertThis)
+inline list_node<ITEM_TYPE>* InsertAfter(list_node<ITEM_TYPE>*& head,
+                                    list_node<ITEM_TYPE>* afterThis, const ITEM_TYPE& insertThis)
 {
-    node<ITEM_TYPE>* newNode = nullptr;
+    list_node<ITEM_TYPE>* newNode = nullptr;
 
     if (head)
     {
         if (afterThis)
         {
-            newNode = new node<ITEM_TYPE>(insertThis);
+            newNode = new list_node<ITEM_TYPE>(insertThis);
 
-            node<ITEM_TYPE>* temp = nullptr;
+            list_node<ITEM_TYPE>* temp = nullptr;
 
             if (afterThis->next)
             {
@@ -244,10 +288,10 @@ inline node<ITEM_TYPE>* InsertAfter(node<ITEM_TYPE>*& head,
     @return <node<ITEM_TYPE> *>: The node that was inserted.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* InsertBefore(node<ITEM_TYPE>*& head,
-                                     const node<ITEM_TYPE>* beforeThis, const ITEM_TYPE& insertThis)
+inline list_node<ITEM_TYPE>* InsertBefore(list_node<ITEM_TYPE>*& head,
+                                     const list_node<ITEM_TYPE>* beforeThis, const ITEM_TYPE& insertThis)
 {
-    node<ITEM_TYPE>* newNode = nullptr;
+    list_node<ITEM_TYPE>* newNode = nullptr;
 
     if (head)
     {
@@ -259,7 +303,7 @@ inline node<ITEM_TYPE>* InsertBefore(node<ITEM_TYPE>*& head,
             }
             else
             {
-                node<ITEM_TYPE>* prev = PreviousNode(head, beforeThis);
+                list_node<ITEM_TYPE>* prev = PreviousNode(head, beforeThis);
 
                 newNode = InsertAfter(head, prev, insertThis);
             }
@@ -282,10 +326,10 @@ inline node<ITEM_TYPE>* InsertBefore(node<ITEM_TYPE>*& head,
     @return <node<ITEM_TYPE> *>: The previous node of the given node.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* PreviousNode(node<ITEM_TYPE>* head,
-                                     const node<ITEM_TYPE>* prevToThis)
+inline list_node<ITEM_TYPE>* PreviousNode(list_node<ITEM_TYPE>* head,
+                                     const list_node<ITEM_TYPE>* prevToThis)
 {
-    node<ITEM_TYPE>* prev = nullptr;
+    list_node<ITEM_TYPE>* prev = nullptr;
 
     if (prevToThis)
     {
@@ -304,7 +348,7 @@ inline node<ITEM_TYPE>* PreviousNode(node<ITEM_TYPE>* head,
     @return <ITEM_TYPE>: The value of the deleted node.
 */
 template<typename ITEM_TYPE>
-inline ITEM_TYPE DeleteNode(node<ITEM_TYPE>*& head, node<ITEM_TYPE>* deleteThis)
+inline ITEM_TYPE DeleteNode(list_node<ITEM_TYPE>*& head, list_node<ITEM_TYPE>* deleteThis)
 {
     if (!deleteThis)
     {
@@ -321,7 +365,7 @@ inline ITEM_TYPE DeleteNode(node<ITEM_TYPE>*& head, node<ITEM_TYPE>* deleteThis)
     }
     else
     {
-        node<ITEM_TYPE>* prev = PreviousNode(head, deleteThis);
+        list_node<ITEM_TYPE>* prev = PreviousNode(head, deleteThis);
         item = deleteThis->_item;
 
         if (prev)
@@ -349,14 +393,14 @@ inline ITEM_TYPE DeleteNode(node<ITEM_TYPE>*& head, node<ITEM_TYPE>* deleteThis)
     @return <node<ITEM_TYPE> *>: The copy of the given list.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* CopyList(node<ITEM_TYPE>* head)
+inline list_node<ITEM_TYPE>* CopyList(list_node<ITEM_TYPE>* head)
 {
     if (head)
     {
-        node<ITEM_TYPE>* newHead = new node<ITEM_TYPE>(head->_item);
-        node<ITEM_TYPE>* temp = newHead;
+        list_node<ITEM_TYPE>* newHead = new list_node<ITEM_TYPE>(head->_item);
+        list_node<ITEM_TYPE>* temp = newHead;
 
-        for (node<ITEM_TYPE>* i = head->next; i != nullptr; i = i->next)
+        for (list_node<ITEM_TYPE>* i = head->next; i != nullptr; i = i->next)
         {
             InsertAfter(newHead, temp, i->_item);
             temp = temp->next;
@@ -374,10 +418,10 @@ inline node<ITEM_TYPE>* CopyList(node<ITEM_TYPE>* head)
     @param <node<ITEM_TYPE> *&head>: The head of the list.
 */
 template<typename ITEM_TYPE>
-inline void ClearList(node<ITEM_TYPE>*& head)
+inline void ClearList(list_node<ITEM_TYPE>*& head)
 {
-    node<ITEM_TYPE>* curr = head;
-    node<ITEM_TYPE>* next = curr;
+    list_node<ITEM_TYPE>* curr = head;
+    list_node<ITEM_TYPE>* next = curr;
 
     while (curr && next)
     {
@@ -400,9 +444,9 @@ inline void ClearList(node<ITEM_TYPE>*& head)
     @return <ITEM_TYPE &>: Reference to the item in the node.
 */
 template<typename ITEM_TYPE>
-inline ITEM_TYPE& At(node<ITEM_TYPE>* head, const int pos)
+inline ITEM_TYPE& At(list_node<ITEM_TYPE>* head, const int pos)
 {
-    node<ITEM_TYPE>* i = head;
+    list_node<ITEM_TYPE>* i = head;
     int idx = 0;
 
     while (i && idx < pos)
@@ -429,11 +473,11 @@ inline ITEM_TYPE& At(node<ITEM_TYPE>* head, const int pos)
     @return <node<ITEM_TYPE> *>: The node that was inserted.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* InsertSorted(node<ITEM_TYPE>*& head,
+inline list_node<ITEM_TYPE>* InsertSorted(list_node<ITEM_TYPE>*& head,
                                      const ITEM_TYPE& item, const bool ascending)
 {
-    node<ITEM_TYPE>* newNode = nullptr;
-    node<ITEM_TYPE>* mNode = WhereThisGoes(head, item, ascending);
+    list_node<ITEM_TYPE>* newNode = nullptr;
+    list_node<ITEM_TYPE>* mNode = WhereThisGoes(head, item, ascending);
 
     if (ascending)
     {
@@ -486,12 +530,12 @@ inline node<ITEM_TYPE>* InsertSorted(node<ITEM_TYPE>*& head,
     @return <node<ITEM_TYPE> *>: The node that was inserted.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* InsertSorted_and_add(node<ITEM_TYPE>*& head,
+inline list_node<ITEM_TYPE>* InsertSorted_and_add(list_node<ITEM_TYPE>*& head,
                                              const ITEM_TYPE& item, const bool ascending)
 {
     if (head)
     {
-        node<ITEM_TYPE>* mNode = SearchList(head, item);
+        list_node<ITEM_TYPE>* mNode = SearchList(head, item);
 
         if (mNode)
         {
@@ -518,12 +562,12 @@ inline node<ITEM_TYPE>* InsertSorted_and_add(node<ITEM_TYPE>*& head,
     @return <node<ITEM_TYPE> *>: The node that was inserted.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* WhereThisGoes(node<ITEM_TYPE>* head,
+inline list_node<ITEM_TYPE>* WhereThisGoes(list_node<ITEM_TYPE>* head,
                                       const ITEM_TYPE& item, const bool ascending)
 {
     if (head)
     {
-        node<ITEM_TYPE>* curr = head;
+        list_node<ITEM_TYPE>* curr = head;
 
         if (ascending)
         {
@@ -554,10 +598,10 @@ inline node<ITEM_TYPE>* WhereThisGoes(node<ITEM_TYPE>* head,
     @return <node<ITEM_TYPE> *>: The last node in the list.
 */
 template<typename ITEM_TYPE>
-inline node<ITEM_TYPE>* LastNode(node<ITEM_TYPE>* head)
+inline list_node<ITEM_TYPE>* LastNode(list_node<ITEM_TYPE>* head)
 {
-    node<ITEM_TYPE>* end = head;
-    node<ITEM_TYPE>* tail = nullptr;
+    list_node<ITEM_TYPE>* end = head;
+    list_node<ITEM_TYPE>* tail = nullptr;
 
     while (end)
     {

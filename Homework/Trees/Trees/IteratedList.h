@@ -25,7 +25,7 @@ public:
         Iterator() { _ptr = NULL; }     
 
         //Point Iterator to where p is pointing to
-        Iterator(node<ITEM_TYPE> *p) : _ptr(p) { }
+        Iterator(list_node<ITEM_TYPE> *p) : _ptr(p) { }
 
         //dereference operator
         ITEM_TYPE &operator*()
@@ -85,7 +85,7 @@ public:
 
     private:
         //pointer being encapsulated
-        node<ITEM_TYPE> *_ptr;                                                  
+        list_node<ITEM_TYPE> *_ptr;                                                  
     };
 
     //CTOR with default args
@@ -130,7 +130,7 @@ public:
     friend std::ostream &operator<<(std::ostream &outs, const List<U> &l);
 
 private:
-    node<ITEM_TYPE> *_head_ptr;
+    list_node<ITEM_TYPE> *_head_ptr;
 };
 
 /*
@@ -204,7 +204,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertHead(const ITEM
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITEM_TYPE &i, Iterator iMarker)
 {
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    list_node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
 
     return Iterator(::InsertAfter(_head_ptr, mNode, i));
 }
@@ -220,7 +220,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITE
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertBefore(const ITEM_TYPE &i, Iterator iMarker)
 {
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    list_node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
 
     return Iterator(::InsertBefore(_head_ptr, mNode, i));
 }
@@ -253,7 +253,7 @@ inline ITEM_TYPE List<ITEM_TYPE>::Delete(Iterator iMarker)
         throw std::invalid_argument("iMarker contained nullptr");
     }
 
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    list_node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
     ITEM_TYPE item = DeleteNode(_head_ptr, mNode);
 
     return item;
@@ -292,7 +292,7 @@ template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker)
 {
     auto prev = begin();
-    node<ITEM_TYPE> *mNode = nullptr;
+    list_node<ITEM_TYPE> *mNode = nullptr;
 
     for (auto curr = begin(); curr != end(); ++curr)
     {
