@@ -164,7 +164,7 @@ template<typename T>
 inline bool tree_search(tree_node<T>* root, const T& target, tree_node<T>*& found_ptr)
 {
     if (!root)
-        return nullptr;
+        return false;
 
     if (target == root->_item)
     {

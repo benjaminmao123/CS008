@@ -62,7 +62,7 @@ int main()
 			wordList.emplace_back(i);
 
 		std::sort(wordList.begin(), wordList.end(),
-				  [](Word w1, Word w2)
+				  [](const Word& w1, const Word& w2)
 				  {
 					  return w1.frequency > w2.frequency;
 				  });
@@ -79,8 +79,8 @@ int main()
 		if (t.type_string() == "ALPHA")
 		{
 			std::cout << std::setw(10) << count++
-				<< std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
-				<< t.type_string() << std::endl;
+					  << std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
+				      << t.type_string() << std::endl;
 
 			Word word(t.token_str());
 			tree_node<Word>* fptr;
