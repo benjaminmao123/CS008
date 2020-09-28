@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "BSTLibrary.h"
+#include "AVLLibrary.h"
+#include "Stack.h"
 
 #include <iostream>
 #include <algorithm>
@@ -17,6 +18,98 @@ template <typename T>
 class AVL 
 {
 public:
+    class Iterator
+    {
+    public:
+        Iterator() { }
+
+        Iterator(tree_node<T>* ptr) :
+            curr(ptr)
+        {
+            NextInorder();
+            SetNext();
+        }
+
+        //dereference operator
+        T& operator*()
+        {
+            return curr->_item;
+        }
+
+        const T& operator*() const
+        {
+            return curr->_item;
+        }
+
+        //member access operator
+        T* operator->()
+        {
+            return &curr->_item;
+        }
+
+        const T* operator->() const
+        {
+            return &curr->_item;
+        }
+
+        //true if left != right
+        bool operator!=(const Iterator& rhs) const
+        {
+            return curr != rhs.curr;
+        }
+
+        //true if left == right
+        bool operator==(const Iterator& rhs) const
+        {
+            return curr == rhs.curr;
+        }
+
+        //member operator: ++it; or ++it = new_value
+        Iterator& operator++()
+        {
+            if (curr)
+            {
+                if (curr->_right)
+                {
+                    curr = stack.pop()->_right;
+
+                    NextInorder();
+                    SetNext();
+                }
+                else
+                {
+                    if (!stack.empty())
+                        stack.pop();
+
+                    SetNext();
+                }
+            }
+
+            return *this;
+        }
+
+    private:
+        void NextInorder()
+        {
+            while (curr)
+            {
+                stack.push(curr);
+                curr = curr->_left;
+            }
+        }
+
+        void SetNext()
+        {
+            if (!stack.empty())
+                curr = stack.top();
+            else
+                curr = nullptr;
+        }
+
+        tree_node<T>* curr;
+        Stack<tree_node<T>*> stack;
+    };
+
     AVL();
     AVL(const T* sorted_list, int size = -1);
 
@@ -27,6 +120,8 @@ public:
     ~AVL();
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+    Iterator begin() const;
+    Iterator end() const;
 
     void insert(const T& insert_me);
     void erase(const T& target);
@@ -79,6 +174,18 @@ inline AVL<T>::~AVL()
 }
 
 template<typename T>
+inline typename AVL<T>::Iterator AVL<T>::begin() const
+{
+    return Iterator(root);
+}
+
+template<typename T>
+inline typename AVL<T>::Iterator AVL<T>::end() const
+{
+    return Iterator(nullptr);
+}
+
+template<typename T>
 inline void AVL<T>::insert(const T& insert_me)
 {
     tree_insert(root, insert_me);
@@ -90,6 +197,7 @@ inline void AVL<T>::erase(const T& target)
     if (!tree_erase(root, target))
     {
         std::cout << "Item does not exist." << std::endl;
+
         return;
     }
 }

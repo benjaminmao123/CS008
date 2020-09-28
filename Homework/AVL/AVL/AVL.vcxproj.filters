@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BSTLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AVL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -30,6 +27,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="z_work_report.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AVLLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

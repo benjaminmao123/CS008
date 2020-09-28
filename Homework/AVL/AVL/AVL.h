@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "BSTLibrary.h"
+#include "AVLLibrary.h"
 
 #include <iostream>
 #include <algorithm>
@@ -90,6 +90,7 @@ inline void AVL<T>::erase(const T& target)
     if (!tree_erase(root, target))
     {
         std::cout << "Item does not exist." << std::endl;
+
         return;
     }
 }

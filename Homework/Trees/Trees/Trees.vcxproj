@@ -145,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVL.h" />
-    <ClInclude Include="BSTLibrary.h" />
     <ClInclude Include="FTokenizer.h" />
     <ClInclude Include="IteratedList.h" />
     <ClInclude Include="LinkedListLibrary.h" />

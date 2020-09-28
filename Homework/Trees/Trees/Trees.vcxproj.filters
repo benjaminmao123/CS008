@@ -32,9 +32,6 @@
     <ClInclude Include="AVL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BSTLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="z_output.h">
       <Filter>Header Files</Filter>
     </ClInclude>
