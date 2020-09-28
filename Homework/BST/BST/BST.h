@@ -74,7 +74,7 @@ inline BST<T>& BST<T>::operator=(const BST<T>& rhs)
 template<typename T>
 inline BST<T>::~BST()
 {
-    tree_clear(root);
+    clear();
 }
 
 template<typename T>

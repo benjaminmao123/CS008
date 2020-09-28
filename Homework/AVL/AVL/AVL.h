@@ -75,7 +75,7 @@ inline AVL<T>& AVL<T>::operator=(const AVL<T>& rhs)
 template<typename T>
 inline AVL<T>::~AVL()
 {
-    tree_clear(root);
+    clear();
 }
 
 template<typename T>
