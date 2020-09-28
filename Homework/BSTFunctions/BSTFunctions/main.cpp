@@ -19,7 +19,23 @@ void TestClear(tree_node<int>*& root);
 
 int main()
 {
-    Test();
+    //Test();
+
+    tree_node<int>* root = nullptr;
+
+    tree_insert(root, 20);
+    tree_insert(root, 22);
+    tree_insert(root, 7);
+    tree_insert(root, 5);
+    tree_insert(root, 9);
+    tree_insert(root, 8);
+
+    tree_print(root);
+
+    std::cout << std::endl;
+
+    tree_erase(root, 7);
+    tree_print(root);
 
 	return 0;
 }

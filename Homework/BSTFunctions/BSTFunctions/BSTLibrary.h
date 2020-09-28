@@ -104,6 +104,8 @@ bool tree_erase(tree_node<T>*& root, const T& target);
 // store the item in max_value
 template <typename T>
 void tree_remove_max(tree_node<T>*& root, T& max_value);
+template <typename T>
+void tree_remove_min(tree_node<T>*& root, T& min_value);
 
 //return copy of tree pointed to by root
 template <typename T>
@@ -257,14 +259,9 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
         else
         {
-            tree_node<T>* successor = root->_right;
-
-            while (successor && successor->_left)
-                successor = successor->_left;
-
-            root->_item = successor->_item;
-
-            tree_erase(root->_right, successor->_item);
+            T value;
+            tree_remove_min(root->_right, value);
+            root->_item = value;
         }
     }
 
@@ -284,8 +281,30 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
     else
     {
         max_value = root->_item;
+        tree_node<T>* left = root->_left;
         delete root;
-        root = nullptr;
+        root = left;
+
+        return;
+    }
+
+    root->update_height();
+}
+
+template<typename T>
+inline void tree_remove_min(tree_node<T>*& root, T& min_value)
+{
+    if (!root)
+        return;
+
+    if (root->_left)
+        tree_remove_min(root->_left, min_value);
+    else
+    {
+        min_value = root->_item;
+        tree_node<T>* right = root->_right;
+        delete root;
+        root = right;
 
         return;
     }

@@ -17,28 +17,7 @@ void Test();
 
 int main()
 {
-	//Test();
-	int a[] = { 1, 2, 3, 4, 5 };
-	BST<int> tree1;
-	tree1.insert(100);
-	tree1.insert(50);
-	tree1.insert(300);
-	tree1.insert(20);
-	tree1.insert(70);
-	
-	int b[] = { 1, 2, 3, 4, 5, 6 };
-	BST<int> tree2;
-	tree2.insert(80);
-	tree2.insert(40);
-	tree2.insert(120);
-
-	std::cout << tree1 << std::endl;
-	std::cout << tree2 << std::endl;
-
-	tree1 += tree2;
-
-	std::cout << "Combined: " << std::endl;
-	std::cout << tree1 << std::endl;
+	Test();
 
 	return 0;
 }
