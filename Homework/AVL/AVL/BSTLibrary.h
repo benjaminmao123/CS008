@@ -21,24 +21,24 @@ struct tree_node
 
     int balance_factor() 
     {
-        //balance factor = height of the right subtree 
+        //root->balance_factor() factor = height of the right subtree 
         //                        - the height of the left subtree
         //a NULL child has a height of -1
         //a leaf has a height of 0
         if (_left && _right)
-            return _left->height() - _right->height();
+            return _left->_height - _right->_height;
         else if (_left)
-            return _left->height() - -1;
+            return _left->_height - -1;
         else if (_right)
-            return -1 - _right->height();
-
+            return -1 - _right->_height;
+        
         return 0;
     }
 
     int height()
     {
-        // Height of a node is 1 + height of the "taller" child
-        //A leaf node has a height of zero: 1 + max(-1,-1)
+        // Height of a root is 1 + height of the "taller" child
+        //A leaf root has a height of zero: 1 + max(-1,-1)
         if (_left && _right)
             return std::max(_left->height(), _right->height()) + 1;
         else if (_left)
@@ -87,7 +87,7 @@ template<typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
 
-//prints detailes info about each node
+//prints detailes info about each root
 template<typename T>       
 void tree_print_debug(tree_node<T>* root, int level = 0,
                       std::ostream& outs = std::cout);
@@ -100,7 +100,7 @@ void tree_clear(tree_node<T>*& root);
 template <typename T>       
 bool tree_erase(tree_node<T>*& root, const T& target);
 
-//erase rightmost node from the tree
+//erase rightmost root from the tree
 // store the item in max_value
 template <typename T>       
 void tree_remove_max(tree_node<T>*& root, T& max_value); 
@@ -121,6 +121,15 @@ tree_node<T>* tree_from_sorted_list(const T* a, int size);
 template <typename T>
 tree_node<T>* tree_from_sorted_list(const T* a, int l, int r);
 
+// ---------------- ROTATIONS --------------------------
+template <typename T>
+tree_node<T>* rotate_right(tree_node<T>*& root);
+template <typename T>
+tree_node<T>* rotate_left(tree_node<T>*& root);
+//decide which rotate is needed based on root->balance_factor() factor
+template <typename T>
+tree_node<T>* rotate(tree_node<T>*& root); 
+
 template<typename T>
 inline void tree_insert(tree_node<T>*& root, const T& insert_me)
 {
@@ -139,6 +148,8 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
         return;
 
     root->update_height();
+
+    root = rotate(root);
 }
 
 template<typename T>
@@ -171,11 +182,11 @@ inline bool tree_search(tree_node<T>* root, const T& target, tree_node<T>*& foun
 
 template<typename T>
 inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
-{ 
+{
     if (!root)
     {
         std::cout << "Tree is empty" << std::endl;
-        
+
         return;
     }
 
@@ -186,7 +197,7 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
     for (int i = 0; i < level; ++i)
         outs << " ";
     outs << "{" << root->_item << "}" << std::endl;
-    
+
     if (root->_left)
         tree_print(root->_left, level + 5, outs);
 }
@@ -247,7 +258,7 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         }
         else if (!root->_left)
         {
-            tree_node<T> *temp = root->_right;
+            tree_node<T>* temp = root->_right;
             delete root;
             root = temp;
         }
@@ -266,6 +277,8 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
     }
 
     root->update_height();
+
+    root = rotate(root);
 
     return true;
 }
@@ -361,6 +374,64 @@ inline tree_node<T>* tree_from_sorted_list(const T* a, int l, int r)
 
     root->_left = tree_from_sorted_list(a, l, mid - 1);
     root->_right = tree_from_sorted_list(a, mid + 1, r);
+
+    return root;
+}
+
+template<typename T>
+inline tree_node<T>* rotate_right(tree_node<T>*& root)
+{
+    tree_node<T>* middleNode = root->_left;
+    root->_left = middleNode->_right;
+    middleNode->_right = root;
+
+    root->update_height();
+    middleNode->update_height();
+
+    return middleNode;
+}
+
+template<typename T>
+inline tree_node<T>* rotate_left(tree_node<T>*& root)
+{
+    tree_node<T>* middleNode = root->_right;
+    root->_right = middleNode->_left;
+    middleNode->_left = root;        
+
+    root->update_height();
+    middleNode->update_height();
+
+    return middleNode;
+}
+
+template<typename T>
+inline tree_node<T>* rotate(tree_node<T>*& root)
+{
+    if (!root)
+        return nullptr;
+
+    int balance = root->balance_factor();
+    int balanceLeft = root->_left ? root->_left->balance_factor() : 0;
+    int balanceRight = root->_right ? root->_right->balance_factor() : 0;
+
+    //left left case
+    if (balance > 1 && balanceLeft >= 0)
+        return rotate_right(root);
+    //right right case
+    else if (balance < -1 && balanceRight <= 0)
+        return rotate_left(root);
+    //left right case
+    else if (balance > 1 && balanceLeft < 0)
+    {
+        root->_left = rotate_left(root->_left);
+        return rotate_right(root);
+    }
+    //right left case
+    else if (balance < -1 && balanceRight > 0)
+    {
+        root->_right = rotate_right(root->_right);
+        return rotate_left(root);
+    }
 
     return root;
 }

@@ -83,22 +83,14 @@ template <typename T>
 bool tree_search(tree_node<T>* root, const T& target,
                  tree_node<T>*& found_ptr);
 
-template <typename T>
+template<typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
+
 //prints detailes info about each node
-template <typename T>
+template<typename T>
 void tree_print_debug(tree_node<T>* root, int level = 0,
                       std::ostream& outs = std::cout);
-template <typename T>
-void tree_print_inorder(tree_node<T>* root, 
-                        std::ostream& outs = std::cout);
-template <typename T>
-void tree_print_preorder(tree_node<T>* root,
-                        std::ostream& outs = std::cout);
-template <typename T>
-void tree_print_postorder(tree_node<T>* root,
-                        std::ostream& outs = std::cout);
 
 //clear the tree
 template <typename T>
@@ -219,39 +211,6 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
 
     if (root->_left)
         tree_print_debug(root->_left, level + 10, outs);
-}
-
-template<typename T>
-inline void tree_print_inorder(tree_node<T>* root, std::ostream& outs)
-{
-    if (!root)
-        return;
-
-    tree_print_inorder(root->_left, outs);
-    outs << "{" << root->_item << "}" << std::endl;
-    tree_print_inorder(root->_right, outs);
-}
-
-template<typename T>
-inline void tree_print_preorder(tree_node<T>* root, std::ostream& outs)
-{
-    if (!root)
-        return;
-
-    outs << "{" << root->_item << "}" << std::endl;
-    tree_print_inorder(root->_left, outs);
-    tree_print_inorder(root->_right, outs);
-}
-
-template<typename T>
-inline void tree_print_postorder(tree_node<T>* root, std::ostream& outs)
-{
-    if (!root)
-        return;
-
-    tree_print_inorder(root->_left, outs);
-    tree_print_inorder(root->_right, outs);
-    outs << "{" << root->_item << "}" << std::endl;
 }
 
 template<typename T>
