@@ -144,25 +144,29 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
 template<typename T>
 inline tree_node<T>* tree_search(tree_node<T>* root, const T& target)
 {
-    if (!root)
-        return nullptr;
+    tree_node<T>* res = nullptr;
 
-    if (target == root->_item)
-    {
-        return root;
-    }
-    else if (target < root->_item)
-        return tree_search(root->_left, target);
+    tree_search(root, target, res);
 
-    return tree_search(root->_right, target);
+    return res;
 }
 
 template<typename T>
 inline bool tree_search(tree_node<T>* root, const T& target, tree_node<T>*& found_ptr)
 {
-    found_ptr = tree_search(root, target);
+    if (!root)
+        return false;
 
-    return found_ptr;
+    if (target == root->_item)
+    {
+        found_ptr = root;
+
+        return true;
+    }
+    else if (target < root->_item)
+        return tree_search(root->_left, target, found_ptr);
+
+    return tree_search(root->_right, target, found_ptr);
 }
 
 template<typename T>
