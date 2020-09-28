@@ -31,7 +31,6 @@ public:
     void erase(const T& target);
     bool search(const T& target, tree_node<T>*& found_ptr);
     void swap(BST<T>& tree);
-    void clear();
 
     template <typename U>
     friend std::ostream& operator<<(std::ostream& outs, const BST<U>& tree);
@@ -103,12 +102,6 @@ template<typename T>
 inline void BST<T>::swap(BST<T>& tree)
 {
     std::swap(root, tree.root);
-}
-
-template<typename T>
-inline void BST<T>::clear()
-{
-    tree_clear(root);
 }
 
 template<typename T>
