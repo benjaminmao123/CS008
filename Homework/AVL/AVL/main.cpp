@@ -55,10 +55,8 @@ void Test()
 			break;
 		}
 		case 'c':
-		{
 			avl.clear();
 			break;
-		}
 		case 's':
 		{
 			tree_node<int>* fptr;

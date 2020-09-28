@@ -220,7 +220,9 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
     outs << std::endl;
     for (int i = 0; i < level; ++i)
         outs << " ";
-    outs << "{" << root->_item << "}" << "H: " << root->_height << std::endl;
+    outs << "[H: " << root->_height <<
+        ", B: " << root->balance_factor() << "]" << 
+        "{" << root->_item << "}" << std::endl;
 
     if (root->_left)
         tree_print_debug(root->_left, level + 5, outs);
@@ -284,34 +286,22 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         tree_erase(root->_right, target);
     else
     {
-        if (!root->_left && !root->_right)
-        {
-            delete root;
-            root = nullptr;
-
-            return true;
-        }
-        else if (!root->_left)
+        if (!root->_left)
         {
             tree_node<T>* temp = root->_right;
-            delete root;
-            root = temp;
-        }
-        else if (!root->_right)
-        {
-            tree_node<T>* temp = root->_left;
             delete root;
             root = temp;
         }
         else
         {
             T value;
-            tree_remove_min(root->_right, value);
+            tree_remove_max(root->_left, value);
             root->_item = value;
         }
     }
 
-    root->update_height();
+    if (root)
+        root->update_height();
 
     root = rotate(root);
 
@@ -332,11 +322,10 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
         tree_node<T>* left = root->_left;
         delete root;
         root = left;
-
-        return;
     }
 
-    root->update_height();
+    if (root)
+        root->update_height();
 }
 
 template<typename T>
@@ -353,11 +342,10 @@ inline void tree_remove_min(tree_node<T>*& root, T& min_value)
         tree_node<T>* right = root->_right;
         delete root;
         root = right;
-
-        return;
     }
 
-    root->update_height();
+    if (root)
+        root->update_height();
 }
 
 template<typename T>
