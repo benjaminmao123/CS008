@@ -21,30 +21,30 @@ struct tree_node
 
     int balance_factor()
     {
-        //balance factor = height of the right subtree 
+        //root->balance_factor() factor = height of the right subtree 
         //                        - the height of the left subtree
         //a NULL child has a height of -1
         //a leaf has a height of 0
         if (_left && _right)
-            return _left->height() - _right->height();
+            return _left->_height - _right->_height;
         else if (_left)
-            return _left->height() - -1;
+            return _left->_height - -1;
         else if (_right)
-            return -1 - _right->height();
+            return -1 - _right->_height;
 
         return 0;
     }
 
     int height()
     {
-        // Height of a node is 1 + height of the "taller" child
-        //A leaf node has a height of zero: 1 + max(-1,-1)
+        // Height of a root is 1 + height of the "taller" child
+        //A leaf root has a height of zero: 1 + max(-1,-1)
         if (_left && _right)
-            return std::max(_left->height(), _right->height()) + 1;
+            return std::max(_left->_height, _right->_height) + 1;
         else if (_left)
-            return _left->height() + 1;
+            return _left->_height + 1;
         else if (_right)
-            return _right->height() + 1;
+            return _right->_height + 1;
 
         return 0;
     }
@@ -86,11 +86,19 @@ bool tree_search(tree_node<T>* root, const T& target,
 template<typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
-
 //prints detailes info about each node
 template<typename T>
 void tree_print_debug(tree_node<T>* root, int level = 0,
                       std::ostream& outs = std::cout);
+template <typename T>
+void tree_print_inorder(tree_node<T>* root,
+                        std::ostream& outs = std::cout);
+template <typename T>
+void tree_print_preorder(tree_node<T>* root,
+                         std::ostream& outs = std::cout);
+template <typename T>
+void tree_print_postorder(tree_node<T>* root,
+                          std::ostream& outs = std::cout);
 
 //clear the tree
 template <typename T>
@@ -211,6 +219,39 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
 
     if (root->_left)
         tree_print_debug(root->_left, level + 10, outs);
+}
+
+template<typename T>
+inline void tree_print_inorder(tree_node<T>* root, std::ostream& outs)
+{
+    if (!root)
+        return;
+
+    tree_print_inorder(root->_left, outs);
+    outs << "{" << root->_item << "}" << std::endl;
+    tree_print_inorder(root->_right, outs);
+}
+
+template<typename T>
+inline void tree_print_preorder(tree_node<T>* root, std::ostream& outs)
+{
+    if (!root)
+        return;
+
+    outs << "{" << root->_item << "}" << std::endl;
+    tree_print_inorder(root->_left, outs);
+    tree_print_inorder(root->_right, outs);
+}
+
+template<typename T>
+inline void tree_print_postorder(tree_node<T>* root, std::ostream& outs)
+{
+    if (!root)
+        return;
+
+    tree_print_inorder(root->_left, outs);
+    tree_print_inorder(root->_right, outs);
+    outs << "{" << root->_item << "}" << std::endl;
 }
 
 template<typename T>
