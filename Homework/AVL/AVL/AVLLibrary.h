@@ -28,7 +28,7 @@ struct tree_node
         if (_left && _right)
             return _left->_height - _right->_height;
         else if (_left)
-            return _left->_height - -1;
+            return _left->_height + 1;
         else if (_right)
             return -1 - _right->_height;
         
@@ -78,7 +78,6 @@ void tree_insert(tree_node<T>*& root, const T& insert_me);
 
 template <typename T>
 tree_node<T>* tree_search(tree_node<T>* root, const T& target);
-
 template <typename T>
 bool tree_search(tree_node<T>* root, const T& target,
                  tree_node<T>*& found_ptr);
@@ -103,7 +102,6 @@ void tree_print_postorder(tree_node<T>* root,
 //clear the tree
 template <typename T>       
 void tree_clear(tree_node<T>*& root);
-
 //erase target from the tree
 template <typename T>       
 bool tree_erase(tree_node<T>*& root, const T& target);

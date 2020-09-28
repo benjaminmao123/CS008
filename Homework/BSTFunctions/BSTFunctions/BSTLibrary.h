@@ -1,7 +1,7 @@
 /*
  * Author: Benjamin Mao
  * Project: BST Functions
- * Purpose: Functions to BST
+ * Purpose: Functions to implement BST
  *
  * Notes: None.
  */
@@ -12,7 +12,7 @@
 #include <algorithm>
 
 template <typename T>
-struct tree_node
+struct tree_node 
 {
     T _item;
     tree_node<T>* _left;
@@ -28,7 +28,7 @@ struct tree_node
         if (_left && _right)
             return _left->_height - _right->_height;
         else if (_left)
-            return _left->_height - -1;
+            return _left->_height + 1;
         else if (_right)
             return -1 - _right->_height;
 
@@ -49,7 +49,7 @@ struct tree_node
         return 0;
     }
 
-    int update_height()
+    int update_height() 
     {
         //set the _height member variable (call height();)
         _height = height();
@@ -65,7 +65,7 @@ struct tree_node
     }
 
     friend std::ostream& operator<<(std::ostream& outs,
-                                    const tree_node<T>& t_node)
+                                    const tree_node<T>& t_node) 
     {
         outs << "|" << t_node._item << "|";
 
@@ -78,7 +78,6 @@ void tree_insert(tree_node<T>*& root, const T& insert_me);
 
 template <typename T>
 tree_node<T>* tree_search(tree_node<T>* root, const T& target);
-
 template <typename T>
 bool tree_search(tree_node<T>* root, const T& target,
                  tree_node<T>*& found_ptr);
@@ -87,7 +86,7 @@ template<typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
 //prints detailes info about each node
-template<typename T>
+template<typename T>       
 void tree_print_debug(tree_node<T>* root, int level = 0,
                       std::ostream& outs = std::cout);
 template <typename T>
@@ -101,30 +100,29 @@ void tree_print_postorder(tree_node<T>* root,
                           std::ostream& outs = std::cout);
 
 //clear the tree
-template <typename T>
+template <typename T>       
 void tree_clear(tree_node<T>*& root);
-
 //erase target from the tree
-template <typename T>
+template <typename T>       
 bool tree_erase(tree_node<T>*& root, const T& target);
 
 //erase rightmost node from the tree
 // store the item in max_value
-template <typename T>
-void tree_remove_max(tree_node<T>*& root, T& max_value);
+template <typename T>       
+void tree_remove_max(tree_node<T>*& root, T& max_value); 
 template <typename T>
 void tree_remove_min(tree_node<T>*& root, T& min_value);
 
 //return copy of tree pointed to by root
-template <typename T>
+template <typename T>       
 tree_node<T>* tree_copy(tree_node<T>* root);
 
 //Add tree src to dest
-template <typename T>
+template <typename T>       
 void tree_add(tree_node<T>*& dest, const tree_node<T>* src);
 
 //sorted array -> tree
-template <typename T>
+template <typename T>       
 tree_node<T>* tree_from_sorted_list(const T* a, int size);
 template <typename T>
 tree_node<T>* tree_from_sorted_list(const T* a, int l, int r);
@@ -144,7 +142,7 @@ inline void tree_insert(tree_node<T>*& root, const T& insert_me)
     else if (insert_me > root->_item)
         tree_insert(root->_right, insert_me);
     else
-        std::cout << "Item exists." << std::endl;
+        return;
 
     root->update_height();
 }
@@ -173,11 +171,11 @@ inline bool tree_search(tree_node<T>* root, const T& target, tree_node<T>*& foun
 
 template<typename T>
 inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
-{
+{ 
     if (!root)
     {
         std::cout << "Tree is empty" << std::endl;
-
+        
         return;
     }
 
@@ -188,7 +186,7 @@ inline void tree_print(tree_node<T>* root, int level, std::ostream& outs)
     for (int i = 0; i < level; ++i)
         outs << " ";
     outs << "{" << root->_item << "}" << std::endl;
-
+    
     if (root->_left)
         tree_print(root->_left, level + 5, outs);
 }
@@ -204,15 +202,17 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
     }
 
     if (root->_right)
-        tree_print_debug(root->_right, level + 10, outs);
+        tree_print_debug(root->_right, level + 5, outs);
 
     outs << std::endl;
     for (int i = 0; i < level; ++i)
         outs << " ";
-    outs << "{" << root->_item << "}" << "H: " << root->_height << std::endl;
+    outs << "[H: " << root->_height <<
+        ", B: " << root->balance_factor() << "]" <<
+        "{" << root->_item << "}" << std::endl;
 
     if (root->_left)
-        tree_print_debug(root->_left, level + 10, outs);
+        tree_print_debug(root->_left, level + 5, outs);
 }
 
 template<typename T>
@@ -273,34 +273,22 @@ inline bool tree_erase(tree_node<T>*& root, const T& target)
         tree_erase(root->_right, target);
     else
     {
-        if (!root->_left && !root->_right)
-        {
-            delete root;
-            root = nullptr;
-
-            return true;
-        }
-        else if (!root->_left)
+        if (!root->_left)
         {
             tree_node<T>* temp = root->_right;
-            delete root;
-            root = temp;
-        }
-        else if (!root->_right)
-        {
-            tree_node<T>* temp = root->_left;
             delete root;
             root = temp;
         }
         else
         {
             T value;
-            tree_remove_min(root->_right, value);
+            tree_remove_max(root->_left, value);
             root->_item = value;
         }
     }
 
-    root->update_height();
+    if (root)
+        root->update_height();
 
     return true;
 }
@@ -319,11 +307,10 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
         tree_node<T>* left = root->_left;
         delete root;
         root = left;
-
-        return;
     }
 
-    root->update_height();
+    if (root)
+        root->update_height();
 }
 
 template<typename T>
@@ -340,11 +327,10 @@ inline void tree_remove_min(tree_node<T>*& root, T& min_value)
         tree_node<T>* right = root->_right;
         delete root;
         root = right;
-
-        return;
     }
 
-    root->update_height();
+    if (root)
+        root->update_height();
 }
 
 template<typename T>
@@ -366,19 +352,13 @@ inline tree_node<T>* tree_copy(tree_node<T>* root)
 template<typename T>
 inline void tree_add(tree_node<T>*& dest, const tree_node<T>* src)
 {
-    if (!dest)
-        return src;
     if (!src)
-        return dest;
+        return;
 
-    dest->_item += src->_item;
+    tree_insert(dest, src->_item);
 
-    dest->_left = tree_add(dest->_left, src->_left);
-    dest->_right = tree_add(dest->_right, src->_right);
-
-    dest->update_height();
-
-    return dest;
+    tree_add(dest, src->_left);
+    tree_add(dest, src->_right);
 }
 
 template<typename T>
