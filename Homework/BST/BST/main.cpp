@@ -57,8 +57,7 @@ void Test()
 		}
 		case 'c':
 		{
-			BST<int> temp;
-			bst.swap(temp);
+			bst.clear();
 			break;
 		}
 		case 's':

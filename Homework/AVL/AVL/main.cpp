@@ -56,8 +56,7 @@ void Test()
 		}
 		case 'c':
 		{
-			AVL<int> temp;
-			avl.swap(temp);
+			avl.clear();
 			break;
 		}
 		case 's':
