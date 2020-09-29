@@ -10,6 +10,7 @@ class Heap
 {
 public:
     Heap();
+    Heap(const std::vector<T>& tree);
 
     void insert(const T& insert_me);
     T pop();
@@ -40,6 +41,13 @@ template<typename T>
 inline Heap<T>::Heap()
 {
 
+}
+
+template<typename T>
+inline Heap<T>::Heap(const std::vector<T>& tree)
+{
+    for (const auto& i : tree)
+        insert(i);
 }
 
 template<typename T>
