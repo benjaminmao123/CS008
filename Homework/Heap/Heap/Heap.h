@@ -18,6 +18,7 @@ public:
     bool is_empty() const;
     unsigned int size() const;
     unsigned int capacity() const;
+    void clear();
 
     template<typename U>
     friend std::ostream& operator<<(std::ostream& outs, const Heap<U>& print_me);
@@ -34,17 +35,20 @@ private:
     void heapify_up(unsigned int i);
     void heapify_down(unsigned int i);
 
+    unsigned int how_many;
     std::vector<T> tree;
 };
 
 template<typename T>
-inline Heap<T>::Heap()
+inline Heap<T>::Heap() :
+    how_many(0)
 {
 
 }
 
 template<typename T>
-inline Heap<T>::Heap(const std::vector<T>& tree)
+inline Heap<T>::Heap(const std::vector<T>& tree) :
+    how_many(0)
 {
     for (const auto& i : tree)
         insert(i);
@@ -54,6 +58,7 @@ template<typename T>
 inline void Heap<T>::insert(const T& insert_me)
 {
     tree.emplace_back(insert_me);
+    ++how_many;
 
     if (!is_empty())
         heapify_up(size() - 1);
@@ -69,6 +74,7 @@ inline T Heap<T>::pop()
     tree[0] = item;
     tree.pop_back();
     heapify_down(0);
+    --how_many;
 
     return item;
 }
@@ -89,6 +95,13 @@ template<typename T>
 inline unsigned int Heap<T>::capacity() const
 {
     return tree.capacity();
+}
+
+template<typename T>
+inline void Heap<T>::clear()
+{
+    tree.clear();
+    how_many = 0;
 }
 
 template<typename T>

@@ -15,8 +15,8 @@ template <typename T>
 struct tree_node 
 {
     T _item;
-    tree_node<T>* _left;
-    tree_node<T>* _right;
+    tree_node* _left;
+    tree_node* _right;
     int _height;
 
     int balance_factor() 
