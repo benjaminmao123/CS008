@@ -50,508 +50,545 @@
 : c
 : x
 ------------ RESULTS --------------------
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: r
-Insert: 945
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 929
 
-{945}
+{929}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: r
-Insert: 478
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 713
 
-{945}
+{929}
 
-     {478}
+     {713}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: r
-Insert: 892
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 464
 
-     {945}
+     {464}
 
-{892}
+{929}
 
-     {478}
+     {713}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: r
-Insert: 492
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 787
 
-     {945}
+     {464}
 
-{892}
+{929}
 
-          {492}
+     {787}
 
-     {478}
+          {713}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: r
-Insert: 62
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 67
 
-     {945}
+     {464}
 
-{892}
+{929}
 
-          {492}
+          {67}
 
-     {478}
+     {787}
 
-          {62}
+          {713}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: r
-Insert: 224
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 813
 
-          {945}
+     {813}
 
-     {892}
+          {464}
 
-          {492}
+{929}
 
-{478}
+          {67}
 
-          {224}
+     {787}
 
-     {62}
+          {713}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: i
-Insert: 10
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 865
 
+          {813}
 
-          {945}
+     {865}
 
-     {892}
+          {464}
 
-          {492}
+{929}
 
-{478}
+          {67}
 
-          {224}
+     {787}
 
-     {62}
+          {713}
 
-          {10}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 374
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: i
-Insert: 20
+          {813}
 
+     {865}
 
-          {945}
+          {464}
 
-     {892}
+{929}
 
-          {492}
+          {67}
 
-{478}
+     {787}
 
-          {224}
+          {713}
 
-     {62}
+               {374}
 
-               {20}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 375
 
-          {10}
+          {813}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: i
-Insert: 30
+     {865}
 
+          {464}
 
-          {945}
+{929}
 
-     {892}
+          {67}
 
-          {492}
+     {787}
 
-{478}
+               {375}
 
-          {224}
+          {713}
 
-     {62}
+               {374}
 
-               {30}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 159
 
-          {20}
+          {813}
 
-               {10}
+     {865}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: i
-Insert: 100
+          {464}
 
+{929}
 
-          {945}
+          {159}
 
-     {892}
+               {67}
 
-          {492}
+     {787}
 
-{478}
+               {375}
 
-          {224}
+          {713}
 
-               {100}
+               {374}
 
-     {62}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 654
 
-               {30}
+          {813}
 
-          {20}
+     {865}
 
-               {10}
+          {464}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: i
-Insert: 1000
+{929}
 
+               {159}
 
-               {1000}
+          {654}
 
-          {945}
+               {67}
 
-     {892}
+     {787}
 
-          {492}
+               {375}
 
-{478}
+          {713}
 
-          {224}
+               {374}
 
-               {100}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 58
 
-     {62}
+          {813}
 
-               {30}
+     {865}
 
-          {20}
+          {464}
 
-               {10}
+               {58}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: i
-Insert: 72
+{929}
 
+               {159}
 
-               {1000}
+          {654}
 
-          {945}
+               {67}
 
-     {892}
+     {787}
 
-          {492}
+               {375}
 
-{478}
+          {713}
 
-               {224}
+               {374}
 
-          {100}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 192
 
-               {72}
+          {813}
 
-     {62}
+     {865}
 
-               {30}
+               {192}
 
-          {20}
+          {464}
 
-               {10}
+               {58}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: s
-Search: 945
+{929}
 
-Item is found.
+               {159}
 
-               {1000}
+          {654}
 
-          {945}
+               {67}
 
-     {892}
+     {787}
 
-          {492}
+               {375}
 
-{478}
+          {713}
 
-               {224}
+               {374}
 
-          {100}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 352
 
-               {72}
+          {813}
 
-     {62}
+               {352}
 
-               {30}
+     {865}
 
-          {20}
+               {192}
 
-               {10}
+          {464}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: s
-Search: 478
+               {58}
 
-Item is found.
+{929}
 
-               {1000}
+               {159}
 
-          {945}
+          {654}
 
-     {892}
+               {67}
 
-          {492}
+     {787}
 
-{478}
+               {375}
 
-               {224}
+          {713}
 
-          {100}
+               {374}
 
-               {72}
+[R]andom [I]nsert [C]lear [P]op E[x]it: r
+Insert: 415
 
-     {62}
+               {415}
 
-               {30}
+          {813}
 
-          {20}
+               {352}
 
-               {10}
+     {865}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: s
-Search: 100
+               {192}
 
-Item is found.
+          {464}
 
-               {1000}
+               {58}
 
-          {945}
+{929}
 
-     {892}
+               {159}
 
-          {492}
+          {654}
 
-{478}
+               {67}
 
-               {224}
+     {787}
 
-          {100}
+               {375}
 
-               {72}
+          {713}
 
-     {62}
+               {374}
 
-               {30}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 415
 
-          {20}
+          {813}
 
-               {10}
+               {352}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: s
-Search: 2
+     {415}
 
-Item is not found.
+               {192}
 
-               {1000}
+          {464}
 
-          {945}
+               {58}
 
-     {892}
+{865}
 
-          {492}
+               {159}
 
-{478}
+          {654}
 
-               {224}
+               {67}
 
-          {100}
+     {787}
 
-               {72}
+               {375}
 
-     {62}
+          {713}
 
-               {30}
+               {374}
 
-          {20}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 352
 
-               {10}
+          {813}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: s
-Search: 90
+     {415}
 
-Item is not found.
+               {192}
 
-               {1000}
+          {464}
 
-          {945}
+               {58}
 
-     {892}
+{787}
 
-          {492}
+               {159}
 
-{478}
+          {654}
 
-               {224}
+               {67}
 
-          {100}
+     {352}
 
-               {72}
+               {375}
 
-     {62}
+          {713}
 
-               {30}
+               {374}
 
-          {20}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 192
 
-               {10}
+          {813}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: s
-Search: 25
+     {192}
 
-Item is not found.
+          {464}
 
-               {1000}
+               {58}
 
-          {945}
+{415}
 
-     {892}
+               {159}
 
-          {492}
+          {654}
 
-{478}
+               {67}
 
-               {224}
+     {352}
 
-          {100}
+               {375}
 
-               {72}
+          {713}
 
-     {62}
+               {374}
 
-               {30}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 58
 
-          {20}
+          {813}
 
-               {10}
+     {192}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: e
-Erase: 1000
+          {464}
 
+{352}
 
-          {945}
+               {159}
 
-     {892}
+          {654}
 
-          {492}
+               {67}
 
-{478}
+     {58}
 
-               {224}
+               {375}
 
-          {100}
+          {713}
 
-               {72}
+               {374}
 
-     {62}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 159
 
-               {30}
+          {813}
 
-          {20}
+     {159}
 
-               {10}
+          {464}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: e
-Erase: 100
+{192}
 
+          {654}
 
-          {945}
+               {67}
 
-     {892}
+     {58}
 
-          {492}
+               {375}
 
-{478}
+          {713}
 
-          {224}
+               {374}
 
-               {72}
+[R]andom [I]nsert [C]lear [P]op E[x]it: pp
+Pop: 67
 
-     {62}
+          {813}
 
-               {30}
+     {67}
 
-          {20}
+          {464}
 
-               {10}
+{159}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: e
-Erase: 30
+          {654}
 
+     {58}
 
-          {945}
+               {375}
 
-     {892}
+          {713}
 
-          {492}
+               {374}
 
-{478}
+[R]andom [I]nsert [C]lear [P]op E[x]it: Pop: 375
 
-          {224}
+          {813}
 
-               {72}
+     {67}
 
-     {62}
+          {464}
 
-          {20}
+{375}
 
-               {10}
+          {654}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: e
-Erase: 20
+     {58}
 
+          {713}
 
-          {945}
+               {374}
 
-     {892}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 374
 
-          {492}
+          {813}
 
-{478}
+     {67}
 
-          {224}
+          {464}
 
-               {72}
+{374}
 
-     {62}
+          {654}
 
-          {10}
+     {58}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: e
-Erase: 10
+          {713}
 
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 813
 
-          {945}
+     {67}
 
-     {892}
+          {464}
 
-          {492}
+{813}
 
-{478}
+          {654}
 
-          {224}
+     {58}
 
-     {72}
+          {713}
 
-          {62}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 464
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: e
-Erase: 945
+     {67}
 
+{464}
 
-     {892}
+          {654}
 
-          {492}
+     {58}
 
-{478}
+          {713}
 
-          {224}
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 654
 
-     {72}
+     {67}
 
-          {62}
+{654}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: c
-Tree is empty
+     {58}
 
-[R]andom [I]nsert [C]lear [S]earch [E]rase E[x]it: x
+          {713}
+
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 713
+
+     {67}
+
+{713}
+
+     {58}
+
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 67
+
+{67}
+
+     {58}
+
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 58
+
+{58}
+
+[R]andom [I]nsert [C]lear [P]op E[x]it: p
+Pop: 58
+
 
 
 */

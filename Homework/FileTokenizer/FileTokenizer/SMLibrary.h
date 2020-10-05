@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: STokenizer
+ * Purpose: Functions for state machine.
+ *
+ * Notes: None.
+ */
+
 #pragma once
 
 #include "SMConstants.h"
@@ -21,7 +29,7 @@ void init_table(int _table[][MAX_COLUMNS])
 	for (int i = 0; i < MAX_ROWS; ++i)
 	{
 		for (int j = 0; j < MAX_COLUMNS; ++j)
-				_table[i][j] = -1;
+			_table[i][j] = -1;
 	}
 }
 
@@ -48,7 +56,7 @@ bool is_success(int _table[][MAX_COLUMNS], int state)
 	return _table[state][0];
 }
 
-//Mark a range of cells in the array. 
+//Mark a range of cells in the array.
 void mark_cells(int row, int _table[][MAX_COLUMNS], int from, int to, int state)
 {
 	while (from <= to)

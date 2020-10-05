@@ -23,7 +23,7 @@ public:
 
     void insert(const T& insert_me);
     T pop();
-    typename Vector<T>::Iterator search(const T& find_me);
+    bool search(const T& find_me, T& res);
 
     bool is_empty() const;
     unsigned int size() const;
@@ -90,9 +90,19 @@ inline T Heap<T>::pop()
 }
 
 template<typename T>
-inline typename Vector<T>::Iterator Heap<T>::search(const T& find_me)
+inline bool Heap<T>::search(const T& find_me, T& res)
 {
-    return std::find(tree.begin(), tree.end(), find_me);
+    for (int i = 0; i < tree.size(); ++i)
+    {
+        if (tree[i] == find_me)
+        {
+            res = tree[i];
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 template<typename T>

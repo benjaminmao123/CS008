@@ -1,3 +1,11 @@
+/*
+ * Author: Benjamin Mao
+ * Project: STokenizer
+ * Purpose: Functions for state machine.
+ *
+ * Notes: None.
+ */
+
 #pragma once
 
 #include "SMConstants.h"

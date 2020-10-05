@@ -141,7 +141,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrayLibrary.h" />
     <ClInclude Include="Heap.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="z_output.h" />
     <ClInclude Include="z_work_report.h" />
   </ItemGroup>

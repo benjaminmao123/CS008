@@ -1,6 +1,6 @@
 /*
  * Author: Benjamin Mao
- * Project: STokenizer
+ * Project: FTokenizer
  * Purpose: Functions to implement FTokenizer
  *
  * Notes: None.

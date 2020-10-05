@@ -1,6 +1,6 @@
 /*
  * Author: Benjamin Mao
- * Project: AVL
+ * Project: Heap
  * Purpose: Driver
  *
  * Notes: None.
@@ -59,8 +59,11 @@ void Test()
 			break;
 		case 'p':
 		{
-			int item = heap.pop();
-			std::cout << "Pop: " << item << std::endl;
+			if (!heap.is_empty())
+			{
+				int item = heap.pop();
+				std::cout << "Pop: " << item << std::endl;
+			}
 			break;
 		}
 		case 'x':

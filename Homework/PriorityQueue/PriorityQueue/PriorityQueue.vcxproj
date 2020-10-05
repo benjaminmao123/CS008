@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{3646B3ED-1B5B-4836-AAD0-0A2D5368122D}</ProjectGuid>
-    <RootNamespace>Trees</RootNamespace>
+    <ProjectGuid>{EFD43DB7-D554-4565-968A-AD55154BF925}</ProjectGuid>
+    <RootNamespace>PriorityQueue</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -138,27 +138,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FTokenizer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="STokenizer.cpp" />
-    <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayLibrary.h" />
-    <ClInclude Include="FTokenizer.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="PriorityQueue.h" />
-    <ClInclude Include="SMConstants.h" />
-    <ClInclude Include="SMLibrary.h" />
-    <ClInclude Include="STokenizer.h" />
-    <ClInclude Include="Token.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="output.txt" />
-    <Text Include="solitude.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
