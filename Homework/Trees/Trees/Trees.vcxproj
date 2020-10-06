@@ -145,11 +145,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayLibrary.h" />
+    <ClInclude Include="AVL.h" />
+    <ClInclude Include="AVLLibrary.h" />
     <ClInclude Include="FTokenizer.h" />
     <ClInclude Include="Heap.h" />
+    <ClInclude Include="IteratedList.h" />
+    <ClInclude Include="LinkedListLibrary.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="SMConstants.h" />
     <ClInclude Include="SMLibrary.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="STokenizer.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="Vector.h" />

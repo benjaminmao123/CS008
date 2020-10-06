@@ -140,7 +140,6 @@
   <ItemGroup>
     <ClInclude Include="IteratedList.h" />
     <ClInclude Include="LinkedListLibrary.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="QueueTest.h" />
     <ClInclude Include="Stack.h" />

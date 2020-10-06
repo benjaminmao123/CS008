@@ -6,13 +6,14 @@
  * Notes: None.
  */
 
-#include "FTokenizer.h"
-#include "PriorityQueue.h"
-#include "Vector.h"
-
 #include <iostream>
 #include <string>
 #include <iomanip>
+
+#include "FTokenizer.h"
+#include "PriorityQueue.h"
+#include "Vector.h"
+#include "AVL.h"
 
 template <typename T>
 struct info
@@ -73,6 +74,65 @@ struct info
 	}
 };
 
+template <typename T>
+struct word
+{
+	T item;
+	int freq;
+
+	word() :
+		freq(0)
+	{
+
+	}
+
+	word(const T& i, int f) :
+		item(i),
+		freq(f)
+	{
+
+	}
+
+	friend std::ostream& operator<<(std::ostream& outs, const word<T>& print_me)
+	{
+		outs << "(" << print_me.item << ", " << print_me.freq << ")";
+
+		return outs;
+	}
+
+	friend bool operator<(const word<T>& lhs, const word<T>& rhs)
+	{
+		return lhs.item < rhs.item;
+	}
+
+	friend bool operator>(const word<T>& lhs, const word<T>& rhs)
+	{
+		return lhs.item > rhs.item;
+	}
+
+	friend bool operator>=(const word<T>& lhs, const word<T>& rhs)
+	{
+		return lhs.item >= rhs.item;
+	}
+
+	friend bool operator<=(const word<T>& lhs, const word<T>& rhs)
+	{
+		return lhs.item >= rhs.item;
+	}
+
+	word<T>& operator++()
+	{
+		++freq;
+
+		return *this;
+	}
+
+	friend bool operator==(const word<T>& lhs, const word<T>& rhs)
+	{
+		return lhs.item == rhs.item;
+	}
+};
+
 auto PrintWordFrequencies = [&](PQueue<info<std::string>>& pq, unsigned int n)
 {
 	std::cout << "Top " << n << " words: " << std::endl;
@@ -85,6 +145,7 @@ int main()
 {
 	FTokenizer ftk("solitude.txt");
 	PQueue<info<std::string>> pq;
+	AVL<word<std::string>> avl;
 	int count = 0;
 
 	while (ftk.more())
@@ -98,9 +159,12 @@ int main()
 					  << std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
 				      << t.type_string() << std::endl;
 
-			pq.insert(info<std::string>(t.token_str(), 1));
+			avl.insert(word<std::string>(t.token_str(), 1));
 		}
 	}
+
+	for (const auto& i : avl)
+		pq.insert(info<std::string>(i.item, i.freq));
 
 	std::cout << std::endl;
 
