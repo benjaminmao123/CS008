@@ -73,22 +73,19 @@ struct info
 	}
 };
 
+auto PrintWordFrequencies = [&](PQueue<info<std::string>>& pq, unsigned int n)
+{
+	std::cout << "Top " << n << " words: " << std::endl;
+
+	for (unsigned int i = 0; i < n; ++i)
+		std::cout << i + 1 << ". " << pq.pop() << std::endl;
+};
+
 int main()
 {
 	FTokenizer ftk("solitude.txt");
 	PQueue<info<std::string>> pq;
 	int count = 0;
-
-	auto PrintWordFrequencies = [&](unsigned int n)
-	{
-		Vector<info<std::string>> wordList;
-
-		for (unsigned int i = 0; i < n; ++i)
-			wordList.push_back(pq.pop());
-
-		for (unsigned int i = 0; i < n && i < wordList.size(); ++i)
-			std::cout << i + 1 << ". " << wordList[i] << std::endl;
-	};
 
 	while (ftk.more())
 	{
@@ -106,9 +103,8 @@ int main()
 	}
 
 	std::cout << std::endl;
-	std::cout << "Top 100 words: " << std::endl;
 
-	PrintWordFrequencies(100);
+	PrintWordFrequencies(pq, 100);
 
 	return 0;
 }
