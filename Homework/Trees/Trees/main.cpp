@@ -14,21 +14,81 @@
 #include <string>
 #include <iomanip>
 
+template <typename T>
+struct info
+{
+	T item;
+	int priority;
+
+	info() :
+		priority(0)
+	{
+
+	}
+
+	info(const T& i, int p) :
+		item(i),
+		priority(p)
+	{
+
+	}
+
+	friend std::ostream& operator<<(std::ostream& outs, const info<T>& print_me)
+	{
+		outs << print_me.item;
+
+		return outs;
+	}
+
+	friend bool operator<(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.priority < rhs.priority;
+	}
+
+	friend bool operator>(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.priority > rhs.priority;
+	}
+
+	friend bool operator>=(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.priority >= rhs.priority;
+	}
+
+	friend bool operator<=(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.priority >= rhs.priority;
+	}
+
+	info<T>& operator++()
+	{
+		++priority;
+
+		return *this;
+	}
+
+	friend bool operator==(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.item == rhs.item;
+	}
+};
+
 int main()
 {
 	FTokenizer ftk("solitude.txt");
-	PQueue<std::string> pq;
+	PQueue<info<std::string>> pq;
 	int count = 0;
 
 	auto PrintWordFrequencies = [&](unsigned int n)
 	{
 		Vector<info<std::string>> wordList;
 
-		for (int i = 0; i < n; ++i)
+		for (unsigned int i = 0; i < n; ++i)
 			wordList.push_back(pq.pop());
 
 		for (unsigned int i = 0; i < n && i < wordList.size(); ++i)
-			std::cout << i + 1 << ". " << "(" << wordList[i].item << ", " << wordList[i].priority << ")" << std::endl;
+			std::cout << i + 1 << ". " << "(" << wordList[i].item << ", " 
+					  << wordList[i].priority << ")" << std::endl;
 	};
 
 	while (ftk.more())
@@ -42,7 +102,7 @@ int main()
 					  << std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
 				      << t.type_string() << std::endl;
 
-			pq.insert(t.token_str(), 1);
+			pq.insert(info<std::string>(t.token_str(), 1));
 		}
 	}
 
