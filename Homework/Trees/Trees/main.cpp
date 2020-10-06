@@ -22,13 +22,13 @@ int main()
 
 	auto PrintWordFrequencies = [&](unsigned int n)
 	{
-		Vector<std::string> wordList;
+		Vector<info<std::string>> wordList;
 
 		for (int i = 0; i < n; ++i)
 			wordList.push_back(pq.pop());
 
 		for (unsigned int i = 0; i < n && i < wordList.size(); ++i)
-			std::cout << i + 1 << ". " << wordList[i] << std::endl;
+			std::cout << i + 1 << ". " << "(" << wordList[i].item << ", " << wordList[i].priority << ")" << std::endl;
 	};
 
 	while (ftk.more())
@@ -47,9 +47,9 @@ int main()
 	}
 
 	std::cout << std::endl;
-	std::cout << "Top 20 words: " << std::endl;
+	std::cout << "Top 100 words: " << std::endl;
 
-	PrintWordFrequencies(20);
+	PrintWordFrequencies(100);
 
 	return 0;
 }

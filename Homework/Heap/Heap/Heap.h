@@ -13,7 +13,6 @@
 #include <cmath>
 
 #include "Vector.h"
-#include "ASCIIHeapBuilder.h"
 
 template<typename T>
 class Heap
@@ -80,7 +79,7 @@ inline void Heap<T>::insert(const T& insert_me)
 
     if (!tree.empty())
     {
-        for (int i = size() - 1; i > 0; --i)
+        for (unsigned int i = size() - 1; i > 0; --i)
             heapify_up(i);
     }
 }
@@ -96,7 +95,7 @@ inline T Heap<T>::pop()
     tree.pop_back();
     --how_many;
 
-    for (int i = 0; i < size(); ++i)
+    for (unsigned int i = 0; i < size(); ++i)
         heapify_down(i);
 
     return item;
@@ -142,8 +141,7 @@ inline void Heap<T>::clear()
 template<typename T>
 inline void Heap<T>::print_tree(std::ostream& outs) const
 {
-    for (const auto& i : tree)
-        outs << i << " ";
+    print_tree(0, 0, outs);
 }
 
 template<typename T>
@@ -231,9 +229,7 @@ inline void Heap<T>::heapify_down(unsigned int i)
 template<typename U>
 inline std::ostream& operator<<(std::ostream& outs, const Heap<U>& print_me)
 {
-    ASCIIHeapBuilder<Vector<U>> asc(print_me.tree);
-
-    asc.print_ascii_tree(0, outs);
+    print_me.print_tree(outs);
 
     return outs;
 }

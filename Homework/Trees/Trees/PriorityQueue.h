@@ -76,7 +76,7 @@ class PQueue
 {
 public:
 	bool insert(const T& value, int p);
-	T pop();
+	info<T> pop();
 
 	bool is_empty() const;
 	int size() const;
@@ -99,9 +99,9 @@ inline bool PQueue<T>::insert(const T& value, int p)
 }
 
 template<typename T>
-inline T PQueue<T>::pop()
+inline info<T> PQueue<T>::pop()
 {
-	return heap.pop().item;
+	return heap.pop();
 }
 
 template<typename T>
