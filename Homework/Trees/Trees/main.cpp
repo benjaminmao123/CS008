@@ -35,7 +35,7 @@ struct info
 
 	friend std::ostream& operator<<(std::ostream& outs, const info<T>& print_me)
 	{
-		outs << print_me.item;
+		outs << "(" << print_me.item << ", " << print_me.priority << ")";
 
 		return outs;
 	}
@@ -87,8 +87,7 @@ int main()
 			wordList.push_back(pq.pop());
 
 		for (unsigned int i = 0; i < n && i < wordList.size(); ++i)
-			std::cout << i + 1 << ". " << "(" << wordList[i].item << ", " 
-					  << wordList[i].priority << ")" << std::endl;
+			std::cout << i + 1 << ". " << wordList[i] << std::endl;
 	};
 
 	while (ftk.more())
