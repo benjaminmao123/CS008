@@ -105,9 +105,7 @@ T *remove_entry(T *list, const T &delete_me, int &size, int &capacity)
 
 		//if the size drops below a certain amount decrease capacity
 		if (size <= capacity / 4)
-		{
 			capacity /= 2;
-		}
 
 		--size;
 
@@ -144,6 +142,7 @@ T *reallocate(T *list, const int size, const int capacity)
 
 	//copy elements from the old list to the new list
 	copy_list(newList, list, size);
+	delete_array(list);
 
 	return newList;
 }
@@ -161,9 +160,7 @@ void copy_list(T *dest, const T *src, const int size)
 	T *destEnd = dest + size;
 
 	for (T *i = dest; i != destEnd; ++i, ++src)
-	{
 		*i = *src;
-	}
 }
 
 /*
@@ -186,9 +183,7 @@ T *search_entry(T *list, const T &find_me, const int size, int &index)
 	for (T *i = list; i != listEnd; ++i)
 	{
 		if (*i == find_me)
-		{
 			return i;
-		}
 
 		++index;
 	}
@@ -210,9 +205,7 @@ void shift_left(T *start, const T *end)
 	T *next = start + 1;
 
 	for (T *curr = start; curr != end - 1; ++curr, ++next)
-	{
 		*curr = *next;
-	}
 }
 
 
@@ -228,29 +221,28 @@ void shift_right(T *start, const T *end)
 	T *next = start + 1;
 
 	for (T *curr = start; curr != end - 1; --curr, --next)
-	{
 		*next = *curr;
-	}
 }
 
 template<typename T>
 inline void delete_array(T *&list)
 {
 	delete[] list;
+	list = nullptr;
 }
 
 template<typename T>
 inline void remove_last(T *&list, int &size, int &capacity)
 {
-	T *newList = list;
+	T *newList = nullptr;
 
 	//if the size drops below a certain amount decrease capacity
 	if (size <= capacity / 4)
 	{
 		capacity /= 2;
+		newList = reallocate(list, size, capacity);
+		list = newList;
 	}
 
 	--size;
-
-	newList = reallocate(list, size, capacity);
 }

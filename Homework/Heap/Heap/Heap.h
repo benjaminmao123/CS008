@@ -13,6 +13,7 @@
 #include <cmath>
 
 #include "Vector.h"
+#include "ASCIIHeapBuilder.h"
 
 template<typename T>
 class Heap
@@ -23,7 +24,7 @@ public:
 
     void insert(const T& insert_me);
     T pop();
-    typename Vector<T>::Iterator search(const T& find_me);
+    T* search(const T& find_me);
 
     bool is_empty() const;
     unsigned int size() const;
@@ -67,11 +68,21 @@ inline Heap<T>::Heap(const Vector<T>& tree) :
 template<typename T>
 inline void Heap<T>::insert(const T& insert_me)
 {
-    tree.push_back(insert_me);
-    ++how_many;
+    T* item = search(insert_me);
 
-    if (!is_empty())
-        heapify_up(size() - 1);
+    if (item)
+        ++(*item);
+    else
+    {
+        tree.push_back(insert_me);
+        ++how_many;
+    }
+
+    if (!tree.empty())
+    {
+        for (int i = size() - 1; i > 0; --i)
+            heapify_up(i);
+    }
 }
 
 template<typename T>
@@ -80,19 +91,27 @@ inline T Heap<T>::pop()
     if (is_empty())
         throw std::out_of_range("Heap is empty.");
 
-    T item = tree.back();
-    tree[0] = item;
+    T item = tree.front();
+    tree.front() = tree.back();
     tree.pop_back();
-    heapify_down(0);
     --how_many;
+
+    for (int i = 0; i < size(); ++i)
+        heapify_down(i);
 
     return item;
 }
 
 template<typename T>
-inline typename Vector<T>::Iterator Heap<T>::search(const T& find_me)
+inline T* Heap<T>::search(const T& find_me)
 {
-    return std::find(tree.begin(), tree.end(), find_me);
+    for (int i = 0; i < tree.size(); ++i)
+    {
+        if (tree[i] == find_me)
+            return &tree[i];
+    }
+
+    return nullptr;
 }
 
 template<typename T>
@@ -191,13 +210,11 @@ inline void Heap<T>::swap_with_parent(unsigned int i)
 template<typename T>
 inline void Heap<T>::heapify_up(unsigned int i)
 {
+
     if (parent_index(i) >= 0 && parent_index(i) < size())
     {
-        if (tree[i] > tree[parent_index(i)])
-        {
+        if (tree[i] >= tree[parent_index(i)])
             swap_with_parent(i);
-            heapify_up(parent_index(i));
-        }
     }
 }
 
@@ -208,16 +225,15 @@ inline void Heap<T>::heapify_down(unsigned int i)
         return;
 
     if (big_child_index(i) != i)
-    {
         swap_with_parent(big_child_index(i));
-        heapify_down(big_child_index(i));
-    }
 }
 
 template<typename U>
 inline std::ostream& operator<<(std::ostream& outs, const Heap<U>& print_me)
 {
-    print_me.print_tree(0, 0, outs);
+    ASCIIHeapBuilder<Vector<U>> asc(print_me.tree);
+
+    asc.print_ascii_tree(0, outs);
 
     return outs;
 }

@@ -142,6 +142,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayLibrary.h" />
+    <ClInclude Include="ASCIIHeapBuilder.h" />
+    <ClInclude Include="AVLLibrary.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="z_output.h" />

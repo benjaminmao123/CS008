@@ -23,7 +23,7 @@ public:
 
     void insert(const T& insert_me);
     T pop();
-    bool search(const T& find_me, T& res);
+    T* search(const T& find_me);
 
     bool is_empty() const;
     unsigned int size() const;
@@ -67,8 +67,15 @@ inline Heap<T>::Heap(const Vector<T>& tree) :
 template<typename T>
 inline void Heap<T>::insert(const T& insert_me)
 {
-    tree.push_back(insert_me);
-    ++how_many;
+    T* item = search(insert_me);
+
+    if (item)
+        ++(*item);
+    else
+    {
+        tree.push_back(insert_me);
+        ++how_many;
+    }
 
     if (!is_empty())
         heapify_up(size() - 1);
@@ -90,19 +97,15 @@ inline T Heap<T>::pop()
 }
 
 template<typename T>
-inline bool Heap<T>::search(const T& find_me, T& res)
+inline T* Heap<T>::search(const T& find_me)
 {
     for (int i = 0; i < tree.size(); ++i)
     {
         if (tree[i] == find_me)
-        {
-            res = tree[i];
-
-            return true;
-        }
+            return &tree[i];
     }
 
-    return false;
+    return nullptr;
 }
 
 template<typename T>

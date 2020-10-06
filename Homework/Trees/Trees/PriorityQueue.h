@@ -13,7 +13,7 @@
 #include "Heap.h"
 
 template <typename T>
-struct info 
+struct info
 {
 	T item;
 	int priority;
@@ -48,6 +48,23 @@ struct info
 		return lhs.priority > rhs.priority;
 	}
 
+	friend bool operator>=(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.priority >= rhs.priority;
+	}
+
+	friend bool operator<=(const info<T>& lhs, const info<T>& rhs)
+	{
+		return lhs.priority >= rhs.priority;
+	}
+
+	info<T>& operator++()
+	{
+		++priority;
+
+		return *this;
+	}
+
 	friend bool operator==(const info<T>& lhs, const info<T>& rhs)
 	{
 		return lhs.item == rhs.item;
@@ -59,7 +76,7 @@ class PQueue
 {
 public:
 	bool insert(const T& value, int p);
-	T Pop();
+	T pop();
 
 	bool is_empty() const;
 	int size() const;
@@ -76,19 +93,13 @@ private:
 template<typename T>
 inline bool PQueue<T>::insert(const T& value, int p)
 {
-	info<T> res;
-	bool exists = heap.search(info<T>(value, p), res);
-
-	if (!exists)
-		heap.insert(info<T>(value, p));
-	else
-		res.priority += 1;
+	heap.insert(info<T>(value, p));
 
 	return true;
 }
 
 template<typename T>
-inline T PQueue<T>::Pop()
+inline T PQueue<T>::pop()
 {
 	return heap.pop().item;
 }

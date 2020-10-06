@@ -25,7 +25,7 @@ int main()
 		Vector<std::string> wordList;
 
 		for (int i = 0; i < n; ++i)
-			wordList.push_back(pq.Pop());
+			wordList.push_back(pq.pop());
 
 		for (unsigned int i = 0; i < n && i < wordList.size(); ++i)
 			std::cout << i + 1 << ". " << wordList[i] << std::endl;

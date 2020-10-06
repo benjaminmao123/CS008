@@ -136,6 +136,24 @@ tree_node<T>* rotate_left(tree_node<T>*& root);
 template <typename T>
 tree_node<T>* rotate(tree_node<T>*& root); 
 
+template <typename T>
+bool is_valid(tree_node<T>* root)
+{
+    if (root) 
+    {
+        is_valid(root->_left);
+
+        if (root->balance_factor() > 1 || root->balance_factor() < -1) 
+            std::cout << false << " ";
+        else
+            std::cout << true << " ";
+        
+        is_valid(root->_right);
+    }
+
+    return true;
+}
+
 template<typename T>
 inline void tree_insert(tree_node<T>*& root, const T& insert_me)
 {
@@ -324,6 +342,8 @@ inline void tree_remove_max(tree_node<T>*& root, T& max_value)
 
     if (root)
         root->update_height();
+
+    root = rotate(root);
 }
 
 template<typename T>
@@ -344,6 +364,8 @@ inline void tree_remove_min(tree_node<T>*& root, T& min_value)
 
     if (root)
         root->update_height();
+
+    root = rotate(root);
 }
 
 template<typename T>
