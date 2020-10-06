@@ -41,7 +41,7 @@ void Test()
 			int item = dist(gen);
 			std::cout << "Insert: " << item << std::endl;
 
-			pq.insert(item, 1);
+			pq.insert(item);
 			break;
 		}
 		case 'i':
@@ -51,7 +51,7 @@ void Test()
 			std::cin >> item;
 			std::cout << std::endl;
 
-			pq.insert(item, 1);
+			pq.insert(item);
 			break;
 		}
 		case 'c':

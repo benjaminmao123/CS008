@@ -13,59 +13,10 @@
 #include "Heap.h"
 
 template <typename T>
-struct info 
-{
-	T item;
-	int priority;
-
-	info() :
-		priority(0)
-	{
-
-	}
-
-	info(const T& i, int p) :
-		item(i),
-		priority(p)
-	{
-
-	}
-
-	friend std::ostream& operator<<(std::ostream& outs, const info<T>& print_me)
-	{
-		outs << print_me.item;
-
-		return outs;
-	}
-
-	friend bool operator<(const info<T>& lhs, const info<T>& rhs)
-	{
-		return lhs.priority < rhs.priority;
-	}
-
-	friend bool operator>(const info<T>& lhs, const info<T>& rhs)
-	{
-		return lhs.priority > rhs.priority;
-	}
-
-	info<T>& operator++()
-	{
-		++priority;
-
-		return *this;
-	}
-
-	friend bool operator==(const info<T>& lhs, const info<T>& rhs)
-	{
-		return lhs.item == rhs.item;
-	}
-};
-
-template <typename T>
 class PQueue
 {
 public:
-	bool insert(const T& value, int p);
+	bool insert(const T& value);
 	T pop();
 
 	bool is_empty() const;
@@ -77,13 +28,13 @@ public:
 	friend std::ostream& operator<<(std::ostream& outs, const PQueue<U>& print_me);
 
 private:
-	Heap<info<T>> heap;
+	Heap<T> heap;
 };
 
 template<typename T>
-inline bool PQueue<T>::insert(const T& value, int p)
+inline bool PQueue<T>::insert(const T& value)
 {
-	heap.insert(info<T>(value, p));
+	heap.insert(value);
 
 	return true;
 }
@@ -91,7 +42,7 @@ inline bool PQueue<T>::insert(const T& value, int p)
 template<typename T>
 inline T PQueue<T>::pop()
 {
-	return heap.pop().item;
+	return heap.pop();
 }
 
 template<typename T>

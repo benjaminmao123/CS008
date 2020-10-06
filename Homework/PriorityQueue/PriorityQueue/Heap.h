@@ -211,7 +211,7 @@ inline void Heap<T>::heapify_up(unsigned int i)
 
     if (parent_index(i) >= 0 && parent_index(i) < size())
     {
-        if (tree[i] >= tree[parent_index(i)])
+        if (tree[i] > tree[parent_index(i)])
             swap_with_parent(i);
     }
 }
