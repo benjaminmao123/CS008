@@ -496,15 +496,7 @@ inline void Vector<T>::set_capacity(int capacity)
     if (capacity > sz)
     {
         cap = capacity;
-
-        T *newData = nullptr;
-
-        newData = allocate(newData, cap);
-        copy_list(newData, data, sz);
-
-        delete[] data;
-
-        data = newData;
+        data = reallocate(data, sz, cap);
     }
 }
 

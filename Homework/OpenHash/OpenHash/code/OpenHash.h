@@ -13,24 +13,33 @@
 class ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i) const = 0;
+	virtual unsigned int operator()(int hashVal, int i) const = 0;
 };
 
 class LinearProbing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i) const override
+	virtual unsigned int operator()(int hashVal, int i) const override
 	{
-		return i;
+		return hashVal + i;
 	}
 };
 
 class QuadraticProbing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i) const override
+	virtual unsigned int operator()(int hashVal, int i) const override
 	{
-		return pow(i, 2);
+		return hashVal + pow(i, 2);
+	}
+};
+
+class DoubleHashing : public ResolutionFunction
+{
+public:
+	virtual unsigned int operator()(int hashVal, int i) const override
+	{
+		return hashVal + (DOUBLE_HASH_PRIME - (i % DOUBLE_HASH_PRIME));
 	}
 };
 
@@ -148,6 +157,7 @@ inline bool open_hash<T>::remove(int key)
 	if (index == -1)
 		return false;
 
+	delete _data[index];
 	_data[index] = nullptr;
 	--total_records;
 
@@ -192,37 +202,40 @@ inline constexpr int open_hash<T>::hash(int key) const
 template<class T>
 inline int open_hash<T>::find_item(int key) const
 {
-	int indexHint = hash(key);
-	int indexActual = indexHint;
+	int index = hash(key);
+	int finalIndex = index;
 	int i = 0;
 
-	while (_data[indexActual])
+	while (true)
 	{
-		if (i >= _data.size())
+		if (i >= _data.size() || !_data[finalIndex])
 			return -1;
 
-		indexActual = (indexHint + resolution(++i)) % _data.size();
+		if (_data[finalIndex]->_key == key)
+			break;
+
+		finalIndex = resolution(index, ++i) % _data.size();
 	}
 
-	return indexActual;
+	return finalIndex;
 }
 
 template<class T>
 inline int open_hash<T>::get_free_index(int key) const
 {
-	int indexHint = hash(key);
-	int indexActual = indexHint;
+	int index = hash(key);
+	int finalIndex = index;
 	int i = 0;
 
-	while (_data[indexActual])
+	while (_data[finalIndex])
 	{
-		if (i > _data.size() || _data[indexActual]->_key == key)
+		if (i > _data.size() || _data[finalIndex]->_key == key)
 			return -1;
 
-		indexActual = (indexHint + resolution(++i)) % _data.size();
+		finalIndex =  resolution(index, ++i) % _data.size();
 	}
 
-	return indexActual;
+	return finalIndex;
 }
 
 template<class T>
@@ -240,6 +253,9 @@ inline void open_hash<T>::expand_table()
 		else
 			_data[i] = nullptr;
 	}
+
+	for (auto& i : tempTable)
+		delete i;
 }
 
 template<class TT>

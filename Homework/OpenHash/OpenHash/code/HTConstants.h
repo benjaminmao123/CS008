@@ -1,6 +1,7 @@
 #pragma once
 
 #define KNUTH_ALPHA 2654435761
+#define DOUBLE_HASH_PRIME 7
 
 const int primes[] =
 {
