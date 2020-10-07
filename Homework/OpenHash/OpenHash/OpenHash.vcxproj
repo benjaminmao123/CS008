@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{8EFD38DF-32F7-4F0B-83C4-5E6C638C3052}</ProjectGuid>
+    <ProjectGuid>{A9E3BD21-0358-4810-BC14-876EFF812AA6}</ProjectGuid>
     <RootNamespace>OpenHash</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -138,6 +138,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="code\ArrayLibrary.h" />
+    <ClInclude Include="code\HTConstants.h" />
+    <ClInclude Include="code\HTLibrary.h" />
+    <ClInclude Include="code\OpenHash.h" />
+    <ClInclude Include="code\Vector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
