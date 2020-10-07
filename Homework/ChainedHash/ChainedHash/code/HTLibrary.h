@@ -33,27 +33,31 @@ struct record
 	T _value;
 };
 
-int get_msb(int x)
+constexpr int get_msb(int x);
+constexpr int get_prime(int n);
+constexpr int next_prime(int cap);
+
+constexpr int get_msb(int x)
 {
-	if (x == 0)
+	if (!x)
 		return 0;
 
 	int msb = 31;
 
-	while ((x & (1 << msb)) == 0)
+	while (!(x & (1 << msb)))
 		--msb;
 
 	return msb;
-};
+}
 
-int get_prime(int n)
+constexpr int get_prime(int n)
 {
 	int msb = get_msb(n);
 
 	return primes[msb <= 4 ? 0 : msb - 4];
-};
+}
 
-int next_prime(int cap)
+constexpr int next_prime(int cap)
 {
 	int size = sizeof(primes) / sizeof(primes[0]);
 
@@ -65,4 +69,4 @@ int next_prime(int cap)
 		}
 
 	return cap;
-};
+}

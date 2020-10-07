@@ -130,7 +130,7 @@ public:
     void pop_back();                                        
 
     void insert(int pos, const T &item);    
-    void erase(int erase_index);           
+    void erase(int erase_index);
     int index_of(const T &item);                       
 
     void set_size(int size);                
@@ -171,9 +171,7 @@ inline Vector<T>::Vector(int size)
         set_size(size);
     }
     else
-    {
         data = allocate(data, cap);
-    }
 }
 
 /*
@@ -209,9 +207,7 @@ template<typename T>
 inline const T Vector<T>::operator[](int index) const
 {
     if (index >= sz)
-    {
         throw std::out_of_range("Index was out of range");
-    }
 
     T *location = data + index;
 
@@ -230,9 +226,7 @@ template<typename T>
 inline T &Vector<T>::operator[](int index)
 {
     if (index >= sz)
-    {
         throw std::out_of_range("Index was out of range");
-    }
 
     T *location = data + index;
 
@@ -251,9 +245,7 @@ template<typename T>
 inline T &Vector<T>::at(int index)
 {
     if (index >= sz)
-    {
         throw std::out_of_range("Index was out of range");
-    }
 
     T *location = data + index;
 
@@ -272,9 +264,7 @@ template<typename T>
 inline const T Vector<T>::at(int index) const
 {
     if (index >= sz)
-    {
         throw std::out_of_range("Index was out of range");
-    }
 
     T *location = data + index;
 
@@ -415,15 +405,11 @@ template<typename T>
 inline void Vector<T>::insert(int pos, const T &item)
 {
     if (pos >= sz)
-    {
         push_back(item);
-    }
     else
     {
         if (sz >= cap)
-        {
             set_capacity(cap * 2);
-        }
 
         //shift elements right and insert at pos
         T *location = data + pos;
@@ -442,9 +428,7 @@ template<typename T>
 inline void Vector<T>::erase(int erase_index)
 {
     if (erase_index >= sz)
-    {
         pop_back();
-    }
     else
     {
         T *location = data + erase_index;
@@ -478,9 +462,7 @@ template<typename T>
 inline void Vector<T>::set_size(int size)
 {
     while (size >= cap)
-    {
         set_capacity(cap * 2);
-    }
 
     sz = size;
 }
@@ -496,15 +478,7 @@ inline void Vector<T>::set_capacity(int capacity)
     if (capacity > sz)
     {
         cap = capacity;
-
-        T *newData = nullptr;
-
-        newData = allocate(newData, cap);
-        copy_list(newData, data, sz);
-
-        delete[] data;
-
-        data = newData;
+        data = reallocate(data, sz, cap);
     }
 }
 
@@ -532,9 +506,7 @@ template<class U>
 inline std::ostream &operator<<(std::ostream &outs, const Vector<U> &_a)
 {
     for (int i = 0; i < _a.sz; ++i)
-    {
         outs << _a.at(i) << " ";
-    }
 
     return outs;
 }
@@ -551,16 +523,12 @@ template <typename T>
 inline bool Vector<T>::operator==(const Vector<T> &_a)
 {
     if (sz != _a.sz || cap != _a.cap)
-    {
         return false;
-    }
 
     for (int i = 0; i < sz; ++i)
     {
         if (at(i) != _a.at(i))
-        {
             return false;
-        }
     }
 
     return true;
@@ -578,16 +546,12 @@ template<typename T>
 inline bool Vector<T>::operator!=(const Vector<T> &_a)
 {
     if (sz != _a.sz || cap != _a.cap)
-    {
         return true;
-    }
 
     for (int i = 0; i < sz; ++i)
     {
         if (at(i) != _a.at(i))
-        {
             return true;
-        }
     }
 
     return false;

@@ -49,9 +49,10 @@ private:
 
 template<class T>
 inline chained_hash<T>::chained_hash(int n) :
-	total_records(0)
+	total_records(0),
+	_data(get_prime(n))
 {
-	_data.set_size(get_prime(n));
+
 }
 
 template<class T>

@@ -39,12 +39,12 @@ constexpr int next_prime(int cap);
 
 constexpr int get_msb(int x)
 {
-	if (x == 0)
+	if (!x)
 		return 0;
 
 	int msb = 31;
 
-	while ((x & (1 << msb)) == 0)
+	while (!(x & (1 << msb)))
 		--msb;
 
 	return msb;
