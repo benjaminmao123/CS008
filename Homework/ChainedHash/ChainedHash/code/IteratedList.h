@@ -18,14 +18,14 @@ template <class ITEM_TYPE>
 class List
 {
 public:
-    class Iterator 
+    class Iterator
     {
     public:
         //default ctor
-        Iterator() { _ptr = NULL; }     
+        Iterator() { _ptr = NULL; }
 
         //Point Iterator to where p is pointing to
-        Iterator(node<ITEM_TYPE> *p) : _ptr(p) { }
+        Iterator(node<ITEM_TYPE> *p) : _ptr(p) {}
 
         //dereference operator
         ITEM_TYPE &operator*()
@@ -54,7 +54,7 @@ public:
         {
             return _ptr != nullptr;
         }
-        
+
         //true if left != right
         bool operator!=(const Iterator &rhs) const
         {
@@ -83,7 +83,7 @@ public:
             return temp;
         }
 
-        Iterator& operator--()
+        Iterator &operator--()
         {
             _ptr = _ptr->prev;
 
@@ -100,12 +100,12 @@ public:
 
     private:
         //pointer being encapsulated
-        node<ITEM_TYPE> *_ptr;                                                  
+        node<ITEM_TYPE> *_ptr;
     };
 
     //CTOR with default args
     List();
-            
+
     //BIG 3:
     ~List();
     List(const List<ITEM_TYPE> &copyThis);
@@ -118,30 +118,30 @@ public:
     //insert before marker
     Iterator InsertBefore(const ITEM_TYPE &i, Iterator iMarker);
     //Insert i in a sorted manner
-    Iterator InsertSorted(const ITEM_TYPE &i);                                        
+    Iterator InsertSorted(const ITEM_TYPE &i);
     //delete node pointed to by marker
-    ITEM_TYPE Delete(Iterator iMarker);                        
+    ITEM_TYPE Delete(Iterator iMarker);
     void Print() const;
     //return Iterator to node [key]
-    Iterator Search(const ITEM_TYPE &key) const;           
+    Iterator Search(const ITEM_TYPE &key) const;
     //previous node to marker
-    Iterator Prev(Iterator iMarker);                                            
+    Iterator Prev(Iterator iMarker);
 
     //const version of the operator [ ]
-    const ITEM_TYPE &operator[](const int index) const;      
+    const ITEM_TYPE &operator[](const int index) const;
     //return item at position index
-    ITEM_TYPE &operator[](const int index);                                           
+    ITEM_TYPE &operator[](const int index);
     //Iterator to the head node
-    Iterator begin() const;                     
+    Iterator begin() const;
     //Iterator to NULL
-    Iterator end() const;                                       
+    Iterator end() const;
     //Iterator to the last node
-    Iterator LastNode() const;                                                  
+    Iterator LastNode() const;
 
     void Swap(List &l);
 
     //Note the template arg U
-    template <class U>                                                          
+    template <class U>
     friend std::ostream &operator<<(std::ostream &outs, const List<U> &l);
 
 private:
@@ -151,17 +151,15 @@ private:
 /*
     @summary: Default constructor, initializes head to nullptr.
 */
-template<class ITEM_TYPE>
-inline List<ITEM_TYPE>::List()
-    : _head_ptr(nullptr)
+template <class ITEM_TYPE>
+inline List<ITEM_TYPE>::List() : _head_ptr(nullptr)
 {
-
 }
 
 /*
     @summary: Destructor, clears list.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline List<ITEM_TYPE>::~List()
 {
     ClearList(_head_ptr);
@@ -172,11 +170,9 @@ inline List<ITEM_TYPE>::~List()
 
     @param <const List<ITEM_TYPE> &copyThis>: List to copy.
 */
-template<class ITEM_TYPE>
-inline List<ITEM_TYPE>::List(const List<ITEM_TYPE> &copyThis)
-    : _head_ptr(CopyList(copyThis._head_ptr))
+template <class ITEM_TYPE>
+inline List<ITEM_TYPE>::List(const List<ITEM_TYPE> &copyThis) : _head_ptr(CopyList(copyThis._head_ptr))
 {
-
 }
 
 /*
@@ -186,7 +182,7 @@ inline List<ITEM_TYPE>::List(const List<ITEM_TYPE> &copyThis)
 
     @return <List<ITEM_TYPE> &>: Reference to the newly copied list.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline List<ITEM_TYPE> &List<ITEM_TYPE>::operator=(const List &RHS)
 {
     List temp(RHS);
@@ -202,7 +198,7 @@ inline List<ITEM_TYPE> &List<ITEM_TYPE>::operator=(const List &RHS)
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to node that was inserted.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertHead(const ITEM_TYPE &i)
 {
     return Iterator(::InsertHead(_head_ptr, i));
@@ -216,7 +212,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertHead(const ITEM
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to node that was inserted.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITEM_TYPE &i, Iterator iMarker)
 {
     node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
@@ -232,7 +228,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITE
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to node that was inserted.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertBefore(const ITEM_TYPE &i, Iterator iMarker)
 {
     node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
@@ -247,7 +243,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertBefore(const IT
 
     @return <List<ITEM_TYPE>::Iterator>: Returns iterator to the newly inserted item.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertSorted(const ITEM_TYPE &i)
 {
     return Iterator(::InsertSorted(_head_ptr, i));
@@ -260,13 +256,11 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertSorted(const IT
 
     @return <ITEM_TYPE>: Returns the item of the deleted node.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline ITEM_TYPE List<ITEM_TYPE>::Delete(Iterator iMarker)
 {
     if (!iMarker)
-    {
         throw std::invalid_argument("iMarker contained nullptr");
-    }
 
     node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
     ITEM_TYPE item = DeleteNode(_head_ptr, mNode);
@@ -277,7 +271,7 @@ inline ITEM_TYPE List<ITEM_TYPE>::Delete(Iterator iMarker)
 /*
     @summary: Prints the contents of the list.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline void List<ITEM_TYPE>::Print() const
 {
     PrintList(_head_ptr);
@@ -290,7 +284,7 @@ inline void List<ITEM_TYPE>::Print() const
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to the node containing the item.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Search(const ITEM_TYPE &key) const
 {
     return Iterator(SearchList(_head_ptr, key));
@@ -303,7 +297,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Search(const ITEM_TYP
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to the previous node.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker)
 {
     auto prev = --iMarker;
@@ -318,7 +312,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker
 
     @return <const ITEM_TYPE &>: const Reference to the item.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index) const
 {
     return At(_head_ptr, index);
@@ -331,7 +325,7 @@ inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index) const
 
     @return <ITEM_TYPE &>: Reference to the item.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index)
 {
     return At(_head_ptr, index);
@@ -342,7 +336,7 @@ inline ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index)
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to the head node.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::begin() const
 {
     return Iterator(_head_ptr);
@@ -353,7 +347,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::begin() const
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to nullptr.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::end() const
 {
     return Iterator(nullptr);
@@ -364,7 +358,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::end() const
 
     @return <List<ITEM_TYPE>::Iterator>: Iterator to the tail node.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::LastNode() const
 {
     return Iterator(::LastNode(_head_ptr));
@@ -375,7 +369,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::LastNode() const
 
     @param <List &l>: List to swap with.
 */
-template<class ITEM_TYPE>
+template <class ITEM_TYPE>
 inline void List<ITEM_TYPE>::Swap(List &l)
 {
     std::swap(_head_ptr, l._head_ptr);
@@ -389,7 +383,7 @@ inline void List<ITEM_TYPE>::Swap(List &l)
 
     @return <std::ostream &>: Reference to the ostream object.
 */
-template<class U>
+template <class U>
 inline std::ostream &operator<<(std::ostream &outs, const List<U> &l)
 {
     PrintList(l._head_ptr);

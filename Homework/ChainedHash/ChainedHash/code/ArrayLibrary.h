@@ -10,34 +10,34 @@
 #pragma once
 
 template <typename T>
-T *add_entry(T *list, const T &new_entry, int &size, int &capacity);
+T* add_entry(T* list, const T& new_entry, int& size, int& capacity);
 
 template <typename T>
-T *remove_entry(T *list, const T &delete_me, int &size, int &capacity);
+T* remove_entry(T* list, const T& delete_me, int& size, int& capacity);
 
 template <typename T>
-T *allocate(T *list, int capacity);
+T* allocate(T* list, int capacity);
 
 template <typename T>
-T *reallocate(T *list, int size, int capacity);
+T* reallocate(T* list, int size, int capacity);
 
 template <typename T>
-void copy_list(T *dest, const T *src, int size);
+void copy_list(T* dest, const T* src, int size);
 
 template <typename T>
-T *search_entry(T *list, const T &find_me, int size, int &index);
+T* search_entry(T* list, const T& find_me, int size, int& index);
 
 template <typename T>
-void shift_left(T *start, const T *end);
+void shift_left(T* start, const T* end);
 
 template <typename T>
-void shift_right(T *start, const T *end);
+void shift_right(T* start, const T* end);
 
 template <typename T>
-void delete_array(T *&list);
+void delete_array(T*& list);
 
 template <typename T>
-void remove_last(T *&list, int &size, int &capacity);
+void remove_last(T*& list, int& size, int& capacity);
 
 /*
 	Appends an element to the given array.
@@ -50,7 +50,7 @@ void remove_last(T *&list, int &size, int &capacity);
 	@return <T*>: New array with appended element.
 */
 template<typename T>
-T *add_entry(T *list, const T &new_entry, int &size, int &capacity)
+T* add_entry(T* list, const T& new_entry, int& size, int& capacity)
 {
 	if (size >= capacity)
 	{
@@ -60,13 +60,13 @@ T *add_entry(T *list, const T &new_entry, int &size, int &capacity)
 		list = reallocate(list, size, capacity);
 
 		//append the element
-		T *listWalker = list + size++;
+		T* listWalker = list + size++;
 		*listWalker = new_entry;
 	}
 	else
 	{
 		//append the element
-		T *listWalker = list + size++;
+		T* listWalker = list + size++;
 		*listWalker = new_entry;
 	}
 
@@ -84,12 +84,12 @@ T *add_entry(T *list, const T &new_entry, int &size, int &capacity)
 	@return <T*>: A new array without the deleted element.
 */
 template<typename T>
-T *remove_entry(T *list, const T &delete_me, int &size, int &capacity)
+T* remove_entry(T* list, const T& delete_me, int& size, int& capacity)
 {
 	//find the element to delete
 	int index = 0;
-	T *deleteEntry = search_entry(list, delete_me, size, index);
-	T *newList = list;
+	T* deleteEntry = search_entry(list, delete_me, size, index);
+	T* newList = list;
 
 	//delete if the element exists
 	if (deleteEntry)
@@ -118,7 +118,7 @@ T *remove_entry(T *list, const T &delete_me, int &size, int &capacity)
 	@return <T*>: New array with a given capacity.
 */
 template<typename T>
-T *allocate(T *list, int capacity)
+T* allocate(T* list, int capacity)
 {
 	list = new T[capacity]();
 
@@ -126,12 +126,12 @@ T *allocate(T *list, int capacity)
 }
 
 template<typename T>
-T *reallocate(T *list, int size, int capacity)
+T* reallocate(T* list, int size, int capacity)
 {
 	//allocate memory for new list
 	T* newList = nullptr;
 	newList = allocate(newList, capacity);
-	T *listEnd = list + size;
+	T* listEnd = list + size;
 
 	//copy elements from the old list to the new list
 	copy_list(newList, list, size);
@@ -148,11 +148,11 @@ T *reallocate(T *list, int size, int capacity)
 	@param <int size>: Size of the source array.
 */
 template<typename T>
-void copy_list(T *dest, const T *src, int size)
+void copy_list(T* dest, const T* src, int size)
 {
-	T *destEnd = dest + size;
+	T* destEnd = dest + size;
 
-	for (T *i = dest; i != destEnd; ++i, ++src)
+	for (T* i = dest; i != destEnd; ++i, ++src)
 		*i = *src;
 }
 
@@ -168,12 +168,12 @@ void copy_list(T *dest, const T *src, int size)
 		to the first element found. Else, return nullptr.
 */
 template<typename T>
-T *search_entry(T *list, const T &find_me, int size, int &index)
+T* search_entry(T* list, const T& find_me, int size, int& index)
 {
-	T *listEnd = list + size;
+	T* listEnd = list + size;
 	index = 0;
 
-	for (T *i = list; i != listEnd; ++i)
+	for (T* i = list; i != listEnd; ++i)
 	{
 		if (*i == find_me)
 			return i;
@@ -193,11 +193,11 @@ T *search_entry(T *list, const T &find_me, int size, int &index)
 	@param <int size>: Size of the array.
 */
 template<typename T>
-void shift_left(T *start, const T *end)
+void shift_left(T* start, const T* end)
 {
-	T *next = start + 1;
+	T* next = start + 1;
 
-	for (T *curr = start; curr != end - 1; ++curr, ++next)
+	for (T* curr = start; curr != end - 1; ++curr, ++next)
 		*curr = *next;
 }
 
@@ -209,25 +209,25 @@ void shift_left(T *start, const T *end)
 	@param <int size>: Size of the array.
 */
 template<typename T>
-void shift_right(T *start, const T *end)
+void shift_right(T* start, const T* end)
 {
-	T *next = start + 1;
+	T* next = start + 1;
 
-	for (T *curr = start; curr != end - 1; --curr, --next)
+	for (T* curr = start; curr != end - 1; --curr, --next)
 		*next = *curr;
 }
 
 template<typename T>
-inline void delete_array(T *&list)
+inline void delete_array(T*& list)
 {
 	delete[] list;
 	list = nullptr;
 }
 
 template<typename T>
-inline void remove_last(T *&list, int &size, int &capacity)
+inline void remove_last(T*& list, int& size, int& capacity)
 {
-	T *newList = nullptr;
+	T* newList = nullptr;
 
 	//if the size drops below a certain amount decrease capacity
 	if (size <= capacity / 4)
