@@ -167,7 +167,12 @@ inline unsigned int Heap<T>::big_child_index(unsigned int i) const
 template <typename T>
 inline void Heap<T>::swap_with_parent(unsigned int i)
 {
-    std::swap(tree[i], tree[parent_index(i)]);
+    if (parent_index(i) < size())
+    {
+        T temp = tree[i];
+        tree[i] = tree[parent_index(i)];
+        tree[parent_index(i)] = temp;
+    }
 }
 
 template <typename T>
@@ -190,7 +195,7 @@ inline void Heap<T>::heapify_down(unsigned int i)
         return;
 
     if (big_child_index(i) != i)
-    {
+    {       
         unsigned int index = big_child_index(i);
         swap_with_parent(index);
         heapify_down(index);

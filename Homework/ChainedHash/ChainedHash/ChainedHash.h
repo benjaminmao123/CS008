@@ -7,6 +7,37 @@
 #include "IteratedList.h"
 #include "HTConstants.h"
 
+template <typename T>
+struct record
+{
+	record(int k = 0) :
+		_key(k)
+	{
+
+	}
+
+	record(int k, const T& v) :
+		_key(k), _value(v)
+	{
+
+	}
+
+	friend bool operator==(const record& left, const record& right)
+	{
+		return left._key == right._key;
+	}
+
+	friend std::ostream& operator<<(std::ostream& outs, const record& print_me)
+	{
+		outs << print_me._key << ", " << print_me._value;
+
+		return outs;
+	}
+
+	int _key;
+	T _value;
+};
+
 template <class T>
 class chained_hash
 {
@@ -15,15 +46,16 @@ public:
 	chained_hash();
 
 	//insert entry
-	bool insert(const T& entry);
+	bool insert(const record<T>& entry);
 	//remove this key
 	bool remove(int key);
 	//result <- record with key
-	bool find(int key, T& result) const;
+	bool find(int key, record<T>& result) const;
 	//is this key present in table?
 	bool is_present(int key) const;
 	//number of keys in the table
 	constexpr int size() const { return total_records; }
+	constexpr bool empty() const { return !total_records; }
 	//print entire table with keys, etc.
 	template<class TT>
 	friend std::ostream& operator<<(std::ostream& outs,
@@ -32,10 +64,10 @@ private:
 	//hash function
 	int hash(int key) const;
 	//find this key in the table
-	typename List<T>::Iterator find_node(int key) const;
+	typename List<record<T>>::Iterator find_node(int key) const;
 
 	//table chains
-	List<T> _data[TABLE_SIZE];
+	List<record<T>> _data[TABLE_SIZE];
 	//number of keys in the table
 	int total_records;
 	std::hash<int> hasher;
@@ -49,10 +81,14 @@ inline chained_hash<T>::chained_hash() :
 }
 
 template<class T>
-inline bool chained_hash<T>::insert(const T& entry)
+inline bool chained_hash<T>::insert(const record<T>& entry)
 {
+	if (is_present(entry._key))
+		return false;
+
 	int index = hash(entry._key);
-	_data[index].InsertHead(entry);
+	_data[index].InsertAfter(entry, _data[index].begin());
+	++total_records;
 
 	return true;
 }
@@ -67,12 +103,13 @@ inline bool chained_hash<T>::remove(int key)
 		return false;
 
 	_data[index].Delete(it);
+	--total_records;
 
 	return true;
 }
 
 template<class T>
-inline bool chained_hash<T>::find(int key, T& result) const
+inline bool chained_hash<T>::find(int key, record<T>& result) const
 {
 	int index = hash(key);
 	auto it = find_node(key);
@@ -88,7 +125,7 @@ inline bool chained_hash<T>::find(int key, T& result) const
 template<class T>
 inline bool chained_hash<T>::is_present(int key) const
 {
-	T res;
+	record<T> res;
 
 	return find(key, res);
 }
@@ -96,21 +133,22 @@ inline bool chained_hash<T>::is_present(int key) const
 template<class T>
 inline int chained_hash<T>::hash(int key) const
 {
-	return hasher(key);
+	return hasher(key) % TABLE_SIZE;
 }
 
 template<class T>
-inline typename List<T>::Iterator chained_hash<T>::find_node(int key) const
+inline typename List<record<T>>::Iterator chained_hash<T>::find_node(int key) const
 {
 	int index = hash(key);
 
-	return _data[index].Search(key);
+	return _data[index].Search(record<T>(key));
 }
 
 template<class TT>
 inline std::ostream& operator<<(std::ostream& outs, const chained_hash<TT>& h)
 {
-
+	for (int i = 0; i < TABLE_SIZE; ++i)
+		outs << h._data[i] << std::endl;
 
 	return outs;
 }

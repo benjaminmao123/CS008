@@ -145,6 +145,8 @@
     <ClInclude Include="HTConstants.h" />
     <ClInclude Include="IteratedList.h" />
     <ClInclude Include="LinkedListLibrary.h" />
+    <ClInclude Include="z_output.h" />
+    <ClInclude Include="z_work_report.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

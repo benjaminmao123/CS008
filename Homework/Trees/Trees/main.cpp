@@ -133,7 +133,7 @@ struct word
 	}
 };
 
-auto PrintWordFrequencies = [&](PQueue<info<std::string>>& pq, unsigned int n)
+auto PrintWordFrequencies = [](PQueue<info<std::string>>& pq, unsigned int n)
 {
 	std::cout << "Top " << n << " words: " << std::endl;
 
@@ -143,32 +143,53 @@ auto PrintWordFrequencies = [&](PQueue<info<std::string>>& pq, unsigned int n)
 
 int main()
 {
-	FTokenizer ftk("solitude.txt");
-	PQueue<info<std::string>> pq;
-	AVL<word<std::string>> avl;
-	int count = 0;
+	//FTokenizer ftk("solitude.txt");
+	//PQueue<info<std::string>> pq;
+	//AVL<word<std::string>> avl;
+	//int count = 0;
 
-	while (ftk.more())
+	//while (ftk.more())
+	//{
+	//	Token t;
+	//	ftk >> t;
+
+	//	if (t.type_string() == "ALPHA")
+	//	{
+	//		std::cout << std::setw(10) << count++
+	//				  << std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
+	//			      << t.type_string() << std::endl;
+
+	//		tree_node<word<std::string>>* fptr;
+	//		word<std::string> token(t.token_str(), 1);
+
+	//		if (!avl.search(token, fptr))
+	//			avl.insert(token);
+	//		else
+	//			++fptr->_item;
+	//	}
+	//}
+
+	//for (const auto& i : avl)
+	//	pq.insert(info<std::string>(i.item, i.freq));
+
+	//std::cout << std::endl;
+
+	//PrintWordFrequencies(pq, 100);
+
+	int* a = nullptr;
+	if (!a)
 	{
-		Token t;
-		ftk >> t;
+		a = new int[size() + 1];
+	}
+	int size = 0;
+	int* temp = new int[1];
 
-		if (t.type_string() == "ALPHA")
-		{
-			std::cout << std::setw(10) << count++
-					  << std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
-				      << t.type_string() << std::endl;
-
-			avl.insert(word<std::string>(t.token_str(), 1));
-		}
+	for (int i = 0; i < size; ++i)
+	{
+		temp[i] = a[i];
 	}
 
-	for (const auto& i : avl)
-		pq.insert(info<std::string>(i.item, i.freq));
 
-	std::cout << std::endl;
-
-	PrintWordFrequencies(pq, 100);
 
 	return 0;
 }
