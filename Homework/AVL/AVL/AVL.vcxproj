@@ -144,6 +144,9 @@
     <ClInclude Include="ASCIITreeBuilder.h" />
     <ClInclude Include="AVL.h" />
     <ClInclude Include="AVLLibrary.h" />
+    <ClInclude Include="IteratedList.h" />
+    <ClInclude Include="LinkedListLibrary.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="z_output.h" />
     <ClInclude Include="z_work_report.h" />
   </ItemGroup>

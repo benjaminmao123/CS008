@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{6A5378E9-92EE-4A40-8BBA-0E138D31C346}</ProjectGuid>
-    <RootNamespace>AirportSimulation</RootNamespace>
+    <ProjectGuid>{8EFD38DF-32F7-4F0B-83C4-5E6C638C3052}</ProjectGuid>
+    <RootNamespace>OpenHash</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -138,21 +138,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="code\Airport.cpp" />
-    <ClCompile Include="code\Averager.cpp" />
-    <ClCompile Include="code\BooleanSource.cpp" />
-    <ClCompile Include="code\main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="code\Airport.h" />
-    <ClInclude Include="code\Averager.h" />
-    <ClInclude Include="code\BooleanSource.h" />
-    <ClInclude Include="code\IteratedList.h" />
-    <ClInclude Include="code\LinkedListLibrary.h" />
-    <ClInclude Include="code\Node.h" />
-    <ClInclude Include="code\Queue.h" />
-    <ClInclude Include="code\z_output.h" />
-    <ClInclude Include="code\z_work_report.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

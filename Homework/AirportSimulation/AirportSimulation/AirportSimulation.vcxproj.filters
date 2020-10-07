@@ -15,45 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="code\Airport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Airport.cpp">
+    <ClCompile Include="code\Averager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Averager.cpp">
+    <ClCompile Include="code\BooleanSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BooleanSource.cpp">
+    <ClCompile Include="code\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IteratedList.h">
+    <ClInclude Include="code\Airport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedListLibrary.h">
+    <ClInclude Include="code\Averager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="code\BooleanSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Queue.h">
+    <ClInclude Include="code\IteratedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Airport.h">
+    <ClInclude Include="code\LinkedListLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Averager.h">
+    <ClInclude Include="code\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BooleanSource.h">
+    <ClInclude Include="code\Queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_output.h">
+    <ClInclude Include="code\z_output.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_work_report.h">
+    <ClInclude Include="code\z_work_report.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
