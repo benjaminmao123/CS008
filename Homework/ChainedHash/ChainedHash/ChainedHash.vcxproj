@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChainedHash.h" />
+    <ClInclude Include="HTConstants.h" />
     <ClInclude Include="IteratedList.h" />
     <ClInclude Include="LinkedListLibrary.h" />
   </ItemGroup>

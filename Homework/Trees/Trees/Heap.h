@@ -18,12 +18,11 @@ template <typename T>
 class Heap
 {
 public:
-    Heap();
+    Heap() { }
     Heap(const Vector<T>& tree);
 
     void insert(const T& insert_me);
     T pop();
-    T* search(const T& find_me);
 
     bool is_empty() const;
     unsigned int size() const;
@@ -49,11 +48,6 @@ private:
 };
 
 template <typename T>
-inline Heap<T>::Heap()
-{
-}
-
-template <typename T>
 inline Heap<T>::Heap(const Vector<T>& tree)
 {
     for (const auto& i : tree)
@@ -63,12 +57,7 @@ inline Heap<T>::Heap(const Vector<T>& tree)
 template <typename T>
 inline void Heap<T>::insert(const T& insert_me)
 {
-    T* item = search(insert_me);
-
-    if (item)
-        ++(*item);
-    else
-        tree.push_back(insert_me);
+    tree.push_back(insert_me);
 
     if (!tree.empty())
         heapify_up(size() - 1);
@@ -88,18 +77,6 @@ inline T Heap<T>::pop()
         heapify_down(0);
 
     return item;
-}
-
-template <typename T>
-inline T* Heap<T>::search(const T& find_me)
-{
-    for (int i = 0; i < tree.size(); ++i)
-    {
-        if (tree[i] == find_me)
-            return &tree[i];
-    }
-
-    return nullptr;
 }
 
 template <typename T>
