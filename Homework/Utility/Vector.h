@@ -162,8 +162,10 @@ private:
     @param <int size>: Size to set vector to.
 */
 template<typename T>
-inline Vector<T>::Vector(int size)
-    : sz(0), cap(1), data(nullptr)
+inline Vector<T>::Vector(int size) :
+    sz(0), 
+    cap(1), 
+    data(nullptr)
 {
     if (size)
     {
@@ -171,7 +173,7 @@ inline Vector<T>::Vector(int size)
         set_size(size);
     }
     else
-        data = allocate(data, cap);
+        data = ArrayLibrary::allocate(data, cap);
 }
 
 /*
@@ -180,10 +182,12 @@ inline Vector<T>::Vector(int size)
     @param <const Vector &other>: Other vector to copy.
 */
 template<typename T>
-inline Vector<T>::Vector(const Vector &other)
-    : sz(other.sz), cap(other.cap), data(allocate(data, cap))
+inline Vector<T>::Vector(const Vector &other) :
+    sz(other.sz), 
+    cap(other.cap), 
+    data(ArrayLibrary::allocate(data, cap))
 {
-    copy_list(data, other.data, sz);
+    ArrayLibrary::copy_list(data, other.data, sz);
 }
 
 /*
@@ -380,7 +384,7 @@ inline Vector<T> &Vector<T>::operator+=(const T &item)
 template<typename T>
 inline void Vector<T>::push_back(const T &item)
 {
-    data = add_entry(data, item, sz, cap);
+    data = ArrayLibrary::add_entry(data, item, sz, cap);
 }
 
 /*
@@ -396,7 +400,7 @@ inline T Vector<T>::pop_back()
 
     T item = at(sz - 1);
 
-    remove_last(data, sz, cap);
+    ArrayLibrary::remove_last(data, sz, cap);
 
     return item;
 }
@@ -420,7 +424,7 @@ inline void Vector<T>::insert(int pos, const T &item)
 
         //shift elements right and insert at pos
         T *location = data + pos;
-        shift_right((data + sz++) - 1, location);
+        ArrayLibrary::shift_right((data + sz++) - 1, location);
         *location = item;
     }
 }
@@ -439,7 +443,7 @@ inline void Vector<T>::erase(int erase_index)
     else
     {
         T *location = data + erase_index;
-        shift_left(location, data + sz--);
+        ArrayLibrary::shift_left(location, data + sz--);
     }
 }
 
@@ -455,7 +459,7 @@ inline int Vector<T>::index_of(const T &item)
 {
     int index = -1;
 
-    search_entry(data, item, sz, index);
+    ArrayLibrary::search_entry(data, item, sz, index);
 
     return index;
 }
@@ -485,7 +489,7 @@ inline void Vector<T>::set_capacity(int capacity)
     if (capacity > sz)
     {
         cap = capacity;
-        data = reallocate(data, sz, cap);
+        data = ArrayLibrary::reallocate(data, sz, cap);
     }
 }
 
@@ -599,5 +603,6 @@ inline void Vector<T>::swap(Vector &v)
 template<typename T>
 inline void Vector<T>::clear()
 {
-    while (sz) { pop_back(); }
+    while (sz)
+        pop_back();
 }

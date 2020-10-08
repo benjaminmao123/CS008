@@ -24,8 +24,7 @@ int main()
 void Test()
 {
 	char input = '\0';
-	const int a[] = { 22, 30, 33, 43, 45, 56, 62, 77, 82, 85, 92, 94, 95 };
-	AVL<int> avl(a, sizeof(a) / sizeof(a[0]));
+	AVL<int> avl;
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 1000);
@@ -43,7 +42,6 @@ void Test()
 			std::cout << "Insert: " << item << std::endl;
 
 			avl.insert(item);
-			avl.is_valid();
 			break;
 		}
 		case 'i':
@@ -54,7 +52,6 @@ void Test()
 			std::cout << std::endl;
 
 			avl.insert(item);
-			avl.is_valid();
 			break;
 		}
 		case 'c':
@@ -82,7 +79,6 @@ void Test()
 			std::cout << std::endl;
 
 			avl.erase(item);
-			avl.is_valid();
 			break;
 		}
 		case 'x':

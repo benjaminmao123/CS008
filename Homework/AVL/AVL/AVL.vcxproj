@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\ASCIITreeBuilder.h" />
+    <ClInclude Include="code\AVL.h" />
+    <ClInclude Include="code\AVLLibrary.h" />
+    <ClInclude Include="code\IteratedList.h" />
+    <ClInclude Include="code\LinkedListLibrary.h" />
+    <ClInclude Include="code\Stack.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{5ECA27BF-201B-4970-9B3C-8DEC1E3BE667}</ProjectGuid>
@@ -137,19 +150,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ASCIITreeBuilder.h" />
-    <ClInclude Include="AVL.h" />
-    <ClInclude Include="AVLLibrary.h" />
-    <ClInclude Include="IteratedList.h" />
-    <ClInclude Include="LinkedListLibrary.h" />
-    <ClInclude Include="Stack.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -8,9 +8,10 @@
 
 #pragma once
 
+#define MAX_BUFFER 2048
+
 #define MAX_ROWS 8
 #define MAX_COLUMNS 128
-#define MAX_BUFFER 2048
 #define START 0
 #define ALPHA 1
 #define DIGIT 2

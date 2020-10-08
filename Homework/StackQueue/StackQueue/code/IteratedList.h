@@ -25,7 +25,7 @@ public:
         Iterator() { _ptr = NULL; }     
 
         //Point Iterator to where p is pointing to
-        Iterator(node<ITEM_TYPE> *p) : _ptr(p) { }
+        Iterator(::node<ITEM_TYPE> *p) : _ptr(p) { }
 
         //dereference operator
         ITEM_TYPE &operator*()
@@ -85,7 +85,7 @@ public:
 
     private:
         //pointer being encapsulated
-        node<ITEM_TYPE> *_ptr;                                                  
+        ::node<ITEM_TYPE> *_ptr;
     };
 
     //CTOR with default args
@@ -113,9 +113,9 @@ public:
     Iterator Prev(Iterator iMarker);                                            
 
     //const version of the operator [ ]
-    const ITEM_TYPE &operator[](const int index) const;      
+    const ITEM_TYPE &operator[](int index) const;      
     //return item at position index
-    ITEM_TYPE &operator[](const int index);                                           
+    ITEM_TYPE &operator[](int index);                                           
     //Iterator to the head node
     Iterator begin() const;                     
     //Iterator to NULL
@@ -130,7 +130,7 @@ public:
     friend std::ostream &operator<<(std::ostream &outs, const List<U> &l);
 
 private:
-    node<ITEM_TYPE> *_head_ptr;
+    ::node<ITEM_TYPE> *_head_ptr;
 };
 
 /*
@@ -204,7 +204,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertHead(const ITEM
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITEM_TYPE &i, Iterator iMarker)
 {
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    ::node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
 
     return Iterator(::InsertAfter(_head_ptr, mNode, i));
 }
@@ -220,7 +220,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITE
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertBefore(const ITEM_TYPE &i, Iterator iMarker)
 {
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    ::node<ITEM_TYPE> *mNode = ::SearchList(_head_ptr, *iMarker);
 
     return Iterator(::InsertBefore(_head_ptr, mNode, i));
 }
@@ -249,11 +249,9 @@ template<class ITEM_TYPE>
 inline ITEM_TYPE List<ITEM_TYPE>::Delete(Iterator iMarker)
 {
     if (!iMarker)
-    {
         throw std::invalid_argument("iMarker contained nullptr");
-    }
 
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    ::node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
     ITEM_TYPE item = DeleteNode(_head_ptr, mNode);
 
     return item;
@@ -278,7 +276,7 @@ inline void List<ITEM_TYPE>::Print() const
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Search(const ITEM_TYPE &key) const
 {
-    return Iterator(SearchList(_head_ptr, key));
+    return Iterator(::SearchList(_head_ptr, key));
 }
 
 /*
@@ -292,14 +290,12 @@ template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker)
 {
     auto prev = begin();
-    node<ITEM_TYPE> *mNode = nullptr;
+    ::node<ITEM_TYPE> *mNode = nullptr;
 
     for (auto curr = begin(); curr != end(); ++curr)
     {
         if (curr == iMarker)
-        {
             return prev;
-        }
 
         prev = curr;
     }
@@ -315,7 +311,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker
     @return <const ITEM_TYPE &>: const Reference to the item.
 */
 template<class ITEM_TYPE>
-inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index) const
+inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](int index) const
 {
     return At(_head_ptr, index);
 }
@@ -328,7 +324,7 @@ inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index) const
     @return <ITEM_TYPE &>: Reference to the item.
 */
 template<class ITEM_TYPE>
-inline ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index)
+inline ITEM_TYPE &List<ITEM_TYPE>::operator[](int index)
 {
     return At(_head_ptr, index);
 }
@@ -389,9 +385,7 @@ template<class U>
 inline std::ostream &operator<<(std::ostream &outs, const List<U> &l)
 {
     for (auto i : l)
-    {
         outs << i << " ";
-    }
 
     return outs;
 }

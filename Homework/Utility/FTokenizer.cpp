@@ -17,9 +17,9 @@ FTokenizer::FTokenizer(const char* fname) :
 		std::cout << "Failed to open file." << std::endl;
 }
 
-::Token FTokenizer::next_token()
+SMLibrary::Token FTokenizer::next_token()
 {
-	::Token t;
+	SMLibrary::Token t;
 	_stk >> t;
 
 	return t;
@@ -44,7 +44,7 @@ bool FTokenizer::get_new_block()
 	return true;
 }
 
-FTokenizer& operator>>(FTokenizer& f, ::Token& t)
+FTokenizer& operator>>(FTokenizer& f, SMLibrary::Token& t)
 {
 	t = f.next_token();
 

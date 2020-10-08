@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\IteratedList.h" />
+    <ClInclude Include="code\LinkedListLibrary.h" />
+    <ClInclude Include="code\Queue.h" />
+    <ClInclude Include="code\QueueTest.h" />
+    <ClInclude Include="code\Stack.h" />
+    <ClInclude Include="code\StackTest.h" />
+    <ClInclude Include="code\z_output_queue.h" />
+    <ClInclude Include="code\z_output_stack.h" />
+    <ClInclude Include="code\z_work_report_queue.h" />
+    <ClInclude Include="code\z_work_report_stack.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\main.cpp" />
+    <ClCompile Include="code\QueueTest.cpp" />
+    <ClCompile Include="code\StackTest.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{7091056B-6859-4007-AE07-F64060386A00}</ProjectGuid>
@@ -137,23 +154,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="IteratedList.h" />
-    <ClInclude Include="LinkedListLibrary.h" />
-    <ClInclude Include="Queue.h" />
-    <ClInclude Include="QueueTest.h" />
-    <ClInclude Include="Stack.h" />
-    <ClInclude Include="StackTest.h" />
-    <ClInclude Include="z_output_queue.h" />
-    <ClInclude Include="z_output_stack.h" />
-    <ClInclude Include="z_work_report_queue.h" />
-    <ClInclude Include="z_work_report_stack.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="QueueTest.cpp" />
-    <ClCompile Include="StackTest.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

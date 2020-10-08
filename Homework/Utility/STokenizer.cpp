@@ -45,48 +45,48 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS])
 {
 	char punc[] = ".,\'?!\"-;:/@()[]*";
 
-	init_table(_table);
+	SMLibrary::init_table(_table);
 
 	//init start
-	mark_cells(START, _table, 'a', 'z', ALPHA);
-	mark_cells(START, _table, 'A', 'Z', ALPHA);
+	SMLibrary::mark_cells(START, _table, 'a', 'z', ALPHA);
+	SMLibrary::mark_cells(START, _table, 'A', 'Z', ALPHA);
 
-	mark_cells(START, _table, '0', '9', DIGIT);
+	SMLibrary::mark_cells(START, _table, '0', '9', DIGIT);
 
-	mark_cells(START, _table, punc, PUNCT);
+	SMLibrary::mark_cells(START, _table, punc, PUNCT);
 
-	mark_cell(START, _table, ' ', SPACE);
+	SMLibrary::mark_cell(START, _table, ' ', SPACE);
 
 	for (int i = 0; i < MAX_COLUMNS; ++i)
 		if (_table[START][i] == -1)
 			_table[START][i] = UNKNOWN;
 
 	//init alpha
-	mark_cells(ALPHA, _table, 'a', 'z', ALPHA);
-	mark_cells(ALPHA, _table, 'A', 'Z', ALPHA);
+	SMLibrary::mark_cells(ALPHA, _table, 'a', 'z', ALPHA);
+	SMLibrary::mark_cells(ALPHA, _table, 'A', 'Z', ALPHA);
 
 	//init digit
-	mark_cells(DIGIT, _table, '0', '9', DIGIT);
-	mark_cell(DIGIT, _table, '.', DECIMAL);
+	SMLibrary::mark_cells(DIGIT, _table, '0', '9', DIGIT);
+	SMLibrary::mark_cell(DIGIT, _table, '.', DECIMAL);
 
 	//init sub_digit
-	mark_cells(DECIMAL, _table, '0', '9', DECIMAL_SUCCESS);
-	mark_cells(DECIMAL_SUCCESS, _table, '0', '9', DECIMAL_SUCCESS);
+	SMLibrary::mark_cells(DECIMAL, _table, '0', '9', DECIMAL_SUCCESS);
+	SMLibrary::mark_cells(DECIMAL_SUCCESS, _table, '0', '9', DECIMAL_SUCCESS);
 
 	//init punct
-	mark_cells(PUNCT, _table, punc, PUNCT);
+	SMLibrary::mark_cells(PUNCT, _table, punc, PUNCT);
 
 	//init space
-	mark_cell(SPACE, _table, ' ', SPACE);
+	SMLibrary::mark_cell(SPACE, _table, ' ', SPACE);
 
-	mark_success(_table, 0);
-	mark_success(_table, 1);
-	mark_success(_table, 2);
-	mark_success(_table, 3);
-	mark_success(_table, 4);
-	mark_fail(_table, 5);
-	mark_success(_table, 6);
-	mark_success(_table, 7);
+	SMLibrary::mark_success(_table, 0);
+	SMLibrary::mark_success(_table, 1);
+	SMLibrary::mark_success(_table, 2);
+	SMLibrary::mark_success(_table, 3);
+	SMLibrary::mark_success(_table, 4);
+	SMLibrary::mark_fail(_table, 5);
+	SMLibrary::mark_success(_table, 6);
+	SMLibrary::mark_success(_table, 7);
 }
 
 bool STokenizer::get_token(int &start_state, std::string &token)
@@ -119,18 +119,18 @@ bool STokenizer::get_token(int &start_state, std::string &token)
 
 	while (_buffer[tokenBufferPos] != '\0' && endState != -1)
 	{
-		if (!is_success(_table, endState))
+		if (!SMLibrary::is_success(_table, endState))
 		{
 			increment();
 
 			if (!(ch != '\0' &&
 				  endState != -1 &&
-				  is_success(_table, endState)))
+				  SMLibrary::is_success(_table, endState)))
 				return true;
 
 			while (ch != '\0' &&
 				   endState != -1 &&
-				   is_success(_table, endState))
+				   SMLibrary::is_success(_table, endState))
 				increment();
 
 			if (endState == -1 || ch == '\0')
@@ -156,14 +156,14 @@ bool STokenizer::get_token(int &start_state, std::string &token)
 	return true;
 }
 
-STokenizer &operator>>(STokenizer &s, Token &t)
+STokenizer &operator>>(STokenizer &s, SMLibrary::Token &t)
 {
 	std::string tokenStr;
 	int state = 0;
 
 	s.get_token(state, tokenStr);
 
-	t = Token(tokenStr, state);
+	t = SMLibrary::Token(tokenStr, state);
 
 	return s;
 }

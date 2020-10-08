@@ -12,14 +12,14 @@
 #include <algorithm>
 
 template <typename T>
-struct tree_node 
+struct tree_node
 {
     T _item;
     tree_node* _left;
     tree_node* _right;
     int _height;
 
-    int balance_factor() 
+    int balance_factor()
     {
         //root->balance_factor() factor = height of the right subtree 
         //                        - the height of the left subtree
@@ -31,7 +31,7 @@ struct tree_node
             return _left->_height + 1;
         else if (_right)
             return -1 - _right->_height;
-        
+
         return 0;
     }
 
@@ -49,7 +49,7 @@ struct tree_node
         return 0;
     }
 
-    int update_height() 
+    int update_height()
     {
         //set the _height member variable (call height();)
         _height = height();
@@ -58,14 +58,14 @@ struct tree_node
     }
 
     tree_node(T item = T(), tree_node* left = NULL,
-              tree_node* right = NULL) :
+                tree_node* right = NULL) :
         _item(item), _left(left), _right(right), _height(0)
     {
 
     }
 
     friend std::ostream& operator<<(std::ostream& outs,
-                                    const tree_node<T>& t_node) 
+                                    const tree_node<T>& t_node)
     {
         outs << "|" << t_node._item << "|";
 
@@ -80,49 +80,49 @@ template <typename T>
 tree_node<T>* tree_search(tree_node<T>* root, const T& target);
 template <typename T>
 bool tree_search(tree_node<T>* root, const T& target,
-                 tree_node<T>*& found_ptr);
+                    tree_node<T>*& found_ptr);
 
 template <typename T>
 void tree_print(tree_node<T>* root, int level = 0,
                 std::ostream& outs = std::cout);
 //prints detailes info about each root
-template <typename T>       
+template <typename T>
 void tree_print_debug(tree_node<T>* root, int level = 0,
-                      std::ostream& outs = std::cout);
+                        std::ostream& outs = std::cout);
 template <typename T>
 void tree_print_inorder(tree_node<T>* root,
                         std::ostream& outs = std::cout);
 template <typename T>
 void tree_print_preorder(tree_node<T>* root,
-                         std::ostream& outs = std::cout);
+                            std::ostream& outs = std::cout);
 template <typename T>
 void tree_print_postorder(tree_node<T>* root,
-                          std::ostream& outs = std::cout);
+                            std::ostream& outs = std::cout);
 
 //clear the tree
-template <typename T>       
+template <typename T>
 void tree_clear(tree_node<T>*& root);
 //erase target from the tree
-template <typename T>       
+template <typename T>
 bool tree_erase(tree_node<T>*& root, const T& target);
 
 //erase rightmost root from the tree
 // store the item in max_value
-template <typename T>       
-void tree_remove_max(tree_node<T>*& root, T& max_value); 
+template <typename T>
+void tree_remove_max(tree_node<T>*& root, T& max_value);
 template <typename T>
 void tree_remove_min(tree_node<T>*& root, T& min_value);
 
 //return copy of tree pointed to by root
-template <typename T>       
+template <typename T>
 tree_node<T>* tree_copy(tree_node<T>* root);
 
 //Add tree src to dest
-template <typename T>       
+template <typename T>
 void tree_add(tree_node<T>*& dest, const tree_node<T>* src);
 
 //sorted array -> tree
-template <typename T>       
+template <typename T>
 tree_node<T>* tree_from_sorted_list(const T* a, int size);
 template <typename T>
 tree_node<T>* tree_from_sorted_list(const T* a, int l, int r);
@@ -134,20 +134,20 @@ template <typename T>
 tree_node<T>* rotate_left(tree_node<T>*& root);
 //decide which rotate is needed based on root->balance_factor() factor
 template <typename T>
-tree_node<T>* rotate(tree_node<T>*& root); 
+tree_node<T>* rotate(tree_node<T>*& root);
 
 template <typename T>
 bool is_valid(tree_node<T>* root)
 {
-    if (root) 
+    if (root)
     {
         is_valid(root->_left);
 
-        if (root->balance_factor() > 1 || root->balance_factor() < -1) 
+        if (root->balance_factor() > 1 || root->balance_factor() < -1)
             std::cout << false << " ";
         else
             std::cout << true << " ";
-        
+
         is_valid(root->_right);
     }
 
@@ -237,7 +237,7 @@ inline void tree_print_debug(tree_node<T>* root, int level, std::ostream& outs)
     for (int i = 0; i < level; ++i)
         outs << " ";
     outs << "[H: " << root->_height <<
-        ", B: " << root->balance_factor() << "]" << 
+        ", B: " << root->balance_factor() << "]" <<
         "{" << root->_item << "}" << std::endl;
 
     if (root->_left)
@@ -440,7 +440,7 @@ inline tree_node<T>* rotate_left(tree_node<T>*& root)
 {
     tree_node<T>* middleNode = root->_right;
     root->_right = middleNode->_left;
-    middleNode->_left = root;        
+    middleNode->_left = root;
 
     root->update_height();
     middleNode->update_height();

@@ -6,10 +6,10 @@
  * Notes: None.
  */
 
-#include "FTokenizer.h"
-
 #include <iostream>
 #include <iomanip>
+
+#include "FTokenizer.h"
 
 void test_f_tokenize_simple();
 

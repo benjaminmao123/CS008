@@ -25,7 +25,7 @@ public:
         Iterator() { _ptr = NULL; }     
 
         //Point Iterator to where p is pointing to
-        Iterator(node<ITEM_TYPE> *p) : _ptr(p) { }
+        Iterator(LinkedListLibrary::node<ITEM_TYPE> *p) : _ptr(p) { }
 
         //dereference operator
         ITEM_TYPE &operator*()
@@ -85,7 +85,7 @@ public:
 
     private:
         //pointer being encapsulated
-        node<ITEM_TYPE> *_ptr;                                                  
+        LinkedListLibrary::node<ITEM_TYPE> *_ptr;
     };
 
     //CTOR with default args
@@ -113,9 +113,9 @@ public:
     Iterator Prev(Iterator iMarker);                                            
 
     //const version of the operator [ ]
-    const ITEM_TYPE &operator[](const int index) const;      
+    const ITEM_TYPE &operator[](int index) const;      
     //return item at position index
-    ITEM_TYPE &operator[](const int index);                                           
+    ITEM_TYPE &operator[](int index);                                           
     //Iterator to the head node
     Iterator begin() const;                     
     //Iterator to NULL
@@ -130,7 +130,7 @@ public:
     friend std::ostream &operator<<(std::ostream &outs, const List<U> &l);
 
 private:
-    node<ITEM_TYPE> *_head_ptr;
+    LinkedListLibrary::node<ITEM_TYPE> *_head_ptr;
 };
 
 /*
@@ -149,7 +149,7 @@ inline List<ITEM_TYPE>::List()
 template<class ITEM_TYPE>
 inline List<ITEM_TYPE>::~List()
 {
-    ClearList(_head_ptr);
+    LinkedListLibrary::ClearList(_head_ptr);
 }
 
 /*
@@ -159,7 +159,7 @@ inline List<ITEM_TYPE>::~List()
 */
 template<class ITEM_TYPE>
 inline List<ITEM_TYPE>::List(const List<ITEM_TYPE> &copyThis)
-    : _head_ptr(CopyList(copyThis._head_ptr))
+    : _head_ptr(LinkedListLibrary::CopyList(copyThis._head_ptr))
 {
 
 }
@@ -190,7 +190,7 @@ inline List<ITEM_TYPE> &List<ITEM_TYPE>::operator=(const List &RHS)
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertHead(const ITEM_TYPE &i)
 {
-    return Iterator(::InsertHead(_head_ptr, i));
+    return Iterator(LinkedListLibrary::InsertHead(_head_ptr, i));
 }
 
 /*
@@ -204,9 +204,9 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertHead(const ITEM
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITEM_TYPE &i, Iterator iMarker)
 {
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    LinkedListLibrary::node<ITEM_TYPE> *mNode = LinkedListLibrary::SearchList(_head_ptr, *iMarker);
 
-    return Iterator(::InsertAfter(_head_ptr, mNode, i));
+    return Iterator(LinkedListLibrary::InsertAfter(_head_ptr, mNode, i));
 }
 
 /*
@@ -220,9 +220,9 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertAfter(const ITE
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertBefore(const ITEM_TYPE &i, Iterator iMarker)
 {
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
+    LinkedListLibrary::node<ITEM_TYPE> *mNode = LinkedListLibrary::SearchList(_head_ptr, *iMarker);
 
-    return Iterator(::InsertBefore(_head_ptr, mNode, i));
+    return Iterator(LinkedListLibrary::InsertBefore(_head_ptr, mNode, i));
 }
 
 /*
@@ -235,7 +235,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertBefore(const IT
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::InsertSorted(const ITEM_TYPE &i)
 {
-    return Iterator(::InsertSorted(_head_ptr, i));
+    return Iterator(LinkedListLibrary::InsertSorted(_head_ptr, i));
 }
 
 /*
@@ -249,12 +249,10 @@ template<class ITEM_TYPE>
 inline ITEM_TYPE List<ITEM_TYPE>::Delete(Iterator iMarker)
 {
     if (!iMarker)
-    {
         throw std::invalid_argument("iMarker contained nullptr");
-    }
 
-    node<ITEM_TYPE> *mNode = SearchList(_head_ptr, *iMarker);
-    ITEM_TYPE item = DeleteNode(_head_ptr, mNode);
+    LinkedListLibrary::node<ITEM_TYPE> *mNode = LinkedListLibrary::SearchList(_head_ptr, *iMarker);
+    ITEM_TYPE item = LinkedListLibrary::DeleteNode(_head_ptr, mNode);
 
     return item;
 }
@@ -265,7 +263,7 @@ inline ITEM_TYPE List<ITEM_TYPE>::Delete(Iterator iMarker)
 template<class ITEM_TYPE>
 inline void List<ITEM_TYPE>::Print() const
 {
-    PrintList(_head_ptr);
+    LinkedListLibrary::PrintList(_head_ptr);
 }
 
 /*
@@ -278,7 +276,7 @@ inline void List<ITEM_TYPE>::Print() const
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Search(const ITEM_TYPE &key) const
 {
-    return Iterator(SearchList(_head_ptr, key));
+    return Iterator(LinkedListLibrary::SearchList(_head_ptr, key));
 }
 
 /*
@@ -292,14 +290,12 @@ template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker)
 {
     auto prev = begin();
-    node<ITEM_TYPE> *mNode = nullptr;
+    LinkedListLibrary::node<ITEM_TYPE> *mNode = nullptr;
 
     for (auto curr = begin(); curr != end(); ++curr)
     {
         if (curr == iMarker)
-        {
             return prev;
-        }
 
         prev = curr;
     }
@@ -315,9 +311,9 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Prev(Iterator iMarker
     @return <const ITEM_TYPE &>: const Reference to the item.
 */
 template<class ITEM_TYPE>
-inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index) const
+inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](int index) const
 {
-    return At(_head_ptr, index);
+    return LinkedListLibrary::At(_head_ptr, index);
 }
 
 /*
@@ -328,9 +324,9 @@ inline const ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index) const
     @return <ITEM_TYPE &>: Reference to the item.
 */
 template<class ITEM_TYPE>
-inline ITEM_TYPE &List<ITEM_TYPE>::operator[](const int index)
+inline ITEM_TYPE &List<ITEM_TYPE>::operator[](int index)
 {
-    return At(_head_ptr, index);
+    return LinkedListLibrary::At(_head_ptr, index);
 }
 
 /*
@@ -363,7 +359,7 @@ inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::end() const
 template<class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::LastNode() const
 {
-    return Iterator(::LastNode(_head_ptr));
+    return Iterator(LinkedListLibrary::LastNode(_head_ptr));
 }
 
 /*
@@ -389,9 +385,7 @@ template<class U>
 inline std::ostream &operator<<(std::ostream &outs, const List<U> &l)
 {
     for (auto i : l)
-    {
         outs << i << " ";
-    }
 
     return outs;
 }

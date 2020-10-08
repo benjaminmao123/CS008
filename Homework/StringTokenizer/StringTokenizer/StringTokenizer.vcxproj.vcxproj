@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\main.cpp" />
+    <ClCompile Include="code\STokenizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\SMConstants.h" />
+    <ClInclude Include="code\SMLibrary.h" />
+    <ClInclude Include="code\STokenizer.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{55D4BF6B-2E2E-46E9-92ED-F4F061AA0D84}</ProjectGuid>
@@ -137,19 +148,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="SMConstants.h" />
-    <ClInclude Include="SMLibrary.h" />
-    <ClInclude Include="STokenizer.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="STokenizer.cpp" />
-    <ClCompile Include="Token.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

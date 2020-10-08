@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\FTokenizer.cpp" />
+    <ClCompile Include="code\main.cpp" />
+    <ClCompile Include="code\STokenizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\FTokenizer.h" />
+    <ClInclude Include="code\SMConstants.h" />
+    <ClInclude Include="code\SMLibrary.h" />
+    <ClInclude Include="code\STokenizer.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
+    <ClInclude Include="code\FTConstants.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="code\solitude.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{26F67A30-3A01-4D53-8670-75BC0BEC4EB9}</ProjectGuid>
@@ -137,21 +154,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="FTokenizer.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="STokenizer.cpp" />
-    <ClCompile Include="Token.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FTokenizer.h" />
-    <ClInclude Include="SMConstants.h" />
-    <ClInclude Include="SMLibrary.h" />
-    <ClInclude Include="STokenizer.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -23,7 +23,7 @@ public:
     public:
         Iterator() { }
 
-        Iterator(tree_node<T>* ptr) :
+        Iterator(AVLLibrary::tree_node<T>* ptr) :
             curr(ptr)
         {
             NextInorder();
@@ -106,8 +106,8 @@ public:
                 curr = nullptr;
         }
 
-        tree_node<T>* curr;
-        Stack<tree_node<T>*> stack;
+        AVLLibrary::tree_node<T>* curr;
+        Stack<AVLLibrary::tree_node<T>*> stack;
     };
 
     AVL();
@@ -125,7 +125,7 @@ public:
 
     void insert(const T& insert_me);
     void erase(const T& target);
-    bool search(const T& target, tree_node<T>*& found_ptr);
+    bool search(const T& target, AVLLibrary::tree_node<T>*& found_ptr);
     void swap(AVL<T>& other);
     void clear();
     bool is_valid() const;
@@ -135,7 +135,7 @@ public:
     AVL<T>& operator+=(const AVL<T>& rhs);
 
 private:
-    tree_node<T>* root;
+    AVLLibrary::tree_node<T>* root;
 };
 
 template<typename T>
@@ -147,14 +147,14 @@ inline AVL<T>::AVL() :
 
 template<typename T>
 inline AVL<T>::AVL(const T* sorted_list, int size) :
-    root(tree_from_sorted_list(sorted_list, size))
+    root(AVLLibrary::tree_from_sorted_list(sorted_list, size))
 {
 
 }
 
 template<typename T>
 inline AVL<T>::AVL(const AVL<T>& copy_me) :
-    root(tree_copy(copy_me.root))
+    root(AVLLibrary::tree_copy(copy_me.root))
 {
 
 }
@@ -171,7 +171,7 @@ inline AVL<T>& AVL<T>::operator=(const AVL<T>& rhs)
 template<typename T>
 inline AVL<T>::~AVL()
 {
-    tree_clear(root);
+    AVLLibrary::tree_clear(root);
 }
 
 template<typename T>
@@ -189,13 +189,13 @@ inline typename AVL<T>::Iterator AVL<T>::end() const
 template<typename T>
 inline void AVL<T>::insert(const T& insert_me)
 {
-    tree_insert(root, insert_me);
+    AVLLibrary::tree_insert(root, insert_me);
 }
 
 template<typename T>
 inline void AVL<T>::erase(const T& target)
 {
-    if (!tree_erase(root, target))
+    if (!AVLLibrary::tree_erase(root, target))
     {
         std::cout << "Item does not exist." << std::endl;
 
@@ -204,9 +204,9 @@ inline void AVL<T>::erase(const T& target)
 }
 
 template<typename T>
-inline bool AVL<T>::search(const T& target, tree_node<T>*& found_ptr)
+inline bool AVL<T>::search(const T& target, AVLLibrary::tree_node<T>*& found_ptr)
 {
-    return tree_search(root, target, found_ptr);
+    return AVLLibrary::tree_search(root, target, found_ptr);
 }
 
 template<typename T>
@@ -218,19 +218,19 @@ inline void AVL<T>::swap(AVL<T>& other)
 template<typename T>
 inline void AVL<T>::clear()
 {
-    tree_clear(root);
+    AVLLibrary::tree_clear(root);
 }
 
 template<typename T>
 inline bool AVL<T>::is_valid() const
 {
-    return ::is_valid(root);
+    return AVLLibrary::is_valid(root);
 }
 
 template<typename T>
 inline AVL<T>& AVL<T>::operator+=(const AVL<T>& rhs)
 {
-    tree_add(root, rhs.root);
+    AVLLibrary::tree_add(root, rhs.root);
 
     return *this;
 }
@@ -238,7 +238,7 @@ inline AVL<T>& AVL<T>::operator+=(const AVL<T>& rhs)
 template<typename U>
 inline std::ostream& operator<<(std::ostream& outs, const AVL<U>& tree)
 {
-    tree_print(tree.root, 0, outs);
+    AVLLibrary::tree_print(tree.root, 0, outs);
 
     return outs;
 }

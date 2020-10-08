@@ -8,10 +8,80 @@
 
 #pragma once
 
-#include "SMConstants.h"
-
 #include <string>
 #include <iostream>
+
+#include "SMConstants.h"
+
+class Token
+{
+public:
+	Token() :
+		_type(0)
+	{
+
+	}
+
+	Token(const std::string& str, int type) :
+		_token(str),
+		_type(type)
+	{
+
+	}
+
+	int type() const
+	{
+		return _type;
+	}
+
+	std::string type_string() const
+	{
+		std::string res;
+
+		switch (_type)
+		{
+		case ALPHA:
+			res = "ALPHA";
+			break;
+		case DIGIT:
+			res = "DIGIT";
+			break;
+		case DECIMAL:
+		case DECIMAL_SUCCESS:
+			res = "DECIMAL";
+			break;
+		case PUNCT:
+			res = "PUNCT";
+			break;
+		case SPACE:
+			res = "SPACE";
+			break;
+		case UNKNOWN:
+			res = "UNKNOWN";
+			break;
+		default:
+			break;
+		}
+
+		return res;
+	}
+
+	const std::string& token_str() const
+	{
+		return _token;
+	}
+
+	friend std::ostream& operator<<(std::ostream& outs, const Token& t)
+	{
+		outs << "|" << t._token << "|";
+
+		return outs;
+	}
+
+private:
+	std::string _token;
+	int _type;
+};
 
 void init_table(int _table[][MAX_COLUMNS]);
 void mark_success(int _table[][MAX_COLUMNS], int state);
@@ -24,7 +94,7 @@ void print_table(int _table[][MAX_COLUMNS]);
 void show_string(char s[], int _pos);
 
 //Fill all cells of the array with -1
-void init_table(int _table[][MAX_COLUMNS])
+inline void init_table(int _table[][MAX_COLUMNS])
 {
 	for (int i = 0; i < MAX_ROWS; ++i)
 	{
@@ -34,19 +104,19 @@ void init_table(int _table[][MAX_COLUMNS])
 }
 
 //Mark this state (row) with a 1 (success)
-void mark_success(int _table[][MAX_COLUMNS], int state)
+inline void mark_success(int _table[][MAX_COLUMNS], int state)
 {
 	_table[state][0] = 1;
 }
 
 //Mark this state (row) with a 0 (fail)
-void mark_fail(int _table[][MAX_COLUMNS], int state)
+inline void mark_fail(int _table[][MAX_COLUMNS], int state)
 {
 	_table[state][0] = 0;
 }
 
 //true if state is a success state
-bool is_success(int _table[][MAX_COLUMNS], int state)
+inline bool is_success(int _table[][MAX_COLUMNS], int state)
 {
 	if (state >= MAX_COLUMNS || state < 0)
 	{
@@ -57,7 +127,7 @@ bool is_success(int _table[][MAX_COLUMNS], int state)
 }
 
 //Mark a range of cells in the array.
-void mark_cells(int row, int _table[][MAX_COLUMNS], int from, int to, int state)
+inline void mark_cells(int row, int _table[][MAX_COLUMNS], int from, int to, int state)
 {
 	while (from <= to)
 	{
@@ -67,20 +137,20 @@ void mark_cells(int row, int _table[][MAX_COLUMNS], int from, int to, int state)
 }
 
 //Mark columns represented by the string columns[] for this row
-void mark_cells(int row, int _table[][MAX_COLUMNS], const char columns[], int state)
+inline void mark_cells(int row, int _table[][MAX_COLUMNS], const char columns[], int state)
 {
 	for (int i = 0; i < strlen(columns); ++i)
 		mark_cells(row, _table, columns[i], columns[i], state);
 }
 
 //Mark this row and column
-void mark_cell(int row, int _table[][MAX_COLUMNS], int column, int state)
+inline void mark_cell(int row, int _table[][MAX_COLUMNS], int column, int state)
 {
 	_table[row][column] = state;
 }
 
 //This can realistically be used on a small table
-void print_table(int _table[][MAX_COLUMNS])
+inline void print_table(int _table[][MAX_COLUMNS])
 {
 	for (int i = 0; i < MAX_ROWS; ++i)
 	{
@@ -94,7 +164,7 @@ void print_table(int _table[][MAX_COLUMNS])
 //show string s and mark this position on the string:
 //hello world   pos: 7
 //       ^
-void show_string(char s[], int _pos)
+inline void show_string(char s[], int _pos)
 {
 	int length = strlen(s);
 

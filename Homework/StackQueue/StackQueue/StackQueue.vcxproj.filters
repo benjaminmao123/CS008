@@ -15,45 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LinkedListLibrary.h">
+    <ClInclude Include="code\IteratedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Queue.h">
+    <ClInclude Include="code\LinkedListLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IteratedList.h">
+    <ClInclude Include="code\Queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QueueTest.h">
+    <ClInclude Include="code\QueueTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_output_queue.h">
+    <ClInclude Include="code\Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_work_report_queue.h">
+    <ClInclude Include="code\StackTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Stack.h">
+    <ClInclude Include="code\z_output_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StackTest.h">
+    <ClInclude Include="code\z_output_stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_output_stack.h">
+    <ClInclude Include="code\z_work_report_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_work_report_stack.h">
+    <ClInclude Include="code\z_work_report_stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="QueueTest.cpp">
+    <ClCompile Include="code\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="code\QueueTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StackTest.cpp">
+    <ClCompile Include="code\StackTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

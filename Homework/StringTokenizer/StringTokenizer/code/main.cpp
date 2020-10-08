@@ -6,10 +6,10 @@
  * Notes: None.
  */
 
-#include "STokenizer.h"
-
 #include <iostream>
 #include <iomanip>
+
+#include "STokenizer.h"
 
 int main()
 {

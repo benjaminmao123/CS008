@@ -166,9 +166,7 @@ template<typename T>
 inline T Stack<T>::pop()
 {
 	if (empty())
-	{
 		throw std::out_of_range("Pop called on empty stack.");
-	}
 
 	T item = *list.begin();
 
@@ -199,9 +197,7 @@ template<typename T>
 inline const T &Stack<T>::top() const
 {
 	if (empty())
-	{
 		throw std::out_of_range("Top called on empty stack.");
-	}
 
 	return *list.begin();
 }
@@ -215,9 +211,7 @@ template<typename T>
 inline T &Stack<T>::top()
 {
 	if (empty())
-	{
 		throw std::out_of_range("Top called on empty stack.");
-	}
 
 	return *list.begin();
 }
@@ -268,9 +262,7 @@ template<typename T>
 inline bool Stack<T>::operator==(const Stack &rhs) const
 {
 	if (sz == rhs.sz)
-	{
 		return list == rhs.list;
-	}
 
 	return false;
 }
@@ -287,9 +279,7 @@ template<typename T>
 inline bool Stack<T>::operator!=(const Stack &rhs) const
 {
 	if (sz != rhs.sz)
-	{
 		return true;
-	}
 
 	return list != rhs.list;
 }
@@ -321,9 +311,7 @@ inline std::ostream &operator<<(std::ostream &os, const Stack<U> &s)
 	if (!s.empty())
 	{
 		for (auto i : s)
-		{
 			os << "[" << i << "]" << "->";
-		}
 	}
 
 	os << "|||";

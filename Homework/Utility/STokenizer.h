@@ -17,7 +17,7 @@ public:
 
     //---------------
     //extract one token (very similar to the way cin >> works)
-    friend STokenizer& operator>>(STokenizer& s, Token& t);
+    friend STokenizer& operator>>(STokenizer& s, SMLibrary::Token& t);
 
     //set a new string as the input string
     void set_string(const char str[]);

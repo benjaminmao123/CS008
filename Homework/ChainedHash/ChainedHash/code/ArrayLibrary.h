@@ -98,11 +98,11 @@ T* remove_entry(T* list, const T& delete_me, int& size, int& capacity)
 
 		//if the size drops below a certain amount decrease capacity
 		if (size <= capacity / 4)
+		{
 			capacity /= 2;
-
-		--size;
-
-		newList = reallocate(list, size, capacity);
+			--size;
+			newList = reallocate(list, size, capacity);
+		}
 	}
 
 	return newList;
