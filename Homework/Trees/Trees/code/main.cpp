@@ -177,8 +177,6 @@ int main()
 	for (const auto& i : avl)
 		pq.insert(info<std::string>(i.item, i.freq, order++));
 
-	std::cout << std::endl;
-
 	PrintWordFrequencies(pq, 100); 
 
 	return 0;

@@ -394,7 +394,7 @@ inline T Vector<T>::pop_back()
     if (empty())
         throw std::out_of_range("Pop called on empty vector.");
 
-    T item = at(sz);
+    T item = at(sz - 1);
 
     remove_last(data, sz, cap);
 
