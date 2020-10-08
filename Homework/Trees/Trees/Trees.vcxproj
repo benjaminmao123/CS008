@@ -18,6 +18,36 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\ArrayLibrary.h" />
+    <ClInclude Include="code\ASCIIHeapBuilder.h" />
+    <ClInclude Include="code\AVL.h" />
+    <ClInclude Include="code\AVLLibrary.h" />
+    <ClInclude Include="code\FTokenizer.h" />
+    <ClInclude Include="code\Heap.h" />
+    <ClInclude Include="code\IteratedList.h" />
+    <ClInclude Include="code\LinkedListLibrary.h" />
+    <ClInclude Include="code\PriorityQueue.h" />
+    <ClInclude Include="code\SMConstants.h" />
+    <ClInclude Include="code\SMLibrary.h" />
+    <ClInclude Include="code\Stack.h" />
+    <ClInclude Include="code\STokenizer.h" />
+    <ClInclude Include="code\Token.h" />
+    <ClInclude Include="code\Vector.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\FTokenizer.cpp" />
+    <ClCompile Include="code\main.cpp" />
+    <ClCompile Include="code\STokenizer.cpp" />
+    <ClCompile Include="code\Token.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="code\output.txt" />
+    <Text Include="code\solitude.txt" />
+    <Text Include="code\test.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{3646B3ED-1B5B-4836-AAD0-0A2D5368122D}</ProjectGuid>
@@ -137,34 +167,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="FTokenizer.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="STokenizer.cpp" />
-    <ClCompile Include="Token.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ArrayLibrary.h" />
-    <ClInclude Include="AVL.h" />
-    <ClInclude Include="AVLLibrary.h" />
-    <ClInclude Include="FTokenizer.h" />
-    <ClInclude Include="Heap.h" />
-    <ClInclude Include="IteratedList.h" />
-    <ClInclude Include="LinkedListLibrary.h" />
-    <ClInclude Include="PriorityQueue.h" />
-    <ClInclude Include="SMConstants.h" />
-    <ClInclude Include="SMLibrary.h" />
-    <ClInclude Include="Stack.h" />
-    <ClInclude Include="STokenizer.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="output.txt" />
-    <Text Include="solitude.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

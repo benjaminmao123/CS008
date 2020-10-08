@@ -69,9 +69,9 @@ public:
         {
             if (curr)
             {
-                if (curr->_left)
+                if (curr->_right)
                 {
-                    curr = stack.pop()->_left;
+                    curr = stack.pop()->_right;
 
                     NextInorder();
                     SetNext();
@@ -94,7 +94,7 @@ public:
             while (curr)
             {
                 stack.push(curr);
-                curr = curr->_right;
+                curr = curr->_left;
             }
         }
 

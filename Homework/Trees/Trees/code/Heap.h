@@ -13,6 +13,7 @@
 #include <cmath>
 
 #include "Vector.h"
+#include "ASCIIHeapBuilder.h"
 
 template <typename T>
 class Heap

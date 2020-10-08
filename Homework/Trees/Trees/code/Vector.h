@@ -127,7 +127,7 @@ public:
 
     Vector &operator+=(const T &item);                      
     void push_back(const T &item);                        
-    void pop_back();                                        
+    T pop_back();                                        
 
     void insert(int pos, const T &item);    
     void erase(int erase_index);
@@ -389,9 +389,16 @@ inline void Vector<T>::push_back(const T &item)
     @return <T>: Returns the popped item.
 */
 template<typename T>
-inline void Vector<T>::pop_back()
+inline T Vector<T>::pop_back()
 {
+    if (empty())
+        throw std::out_of_range("Pop called on empty vector.");
+
+    T item = at(sz);
+
     remove_last(data, sz, cap);
+
+    return item;
 }
 
 /*

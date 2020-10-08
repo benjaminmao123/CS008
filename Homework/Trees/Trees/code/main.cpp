@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <algorithm>
 
 #include "FTokenizer.h"
 #include "PriorityQueue.h"
@@ -20,45 +21,43 @@ struct info
 {
 	T item;
 	int priority;
+	int order;
 
 	info() :
-		priority(0)
+		priority(0), order(0)
 	{
 
 	}
 
-	info(const T& i, int p) :
+	info(const T& i, int p, int order) :
 		item(i),
-		priority(p)
+		priority(p),
+		order(order)
 	{
 
 	}
 
 	friend std::ostream& operator<<(std::ostream& outs, const info<T>& print_me)
 	{
-		outs << "(" << print_me.item << ", " << print_me.priority << ")";
+		outs << "(" << print_me.item << ", " << print_me.priority << ", " << print_me.order << ")";
 
 		return outs;
 	}
 
 	friend bool operator<(const info<T>& lhs, const info<T>& rhs)
 	{
+		if (lhs.priority == rhs.priority)
+			return lhs.order > rhs.order;
+
 		return lhs.priority < rhs.priority;
 	}
 
 	friend bool operator>(const info<T>& lhs, const info<T>& rhs)
 	{
+		if (lhs.priority == rhs.priority)
+			return lhs.order < rhs.order;
+
 		return lhs.priority > rhs.priority;
-	}
-
-	friend bool operator>=(const info<T>& lhs, const info<T>& rhs)
-	{
-		return lhs.priority >= rhs.priority;
-	}
-
-	friend bool operator<=(const info<T>& lhs, const info<T>& rhs)
-	{
-		return lhs.priority >= rhs.priority;
 	}
 
 	info<T>& operator++()
@@ -95,7 +94,7 @@ struct word
 
 	friend std::ostream& operator<<(std::ostream& outs, const word<T>& print_me)
 	{
-		outs << "(" << print_me.item << ", " << print_me.freq << ")";
+		outs << "(" << print_me.item << ", " << print_me.freq << print_me.order << ")";
 
 		return outs;
 	}
@@ -117,7 +116,7 @@ struct word
 
 	friend bool operator<=(const word<T>& lhs, const word<T>& rhs)
 	{
-		return lhs.item >= rhs.item;
+		return lhs.item <= rhs.item;
 	}
 
 	word<T>& operator++()
@@ -137,59 +136,50 @@ auto PrintWordFrequencies = [](PQueue<info<std::string>>& pq, unsigned int n)
 {
 	std::cout << "Top " << n << " words: " << std::endl;
 
-	for (unsigned int i = 0; i < n; ++i)
+	for (unsigned int i = 0; i < n && !pq.is_empty(); ++i)
+		std::cout << i + 1 << ". " << pq.pop() << std::endl;
+
+	std::cout << "\nLast " << n << " words: " << std::endl;
+
+	while (pq.size() > 100)
+		pq.pop();
+
+	for (unsigned int i = 0; i < n && !pq.is_empty(); ++i)
 		std::cout << i + 1 << ". " << pq.pop() << std::endl;
 };
 
 int main()
 {
-	//FTokenizer ftk("solitude.txt");
-	//PQueue<info<std::string>> pq;
-	//AVL<word<std::string>> avl;
-	//int count = 0;
+	FTokenizer ftk("code/solitude.txt");
+	PQueue<info<std::string>> pq;
+	AVL<word<std::string>> avl;
+	int count = 0;
 
-	//while (ftk.more())
-	//{
-	//	Token t;
-	//	ftk >> t;
-
-	//	if (t.type_string() == "ALPHA")
-	//	{
-	//		std::cout << std::setw(10) << count++
-	//				  << std::setw(3) << std::left << ":" << std::setw(25) << std::left << t.token_str()
-	//			      << t.type_string() << std::endl;
-
-	//		tree_node<word<std::string>>* fptr;
-	//		word<std::string> token(t.token_str(), 1);
-
-	//		if (!avl.search(token, fptr))
-	//			avl.insert(token);
-	//		else
-	//			++fptr->_item;
-	//	}
-	//}
-
-	//for (const auto& i : avl)
-	//	pq.insert(info<std::string>(i.item, i.freq));
-
-	//std::cout << std::endl;
-
-	//PrintWordFrequencies(pq, 100);
-
-	int* a = nullptr;
-	if (!a)
+	while (ftk.more())
 	{
-		a = new int[size() + 1];
-	}
-	int size = 0;
-	int* temp = new int[1];
+		Token t;
+		ftk >> t;
 
-	for (int i = 0; i < size; ++i)
-	{
-		temp[i] = a[i];
+		if (t.type_string() == "ALPHA")
+		{
+			tree_node<word<std::string>>* fptr;
+			word<std::string> token(t.token_str(), 1);
+
+			if (!avl.search(token, fptr))
+				avl.insert(token);
+			else
+				++fptr->_item;
+		}
 	}
 
+	int order = 0;
 
+	for (const auto& i : avl)
+		pq.insert(info<std::string>(i.item, i.freq, order++));
+
+	std::cout << std::endl;
+
+	PrintWordFrequencies(pq, 100); 
 
 	return 0;
 }

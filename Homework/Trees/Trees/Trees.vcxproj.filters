@@ -15,71 +15,75 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FTokenizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="STokenizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Token.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="z_output.h">
+    <ClInclude Include="code\ArrayLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="z_work_report.h">
+    <ClInclude Include="code\AVL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FTokenizer.h">
+    <ClInclude Include="code\AVLLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SMConstants.h">
+    <ClInclude Include="code\FTokenizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SMLibrary.h">
+    <ClInclude Include="code\Heap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="STokenizer.h">
+    <ClInclude Include="code\IteratedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Token.h">
+    <ClInclude Include="code\LinkedListLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ArrayLibrary.h">
+    <ClInclude Include="code\PriorityQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Heap.h">
+    <ClInclude Include="code\SMConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PriorityQueue.h">
+    <ClInclude Include="code\SMLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
+    <ClInclude Include="code\Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AVL.h">
+    <ClInclude Include="code\STokenizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AVLLibrary.h">
+    <ClInclude Include="code\Token.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IteratedList.h">
+    <ClInclude Include="code\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedListLibrary.h">
+    <ClInclude Include="code\z_output.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Stack.h">
+    <ClInclude Include="code\z_work_report.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\ASCIIHeapBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="output.txt" />
-    <Text Include="solitude.txt" />
+    <ClCompile Include="code\FTokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="code\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="code\STokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="code\Token.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="code\output.txt" />
+    <Text Include="code\solitude.txt" />
+    <Text Include="code\test.txt" />
   </ItemGroup>
 </Project>
