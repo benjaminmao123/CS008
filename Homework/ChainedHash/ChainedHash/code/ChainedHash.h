@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
+#include <iomanip>
 
 #include "IteratedList.h"
 #include "HTConstants.h"
@@ -14,7 +15,7 @@ class chained_hash
 {
 public:
 	//CTOR
-	chained_hash(int n = 10);
+	chained_hash(int n = 10, int knuth = 2654435761);
 
 	//insert entry
 	bool insert(const record<T>& entry);
@@ -45,12 +46,14 @@ private:
 	Vector<List<record<T>>> _data;
 	//number of keys in the table
 	int total_records;
+	int knuth_alpha;
 };
 
 template<class T>
-inline chained_hash<T>::chained_hash(int n) :
+inline chained_hash<T>::chained_hash(int n, int knuth) :
 	total_records(0),
-	_data(get_prime(n))
+	_data(get_prime(n)),
+	knuth_alpha(knuth)
 {
 
 }
@@ -111,7 +114,7 @@ inline bool chained_hash<T>::is_present(int key) const
 template<class T>
 inline constexpr int chained_hash<T>::hash(int key) const
 {
-	return (key * KNUTH_ALPHA >> 32) % _data.size();
+	return (key * knuth_alpha >> 32) % _data.size();
 }
 
 template<class T>
@@ -138,8 +141,16 @@ inline void chained_hash<T>::expand_table()
 template<class TT>
 inline std::ostream& operator<<(std::ostream& outs, const chained_hash<TT>& h)
 {
+	auto NumDigits = [](int i)
+	{
+		return i > 0 ? (int)log10((double)i) + 1 : 1;
+	};
+
 	for (int i = 0; i < h._data.size(); ++i)
-		outs << h._data[i] << std::endl;
+	{
+		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]"
+			<< " " << h._data[i] << std::endl;
+	}
 
 	return outs;
 }

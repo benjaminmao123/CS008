@@ -24,7 +24,7 @@ struct record
 
 	friend std::ostream& operator<<(std::ostream& outs, const record& print_me)
 	{
-		outs << print_me._key << ", " << print_me._value;
+		outs << print_me._key << ":" << print_me._value;
 
 		return outs;
 	}

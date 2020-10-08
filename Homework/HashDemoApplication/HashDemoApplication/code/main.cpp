@@ -2,6 +2,7 @@
 #include <random>
 #include <cctype>
 #include <string>
+#include <typeinfo>
 
 #include "ChainedHash.h"
 #include "OpenHash.h"
@@ -17,7 +18,7 @@ int main()
     const bool RANDOM_CHAINED = false;
     const bool RANDOM_OPEN = false;
     const bool INTERACTIVE_OPEN = false;
-    const bool INTERACTIVE_CHAINED = true;
+    const bool INTERACTIVE_CHAINED = false;
 
 	LinearProbing lp;
 	QuadraticProbing qp;
@@ -67,20 +68,25 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 1000);
 
+	std::cout << "Table of {int:int}" << std::endl;
+
 	while (input != 'x')
 	{
-		std::cout << "[R]andom [I]nsert [D]elete [S]earch E[x]it: ";
+		std::cout << "[S]ize [R]andom [I]nsert [D]elete [F]ind [E]xists E[x]it: ";
 		std::cin >> input;
 
 		switch (tolower(input))
 		{
+		case 's':
+			break;
 		case 'r':
 		{
 			int key = dist(gen), value = dist(gen);
-			std::cout << "Insert: " << "(" << key << ", "
-				<< value << ")" << std::endl;
 
-			ht.insert(record<int>(key, value));
+			HTLibrary::record<int> rec(key, value);
+			std::cout << "Insert: " << rec << std::endl;
+
+			ht.insert(rec);
 			break;
 		}
 		case 'i':
@@ -91,9 +97,11 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 			std::cin >> key;
 			std::cout << "Value: ";
 			std::cin >> value;
-			std::cout << "Insert: " << "(" << key << ", "
-				<< value << ")" << std::endl;
-			ht.insert(record<int>(key, value));
+
+			HTLibrary::record<int> rec(key, value);
+			std::cout << "Insert: " << rec << std::endl;
+
+			ht.insert(rec);
 			break;
 		}
 		case 'd':
@@ -111,10 +119,10 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 			}
 			break;
 		}
-		case 's':
+		case 'f':
 		{
 			int item;
-			std::cout << "Search: ";
+			std::cout << "Find: ";
 			std::cin >> item;
 
 			if (ht.is_present(item))
@@ -153,7 +161,7 @@ void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
 			std::cout << "Insert: " << "(" << key << ", "
 				<< value << ")" << std::endl;
 
-			ht.insert(record<int>(key, value));
+			ht.insert(HTLibrary::record<int>(key, value));
 			break;
 		}
 		case 'i':
@@ -166,7 +174,7 @@ void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
 			std::cin >> value;
 			std::cout << "Insert: " << "(" << key << ", "
 				<< value << ")" << std::endl;
-			ht.insert(record<int>(key, value));
+			ht.insert(HTLibrary::record<int>(key, value));
 			break;
 		}
 		case 'd':

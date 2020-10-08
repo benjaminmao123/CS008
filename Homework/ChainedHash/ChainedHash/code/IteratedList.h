@@ -384,8 +384,7 @@ inline void List<ITEM_TYPE>::Swap(List &l)
 template<class U>
 inline std::ostream &operator<<(std::ostream &outs, const List<U> &l)
 {
-    for (auto i : l)
-        outs << i << " ";
+    PrintList(l._head_ptr);
 
     return outs;
 }

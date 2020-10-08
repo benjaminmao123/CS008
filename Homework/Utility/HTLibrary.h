@@ -7,26 +7,22 @@ namespace HTLibrary
 	template <typename T>
 	struct record
 	{
-		record(int k = 0) :
-			_key(k)
+		record(int k = 0) : _key(k)
 		{
-
 		}
 
-		record(int k, const T& v) :
-			_key(k), _value(v)
+		record(int k, const T &v) : _key(k), _value(v)
 		{
-
 		}
 
-		friend bool operator==(const record& left, const record& right)
+		friend bool operator==(const record &left, const record &right)
 		{
 			return left._key == right._key;
 		}
 
-		friend std::ostream& operator<<(std::ostream& outs, const record& print_me)
+		friend std::ostream &operator<<(std::ostream &outs, const record &print_me)
 		{
-			outs << print_me._key << ", " << print_me._value;
+			outs << print_me._key << ":" << print_me._value;
 
 			return outs;
 		}
@@ -72,4 +68,4 @@ namespace HTLibrary
 
 		return cap;
 	}
-}
+} // namespace HTLibrary

@@ -18,6 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\BST.h" />
+    <ClInclude Include="code\BSTLibrary.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{E85D01D8-3E32-4E9B-A96C-014431575C43}</ProjectGuid>
@@ -137,15 +146,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BST.h" />
-    <ClInclude Include="BSTLibrary.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

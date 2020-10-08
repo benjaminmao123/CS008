@@ -15,22 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="code\BST.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\BSTLibrary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\z_output.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\z_work_report.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BSTLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BST.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="z_output.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="z_work_report.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="code\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

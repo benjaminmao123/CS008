@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\Deque.h" />
+    <ClInclude Include="code\IteratedList.h" />
+    <ClInclude Include="code\LinkedListLibrary.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{54595CDA-972C-4D7F-995A-0E65E603EF41}</ProjectGuid>
@@ -137,17 +147,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Deque.h" />
-    <ClInclude Include="IteratedList.h" />
-    <ClInclude Include="LinkedListLibrary.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="z_output.h" />
-    <ClInclude Include="z_work_report.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

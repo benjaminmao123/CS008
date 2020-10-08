@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
+#include <iomanip>
 
 #include "HTConstants.h"
 #include "Vector.h"
@@ -37,10 +38,19 @@ public:
 class DoubleHashing : public ResolutionFunction
 {
 public:
+	DoubleHashing(int prime) :
+		prime(prime)
+	{
+
+	}
+
 	virtual unsigned int operator()(int hashVal, int i) const override
 	{
-		return hashVal + (DOUBLE_HASH_PRIME - (i % DOUBLE_HASH_PRIME));
+		return hashVal + (prime - (i % prime));
 	}
+
+private:
+	int prime
 };
 
 template <class T>
@@ -48,7 +58,9 @@ class open_hash
 {
 public:
 	//CTOR
-	open_hash(const ResolutionFunction& res, int n = 10);
+	open_hash(const ResolutionFunction& res, 
+			  int n = 10,
+			  int knuth = 2654435761);
 	~open_hash();
 	open_hash(const open_hash& other);
 	open_hash& operator=(const open_hash& rhs);
@@ -86,13 +98,17 @@ private:
 	Vector<record<T>*> _data;
 	//number of keys in the table
 	int total_records;
+	int knuth_alpha;
 };
 
 template<class T>
-inline open_hash<T>::open_hash(const ResolutionFunction& res, int n) :
+inline open_hash<T>::open_hash(const ResolutionFunction& res, 
+							   int n,
+							   int knuth) :
 	total_records(0), 
 	resolution(res),
-	_data(get_prime(n))
+	_data(get_prime(n)),
+	knuth_alpha(knuth)
 {
 
 }
@@ -196,7 +212,7 @@ inline void open_hash<T>::swap(open_hash& other)
 template<class T>
 inline constexpr int open_hash<T>::hash(int key) const
 {
-	return (key * KNUTH_ALPHA >> 32) % _data.size();
+	return (key * knuth_alpha >> 32) % _data.size();
 }
 
 template<class T>
@@ -261,12 +277,21 @@ inline void open_hash<T>::expand_table()
 template<class TT>
 inline std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h)
 {
+	auto NumDigits = [](int i)
+	{
+		return i > 0 ? (int)log10((double)i) + 1 : 1;
+	};
+
 	for (int i = 0; i < h._data.size(); ++i)
 	{
+		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]" 
+			 << " ";
+
 		if (h._data[i])
-			outs << *h._data[i] << std::endl;
-		else
-			outs << "NULL" << std::endl;
+			outs << *h._data[i] << 
+			 "(" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << ")";
+
+		outs << std::endl;
 	}
 
 	return outs;

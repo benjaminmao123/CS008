@@ -58,8 +58,8 @@ class open_hash
 {
 public:
 	//CTOR
-	open_hash(const ResolutionFunction& res, 
-			  int n = 10, 
+	open_hash(const ResolutionFunction& res,
+			  int n = 10,
 			  int knuth = 2654435761);
 	~open_hash();
 	open_hash(const open_hash& other);
@@ -102,9 +102,9 @@ private:
 };
 
 template<class T>
-inline open_hash<T>::open_hash(const ResolutionFunction& res, 
+inline open_hash<T>::open_hash(const ResolutionFunction& res,
 							   int n, int knuth) :
-	total_records(0), 
+	total_records(0),
 	resolution(res),
 	_data(HTLibrary::get_prime(n)),
 	knuth_alpha(knuth)
@@ -247,7 +247,7 @@ inline int open_hash<T>::get_free_index(int key) const
 		if (i > _data.size() || _data[finalIndex]->_key == key)
 			return -1;
 
-		finalIndex =  resolution(index, ++i) % _data.size();
+		finalIndex = resolution(index, ++i) % _data.size();
 	}
 
 	return finalIndex;

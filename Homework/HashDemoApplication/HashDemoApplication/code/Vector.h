@@ -111,7 +111,7 @@ public:
     Vector(const Vector &other);
     ~Vector();
 
-    const T operator[](int index) const;
+    const T& operator[](int index) const;
     T &operator[](int index);
     T &at(int index);                       
     const T at(int index) const;             
@@ -208,7 +208,7 @@ inline Vector<T>::~Vector()
     @return <const T>: Returns a copy of the element at index.
 */
 template<typename T>
-inline const T Vector<T>::operator[](int index) const
+inline const T& Vector<T>::operator[](int index) const
 {
     if (index >= sz)
         throw std::out_of_range("Index was out of range");

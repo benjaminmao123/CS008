@@ -15,14 +15,14 @@ class chained_hash
 {
 public:
 	//CTOR
-	chained_hash(int n = 10, long long knuth = 2654435761);
+	chained_hash(int n = 10, int knuth = 2654435761);
 
 	//insert entry
-	bool insert(const HTLibrary::record<T> &entry);
+	bool insert(const HTLibrary::record<T>& entry);
 	//remove this key
 	bool remove(int key);
 	//result <- record with key
-	bool find(int key, HTLibrary::record<T> &result) const;
+	bool find(int key, HTLibrary::record<T>& result) const;
 	//is this key present in table?
 	bool is_present(int key) const;
 	//number of keys in the table
@@ -31,8 +31,8 @@ public:
 
 	//print entire table with keys, etc.
 	template <class TT>
-	friend std::ostream &operator<<(std::ostream &outs,
-									const chained_hash<TT> &h);
+	friend std::ostream& operator<<(std::ostream& outs,
+									const chained_hash<TT>& h);
 
 private:
 	//hash function
@@ -44,14 +44,14 @@ private:
 	void expand_table();
 
 	//table chains
-	std::vector<List<HTLibrary::record<T>>> _data;
+	Vector<List<HTLibrary::record<T>>> _data;
 	//number of keys in the table
 	int total_records;
-	long long knuth_alpha;
+	int knuth_alpha;
 };
 
 template <class T>
-inline chained_hash<T>::chained_hash(int n, long long knuth) :
+inline chained_hash<T>::chained_hash(int n, int knuth) :
 	total_records(0),
 	_data(HTLibrary::get_prime(n)),
 	knuth_alpha(knuth)
@@ -59,7 +59,7 @@ inline chained_hash<T>::chained_hash(int n, long long knuth) :
 }
 
 template <class T>
-inline bool chained_hash<T>::insert(const HTLibrary::record<T> &entry)
+inline bool chained_hash<T>::insert(const HTLibrary::record<T>& entry)
 {
 	if (is_present(entry._key))
 		return false;
@@ -90,7 +90,7 @@ inline bool chained_hash<T>::remove(int key)
 }
 
 template <class T>
-inline bool chained_hash<T>::find(int key, HTLibrary::record<T> &result) const
+inline bool chained_hash<T>::find(int key, HTLibrary::record<T>& result) const
 {
 	int index = hash(key);
 	auto it = find_node(key);
@@ -128,20 +128,20 @@ inline typename List<HTLibrary::record<T>>::Iterator chained_hash<T>::find_node(
 template <class T>
 inline void chained_hash<T>::expand_table()
 {
-	std::vector<List<HTLibrary::record<T>>> tempTable(compute_capacity());
+	Vector<List<HTLibrary::record<T>>> tempTable(compute_capacity());
 
 	_data.swap(tempTable);
 	total_records = 0;
 
-	for (const auto &list : tempTable)
-		for (const auto &item : list)
+	for (const auto& list : tempTable)
+		for (const auto& item : list)
 			insert(item);
 }
 
 template <class TT>
-inline std::ostream &operator<<(std::ostream &outs, const chained_hash<TT> &h)
+inline std::ostream& operator<<(std::ostream& outs, const chained_hash<TT>& h)
 {
-	auto NumDigits = [](int i) 
+	auto NumDigits = [](int i)
 	{
 		return i > 0 ? (int)log10((double)i) + 1 : 1;
 	};
@@ -149,7 +149,7 @@ inline std::ostream &operator<<(std::ostream &outs, const chained_hash<TT> &h)
 	for (int i = 0; i < h._data.size(); ++i)
 	{
 		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]"
-			 << " " << h._data[i] << std::endl;
+			<< " " << h._data[i] << std::endl;
 	}
 
 	return outs;
