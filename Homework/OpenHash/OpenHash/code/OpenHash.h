@@ -9,7 +9,7 @@
 #include <initializer_list>
 
 #include "HTConstants.h"
-//#include "std::vector.h"
+#include "Vector.h"
 #include "HTLibrary.h"
 
 class ResolutionFunction
@@ -105,8 +105,8 @@ private:
 
 	const ResolutionFunction& resolution;
 	//table chains
-	std::vector<HTLibrary::record<T>> _data;
-	std::vector<BucketStatus> status;
+	Vector<HTLibrary::record<T>> _data;
+	Vector<BucketStatus> status;
 	//number of keys in the table
 	int total_records;
 	long long knuth_alpha;
@@ -252,8 +252,8 @@ inline int open_hash<T>::get_free_index(int key)
 template<class T>
 inline void open_hash<T>::expand_table()
 {
-	std::vector<HTLibrary::record<T>> tempTable(compute_capacity());
-	std::vector<BucketStatus> tempStatus(tempTable.capacity());
+	Vector<HTLibrary::record<T>> tempTable(compute_capacity());
+	Vector<BucketStatus> tempStatus(tempTable.capacity());
 
 	_data.swap(tempTable);
 	status.swap(tempStatus);

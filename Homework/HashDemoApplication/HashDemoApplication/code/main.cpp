@@ -16,10 +16,10 @@ void test_hash_table_random(chained_hash<int>& ht, int numElements, const std::s
 int main()
 {
     std::cout << std::endl << std::endl << std::endl << "----------------------" << std::endl << std::endl << std::endl;
-    const bool RANDOM_CHAINED = true;
-    const bool RANDOM_OPEN = true;
-    const bool INTERACTIVE_OPEN = true;
-    const bool INTERACTIVE_CHAINED = true;
+    const bool RANDOM_CHAINED = false;
+    const bool RANDOM_OPEN = false;
+    const bool INTERACTIVE_OPEN = false;
+    const bool INTERACTIVE_CHAINED = false;
 
 	LinearProbing lp;
 	QuadraticProbing qp;
