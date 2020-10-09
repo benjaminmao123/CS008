@@ -50,7 +50,7 @@ namespace LinkedListLibrary
         */
         friend std::ostream& operator<<(std::ostream& outs, const node<ITEM_TYPE>& printMe)
         {
-            outs << printMe._item;
+            outs << "[" << printMe._item << "]";
 
             return outs;
         }
@@ -142,9 +142,9 @@ namespace LinkedListLibrary
             for (const node<ITEM_TYPE>* i = head; i != nullptr; i = i->next)
             {
                 if (!i->next)
-                    cout << "[" << *i << "]" << "->|||";
+                    cout << *i << "->|||";
                 else
-                    cout << "[" << *i << "]" << "->";
+                    cout << *i << "->";
             }
         }
         else

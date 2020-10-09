@@ -61,13 +61,14 @@ inline chained_hash<T>::chained_hash(int n, long long knuth) :
 template <class T>
 inline bool chained_hash<T>::insert(const HTLibrary::record<T> &entry)
 {
-	if (is_present(entry._key))
-		return false;
-
 	if (load_factor() >= 0.75)
 		expand_table();
 
 	int index = hash(entry._key);
+
+	if (_data[index].Search(entry))
+		return false;
+
 	_data[index].InsertAfter(entry, _data[index].begin());
 	++total_records;
 
@@ -146,7 +147,7 @@ inline std::ostream &operator<<(std::ostream &outs, const chained_hash<TT> &h)
 		return i > 0 ? (int)log10((double)i) + 1 : 1;
 	};
 
-	for (int i = 0; i < h._data.size(); ++i)
+	for (unsigned int i = 0; i < h._data.size(); ++i)
 	{
 		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]"
 			 << " " << h._data[i] << std::endl;

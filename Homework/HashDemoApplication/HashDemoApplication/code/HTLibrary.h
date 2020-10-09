@@ -8,13 +8,13 @@ namespace HTLibrary
 	struct record
 	{
 		record(int k = 0) :
-			_key(k)
+			_key(k), _value(), actualIndex(-1)
 		{
 
 		}
 
 		record(int k, const T& v) :
-			_key(k), _value(v)
+			_key(k), _value(v), actualIndex(-1)
 		{
 
 		}
@@ -33,6 +33,7 @@ namespace HTLibrary
 
 		int _key;
 		T _value;
+		int actualIndex;
 	};
 
 	constexpr int get_msb(int x);

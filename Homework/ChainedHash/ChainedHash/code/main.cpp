@@ -42,7 +42,7 @@ void Test()
 			std::cout << "Insert: " << "(" << key << ", " 
 				      << value << ")" << std::endl;
 
-			ht.insert(record<int>(key, value));
+			ht.insert(HTLibrary::record<int>(key, value));
 			break;
 		}
 		case 'i':
@@ -55,7 +55,7 @@ void Test()
 			std::cin >> value;
 			std::cout << "Insert: " << "(" << key << ", "
 				<< value << ")" << std::endl;
-			ht.insert(record<int>(key, value));
+			ht.insert(HTLibrary::record<int>(key, value));
 			break;
 		}
 		case 'd':
