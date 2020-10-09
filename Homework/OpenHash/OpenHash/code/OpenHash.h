@@ -9,7 +9,7 @@
 #include <initializer_list>
 
 #include "HTConstants.h"
-#include "Vector.h"
+//#include "std::vector.h"
 #include "HTLibrary.h"
 
 class ResolutionFunction
@@ -105,8 +105,8 @@ private:
 
 	const ResolutionFunction& resolution;
 	//table chains
-	Vector<HTLibrary::record<T>> _data;
-	Vector<BucketStatus> status;
+	std::vector<HTLibrary::record<T>> _data;
+	std::vector<BucketStatus> status;
 	//number of keys in the table
 	int total_records;
 	long long knuth_alpha;
@@ -216,12 +216,8 @@ inline int open_hash<T>::find_item(int key) const
 	int finalIndex = index;
 	int i = 0;
 
-	while (status[finalIndex] != BucketStatus::EMPTY &&
-		   status[finalIndex] != BucketStatus::DELETED)
+	while (status[finalIndex] != BucketStatus::EMPTY)
 	{
-		if (i >= _data.size())
-			return -1;
-
 		if (status[finalIndex] == BucketStatus::OCCUPIED &&
 			_data[finalIndex]._key == key)
 			return finalIndex;
@@ -256,8 +252,8 @@ inline int open_hash<T>::get_free_index(int key)
 template<class T>
 inline void open_hash<T>::expand_table()
 {
-	Vector<HTLibrary::record<T>> tempTable(compute_capacity());
-	Vector<BucketStatus> tempStatus(tempTable.capacity());
+	std::vector<HTLibrary::record<T>> tempTable(compute_capacity());
+	std::vector<BucketStatus> tempStatus(tempTable.capacity());
 
 	_data.swap(tempTable);
 	status.swap(tempStatus);
@@ -286,7 +282,8 @@ inline std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h)
 		if (h.status[i] == open_hash<TT>::BucketStatus::OCCUPIED)
 		{
 			outs << h._data[i] <<
-				"(" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << ")";
+				"(" << std::setfill('0') << std::setw(NumDigits(h._data.size())) 
+				<< h._data[i].actualIndex << ")";
 
 			if (h._data[i].actualIndex != i)
 				outs << "*";
