@@ -16,14 +16,14 @@ class ResolutionFunction
 {
 public:
 	virtual unsigned int operator()(int i, 
-									const std::initializer_list<int>& indices) const = 0;
+		const std::initializer_list<int>& indices) const = 0;
 };
 
 class LinearProbing : public ResolutionFunction
 {
 public:
 	virtual unsigned int operator()(int i, 
-									const std::initializer_list<int>& indices) const override
+		const std::initializer_list<int>& indices) const override
 	{
 		int index = *indices.begin();
 
@@ -35,7 +35,7 @@ class QuadraticProbing : public ResolutionFunction
 {
 public:
 	virtual unsigned int operator()(int i, 
-									const std::initializer_list<int>& indices) const override
+		const std::initializer_list<int>& indices) const override
 	{
 		int index = *indices.begin();
 
@@ -47,7 +47,7 @@ class DoubleHashing : public ResolutionFunction
 {
 public:
 	virtual unsigned int operator()(int i, 
-									const std::initializer_list<int>& indices) const override
+		const std::initializer_list<int>& indices) const override
 	{
 		int index = *indices.begin();
 		int index2 = *(indices.begin() + 1);
