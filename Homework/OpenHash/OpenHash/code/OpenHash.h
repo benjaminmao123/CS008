@@ -96,6 +96,7 @@ private:
 	//hash function
 	constexpr int hash(int key) const;
 	constexpr int hash2(int key) const;
+	
 	int find_item(int key) const;
 	int get_free_index(int key);
 
@@ -109,8 +110,10 @@ private:
 	Vector<BucketStatus> status;
 	//number of keys in the table
 	int total_records;
+	
 	long long knuth_alpha;
 	int prime;
+	
 	int numCollisions;
 };
 
