@@ -15,16 +15,19 @@
 class ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const = 0;
 };
 
 class LinearProbing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const override
 	{
+		if (indices.size() < 1)
+			throw std::out_of_range("Size of indices was less than 1");
+
 		int index = *indices.begin();
 
 		return index + i;
@@ -34,9 +37,12 @@ public:
 class QuadraticProbing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const override
 	{
+		if (indices.size() < 1)
+			throw std::out_of_range("Size of indices was less than 1");
+
 		int index = *indices.begin();
 
 		return index + (unsigned int)pow(i, 2);
@@ -46,9 +52,12 @@ public:
 class DoubleHashing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const override
 	{
+		if (indices.size() < 2)
+			throw std::out_of_range("Size of indices was less than 2");
+
 		int index = *indices.begin();
 		int index2 = *(indices.begin() + 1);
 
@@ -61,10 +70,10 @@ class open_hash
 {
 public:
 	//CTOR
-	open_hash(const ResolutionFunction& res, 
-			  int n = 10, 
-			  long long knuth = 2654435761,
-			  int prime = 7);
+	open_hash(const ResolutionFunction& res,
+		int n = 10,
+		long long knuth = 2654435761,
+		int prime = 7);
 
 	//insert entry
 	bool insert(const HTLibrary::record<T>& entry);
@@ -83,8 +92,8 @@ public:
 
 	//print entire table with keys, etc.
 	template<class TT>
-	friend std::ostream& operator<<(std::ostream& outs,
-									const open_hash<TT>& h);
+	friend std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h);
+
 private:
 	enum class BucketStatus
 	{
@@ -96,6 +105,7 @@ private:
 	//hash function
 	constexpr int hash(int key) const;
 	constexpr int hash2(int key) const;
+
 	int find_item(int key) const;
 	int get_free_index(int key);
 
@@ -109,16 +119,17 @@ private:
 	Vector<BucketStatus> status;
 	//number of keys in the table
 	int total_records;
+
 	long long knuth_alpha;
 	int prime;
+	
 	int numCollisions;
 };
 
 template<class T>
-inline open_hash<T>::open_hash(const ResolutionFunction& res, 
-							   int n, long long knuth, 
-							   int prime) :
-	total_records(0), 
+inline open_hash<T>::open_hash(const ResolutionFunction& res,
+	int n, long long knuth, int prime) :
+	total_records(0),
 	resolution(res),
 	_data(HTLibrary::get_prime(n)),
 	status(HTLibrary::get_prime(n)),
@@ -243,7 +254,7 @@ inline int open_hash<T>::get_free_index(int key)
 
 		++numCollisions;
 
-		finalIndex =  resolution(++i, { index, index2 }) % _data.size();
+		finalIndex = resolution(++i, { index, index2 }) % _data.size();
 	}
 
 	return finalIndex;
@@ -282,7 +293,7 @@ inline std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h)
 		if (h.status[i] == open_hash<TT>::BucketStatus::OCCUPIED)
 		{
 			outs << h._data[i] <<
-				"(" << std::setfill('0') << std::setw(NumDigits(h._data.size())) 
+				"(" << std::setfill('0') << std::setw(NumDigits(h._data.size()))
 				<< h._data[i].actualIndex << ")";
 
 			if (h._data[i].actualIndex != i)
