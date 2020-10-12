@@ -23,55 +23,14 @@ int main()
 
 void Test()
 {
-	char input = '\0';
 	PQueue<int> pq;
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 1000);
 
-	while (input != 'x')
-	{
-		std::cout << "[R]andom [I]nsert [C]lear [P]op E[x]it: ";
-		std::cin >> input;
+	for (int i = 0; i < 100; ++i)
+		pq.insert(dist(rd));
 
-		switch (tolower(input))
-		{
-		case 'r':
-		{
-			int item = dist(gen);
-			std::cout << "Insert: " << item << std::endl;
-
-			pq.insert(item);
-			break;
-		}
-		case 'i':
-		{
-			int item;
-			std::cout << "Insert: ";
-			std::cin >> item;
-			std::cout << std::endl;
-
-			pq.insert(item);
-			break;
-		}
-		case 'c':
-			pq.clear();
-			break;
-		case 'p':
-		{
-			if (!pq.is_empty())
-			{
-				int item = pq.pop();
-				std::cout << "Pop: " << item << std::endl;
-			}
-			break;
-		}
-		case 'x':
-			return;
-		default:
-			break;
-		}
-
-		std::cout << pq << std::endl;
-	}
+	for (int i = 0; i < 100; ++i)
+		std::cout << pq.pop() << std::endl;
 }
