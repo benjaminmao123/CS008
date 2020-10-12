@@ -472,8 +472,14 @@ inline int Vector<T>::index_of(const T &item)
 template<typename T>
 inline void Vector<T>::set_size(int size)
 {
+    if (size <= 0)
+        return;
+
     while (size >= cap)
         set_capacity(cap * 2);
+
+    while (size <= cap / 4)
+        set_capacity(cap / 4);
 
     sz = size;
 }

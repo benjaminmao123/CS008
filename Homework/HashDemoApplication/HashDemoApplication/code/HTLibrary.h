@@ -4,16 +4,22 @@
 
 namespace HTLibrary
 {
-	template <typename T>
+	template <typename K, typename V>
 	struct record
 	{
-		record(int k = 0) :
-			_key(k), _value(), actualIndex(-1)
+		record() :
+			actualIndex(-1)
 		{
 
 		}
 
-		record(int k, const T& v) :
+		record(const K& k) :
+			_key(k), actualIndex(-1)
+		{
+
+		}
+
+		record(const K& k, const V& v) :
 			_key(k), _value(v), actualIndex(-1)
 		{
 
@@ -31,9 +37,67 @@ namespace HTLibrary
 			return outs;
 		}
 
-		int _key;
-		T _value;
+		K _key;
+		V _value;
 		int actualIndex;
+	};
+
+	template <typename T>
+	struct Hash;
+
+	template <>
+	struct Hash<int>
+	{
+		int operator()(int key) const
+		{
+			const long long knuth_alpha = 2654435761;
+
+			return key * knuth_alpha >> 32;
+		}
+	};
+
+	template <>
+	struct Hash<std::string>
+	{
+		int operator()(const std::string& key) const
+		{
+			unsigned int hash = 1315423911;
+
+			for (std::size_t i = 0; i < key.length(); i++)
+				hash ^= ((hash << 5) + key[i] + (hash >> 2));
+
+			return (hash & 0x7FFFFFFF);
+		}
+	};
+
+	template <typename T>
+	struct Hash2;
+
+	template <>
+	struct Hash2<int>
+	{
+		int operator()(int key) const
+		{
+			int prime = 7;
+
+			return prime - (key % prime);
+		}
+	};
+
+	template <>
+	struct Hash2<std::string>
+	{
+		int operator()(const std::string& key) const
+		{
+			unsigned long hash = 5381;
+			int c;
+			const char* k = key.c_str();
+
+			while (c = *k++)
+				hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+			return hash;
+		}
 	};
 
 	constexpr int get_msb(int x);
@@ -57,17 +121,17 @@ namespace HTLibrary
 	{
 		int msb = get_msb(n);
 
-		return primes[msb <= 4 ? 0 : msb - 4];
+		return PRIMES[msb <= 4 ? 0 : msb - 4];
 	}
 
 	constexpr int next_prime(int cap)
 	{
-		int size = sizeof(primes) / sizeof(primes[0]);
+		int size = sizeof(PRIMES) / sizeof(PRIMES[0]);
 
 		for (int i = 0; i < size; ++i)
-			if (cap == primes[i])
+			if (cap == PRIMES[i])
 			{
-				cap = primes[i + 1];
+				cap = PRIMES[i + 1];
 				break;
 			}
 

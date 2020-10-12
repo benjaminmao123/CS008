@@ -8,10 +8,10 @@
 #include "ChainedHash.h"
 #include "OpenHash.h"
 
-void test_hash_table_interactive(open_hash<int>& ht, const std::string& type);
-void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type);
-void test_hash_table_random(open_hash<int>& ht, int numElements, const std::string& type);
-void test_hash_table_random(chained_hash<int>& ht, int numElements, const std::string& type);
+void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& type);
+void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& type);
+void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std::string& type);
+void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const std::string& type);
 
 int main()
 {
@@ -28,14 +28,14 @@ int main()
     if (INTERACTIVE_OPEN)
     {
         std::cout << "-------  INTERACTIVE TESTS ---------------------------" << std::endl;
-        open_hash<int> open(dh);
+        open_hash<int, int> open(dh);
         test_hash_table_interactive(open, "open_hash_table");
     }
 
     if (INTERACTIVE_CHAINED)
     {
         std::cout << "-------  INTERACTIVE TESTS ---------------------------" << std::endl;
-        chained_hash<int> chained;
+        chained_hash<int, int> chained;
         test_hash_table_interactive(chained, "chained_hash_table");
     }
 
@@ -43,7 +43,7 @@ int main()
     {
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Chained Hash Table . . . . . . . . . . .;
-        chained_hash<int> c_table;
+        chained_hash<int, int> c_table;
         test_hash_table_random(c_table, 2500, "chained_hash_table<record>");
         std::cout << c_table << std::endl;
     }
@@ -52,7 +52,7 @@ int main()
     {
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Simple Hash Table . . . . . . . . . . .;
-        open_hash<int> h_table(dh);
+        open_hash<int, int> h_table(dh);
         test_hash_table_random(h_table, 500, "hash_table<record>");
         std::cout << h_table << std::endl;
     }
@@ -62,7 +62,7 @@ int main()
 	return 0;
 }
 
-void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
+void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& type)
 {
 	char input = '\0';
 	std::random_device rd;
@@ -85,7 +85,7 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 		{
 			int key = dist(gen), value = dist(gen);
 
-			HTLibrary::record<int> rec(key, value);
+			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
 			ht.insert(rec);
@@ -100,7 +100,7 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 			std::cout << "Value: ";
 			std::cin >> value;
 
-			HTLibrary::record<int> rec(key, value);
+			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
 			ht.insert(rec);
@@ -127,7 +127,7 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			HTLibrary::record<int> rec;
+			HTLibrary::record<int, int> rec(0);
 
 			if (ht.find(key, rec))
 				std::cout << "Found: " << rec << std::endl;
@@ -155,7 +155,7 @@ void test_hash_table_interactive(open_hash<int>& ht, const std::string& type)
 	}
 }
 
-void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
+void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& type)
 {
 	char input = '\0';
 	std::random_device rd;
@@ -178,7 +178,7 @@ void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
 		{
 			int key = dist(gen), value = dist(gen);
 
-			HTLibrary::record<int> rec(key, value);
+			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
 			ht.insert(rec);
@@ -193,7 +193,7 @@ void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
 			std::cout << "Value: ";
 			std::cin >> value;
 
-			HTLibrary::record<int> rec(key, value);
+			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
 			ht.insert(rec);
@@ -220,7 +220,7 @@ void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			HTLibrary::record<int> rec;
+			HTLibrary::record<int, int> rec(0);
 
 			if (ht.find(key, rec))
 				std::cout << "Found: " << rec << std::endl;
@@ -248,16 +248,16 @@ void test_hash_table_interactive(chained_hash<int>& ht, const std::string& type)
 	}
 }
 
-void test_hash_table_random(open_hash<int>& ht, int numElements, const std::string& type)
+void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std::string& type)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 10000);
 
-	Vector<HTLibrary::record<int>> records;
+	Vector<HTLibrary::record<int, int>> records;
 
 	for (int i = 0; i < numElements; ++i)
-		records.push_back(HTLibrary::record<int>(dist(rd), dist(rd)));
+		records.push_back(HTLibrary::record<int, int>(dist(rd), dist(rd)));
 
 	for (const auto& i : records)
 		ht.insert(i);
@@ -289,16 +289,16 @@ void test_hash_table_random(open_hash<int>& ht, int numElements, const std::stri
 	std::cout << "------------------ END RANDOM TEST ----------------------" << std::endl;
 }
 
-void test_hash_table_random(chained_hash<int>& ht, int numElements, const std::string& type)
+void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const std::string& type)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 10000);
 
-	Vector<HTLibrary::record<int>> records;
+	Vector<HTLibrary::record<int, int>> records;
 
 	for (int i = 0; i < numElements; ++i)
-		records.push_back(HTLibrary::record<int>(dist(rd), dist(rd)));
+		records.push_back(HTLibrary::record<int, int>(dist(rd), dist(rd)));
 
 	for (const auto& i : records)
 		ht.insert(i);
