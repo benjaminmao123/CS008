@@ -54,6 +54,7 @@ inline chained_hash<K, V, H>::chained_hash(int n) :
 	total_records(0),
 	_data(HTLibrary::get_prime(n))
 {
+
 }
 
 template <typename K, typename V, typename H>

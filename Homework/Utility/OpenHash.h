@@ -65,7 +65,8 @@ public:
 	}
 };
 
-template <typename K, typename V, typename H = HTLibrary::Hash<K>>
+template <typename K, typename V, typename H = HTLibrary::Hash<K>, 
+	typename H2 = HTLibrary::Hash2<K>>
 class open_hash
 {
 public:
@@ -101,7 +102,7 @@ private:
 
 	//hash function
 	H hasher;
-	HTLibrary::Hash2<K> hasher2;
+	H2 hasher2;
 
 	int find_item(const K& key) const;
 	int get_free_index(const K& key);
@@ -120,8 +121,8 @@ private:
 	int numCollisions;
 };
 
-template <typename K, typename V, typename H>
-inline open_hash<K, V, H>::open_hash(const ResolutionFunction& res, int n) :
+template <typename K, typename V, typename H, typename H2>
+inline open_hash<K, V, H, H2>::open_hash(const ResolutionFunction& res, int n) :
 	total_records(0),
 	resolution(res),
 	_data(HTLibrary::get_prime(n)),
@@ -131,8 +132,8 @@ inline open_hash<K, V, H>::open_hash(const ResolutionFunction& res, int n) :
 
 }
 
-template <typename K, typename V, typename H>
-inline bool open_hash<K, V, H>::insert(const HTLibrary::record<K, V>& entry)
+template <typename K, typename V, typename H, typename H2>
+inline bool open_hash<K, V, H, H2>::insert(const HTLibrary::record<K, V>& entry)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
@@ -151,8 +152,8 @@ inline bool open_hash<K, V, H>::insert(const HTLibrary::record<K, V>& entry)
 	return true;
 }
 
-template <typename K, typename V, typename H>
-inline bool open_hash<K, V, H>::remove(const K& key)
+template <typename K, typename V, typename H, typename H2>
+inline bool open_hash<K, V, H, H2>::remove(const K& key)
 {
 	int index = find_item(key);
 
@@ -165,8 +166,8 @@ inline bool open_hash<K, V, H>::remove(const K& key)
 	return true;
 }
 
-template <typename K, typename V, typename H>
-inline bool open_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& result) const
+template <typename K, typename V, typename H, typename H2>
+inline bool open_hash<K, V, H, H2>::find(const K& key, HTLibrary::record<K, V>& result) const
 {
 	int index = find_item(key);
 
@@ -178,16 +179,16 @@ inline bool open_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& resu
 	return true;
 }
 
-template <typename K, typename V, typename H>
-inline bool open_hash<K, V, H>::is_present(const K& key) const
+template <typename K, typename V, typename H, typename H2>
+inline bool open_hash<K, V, H, H2>::is_present(const K& key) const
 {
 	HTLibrary::record<K, V> res;
 
 	return find(key, res);
 }
 
-template <typename K, typename V, typename H>
-inline void open_hash<K, V, H>::swap(open_hash& other)
+template <typename K, typename V, typename H, typename H2>
+inline void open_hash<K, V, H, H2>::swap(open_hash& other)
 {
 	std::swap(resolution, other.resolution);
 	std::swap(_data, other._data);
@@ -196,8 +197,8 @@ inline void open_hash<K, V, H>::swap(open_hash& other)
 	std::swap(status, other.status);
 }
 
-template <typename K, typename V, typename H>
-inline int open_hash<K, V, H>::find_item(const K& key) const
+template <typename K, typename V, typename H, typename H2>
+inline int open_hash<K, V, H, H2>::find_item(const K& key) const
 {
 	int index = hasher(key) % _data.size();
 	int index2 = hasher2(key) % _data.size();
@@ -216,8 +217,8 @@ inline int open_hash<K, V, H>::find_item(const K& key) const
 	return -1;
 }
 
-template <typename K, typename V, typename H>
-inline int open_hash<K, V, H>::get_free_index(const K& key)
+template <typename K, typename V, typename H, typename H2>
+inline int open_hash<K, V, H, H2>::get_free_index(const K& key)
 {
 	int index = hasher(key) % _data.size();
 	int index2 = hasher2(key) % _data.size();
@@ -237,8 +238,8 @@ inline int open_hash<K, V, H>::get_free_index(const K& key)
 	return finalIndex;
 }
 
-template <typename K, typename V, typename H>
-inline void open_hash<K, V, H>::expand_table()
+template <typename K, typename V, typename H, typename H2>
+inline void open_hash<K, V, H, H2>::expand_table()
 {
 	Vector<HTLibrary::record<K, V>> tempTable(compute_capacity());
 	Vector<BucketStatus> tempStatus(tempTable.capacity());
