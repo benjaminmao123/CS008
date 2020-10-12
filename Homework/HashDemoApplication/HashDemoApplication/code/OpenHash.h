@@ -181,7 +181,7 @@ inline bool open_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& resu
 template <typename K, typename V, typename H>
 inline bool open_hash<K, V, H>::is_present(const K& key) const
 {
-	HTLibrary::record<K, V> res(0);
+	HTLibrary::record<K, V> res;
 
 	return find(key, res);
 }

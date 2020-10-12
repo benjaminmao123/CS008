@@ -94,7 +94,7 @@ namespace HTLibrary
 			const char* k = key.c_str();
 
 			while (c = *k++)
-				hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+				hash = ((hash << 5) + hash) + c;
 
 			return hash;
 		}

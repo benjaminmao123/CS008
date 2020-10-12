@@ -1,6 +1,6 @@
 #pragma once
 
-const int primes[] =
+const int PRIMES[] =
 {
 	53, 97, 193, 389, 769,
 	1543, 3079, 6151, 12289, 24593,

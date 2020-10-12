@@ -15,16 +15,19 @@
 class ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const = 0;
 };
 
 class LinearProbing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const override
 	{
+		if (indices.size() < 1)
+			throw std::out_of_range("Size of indices was less than 1");
+
 		int index = *indices.begin();
 
 		return index + i;
@@ -34,9 +37,12 @@ public:
 class QuadraticProbing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const override
 	{
+		if (indices.size() < 1)
+			throw std::out_of_range("Size of indices was less than 1");
+
 		int index = *indices.begin();
 
 		return index + (unsigned int)pow(i, 2);
@@ -46,9 +52,12 @@ public:
 class DoubleHashing : public ResolutionFunction
 {
 public:
-	virtual unsigned int operator()(int i, 
+	virtual unsigned int operator()(int i,
 		const std::initializer_list<int>& indices) const override
 	{
+		if (indices.size() < 2)
+			throw std::out_of_range("Size of indices was less than 2");
+
 		int index = *indices.begin();
 		int index2 = *(indices.begin() + 1);
 
@@ -56,24 +65,21 @@ public:
 	}
 };
 
-template <class T>
+template <typename K, typename V, typename H = HTLibrary::Hash<K>>
 class open_hash
 {
 public:
 	//CTOR
-	open_hash(const ResolutionFunction& res, 
-			  int n = 10, 
-			  long long knuth = 2654435761,
-			  int prime = 7);
+	open_hash(const ResolutionFunction& res, int n = 10);
 
 	//insert entry
-	bool insert(const HTLibrary::record<T>& entry);
+	bool insert(const HTLibrary::record<K, V>& entry);
 	//remove this key
-	bool remove(int key);
+	bool remove(const K& key);
 	//result <- record with key
-	bool find(int key, HTLibrary::record<T>& result) const;
+	bool find(const K& key, HTLibrary::record<K, V>& result) const;
 	//is this key present in table?
-	bool is_present(int key) const;
+	bool is_present(const K& key) const;
 	//number of keys in the table
 	constexpr int size() const { return total_records; }
 	constexpr bool empty() const { return !total_records; }
@@ -82,9 +88,9 @@ public:
 	void swap(open_hash& other);
 
 	//print entire table with keys, etc.
-	template<class TT>
-	friend std::ostream& operator<<(std::ostream& outs,
-									const open_hash<TT>& h);
+	template <typename T, typename U>
+	friend std::ostream& operator<<(std::ostream& outs, const open_hash<T, U>& h);
+
 private:
 	enum class BucketStatus
 	{
@@ -94,10 +100,11 @@ private:
 	};
 
 	//hash function
-	constexpr int hash(int key) const;
-	constexpr int hash2(int key) const;
-	int find_item(int key) const;
-	int get_free_index(int key);
+	H hasher;
+	HTLibrary::Hash2<K> hasher2;
+
+	int find_item(const K& key) const;
+	int get_free_index(const K& key);
 
 	constexpr double load_factor() const { return (double)total_records / _data.size(); }
 	constexpr int compute_capacity() const { return HTLibrary::next_prime(_data.size()); }
@@ -105,37 +112,32 @@ private:
 
 	const ResolutionFunction& resolution;
 	//table chains
-	Vector<HTLibrary::record<T>> _data;
+	Vector<HTLibrary::record<K, V>> _data;
 	Vector<BucketStatus> status;
 	//number of keys in the table
 	int total_records;
-	long long knuth_alpha;
-	int prime;
+
 	int numCollisions;
 };
 
-template<class T>
-inline open_hash<T>::open_hash(const ResolutionFunction& res, 
-							   int n, long long knuth, 
-							   int prime) :
-	total_records(0), 
+template <typename K, typename V, typename H>
+inline open_hash<K, V, H>::open_hash(const ResolutionFunction& res, int n) :
+	total_records(0),
 	resolution(res),
 	_data(HTLibrary::get_prime(n)),
 	status(HTLibrary::get_prime(n)),
-	knuth_alpha(knuth),
-	prime(prime),
 	numCollisions(0)
 {
 
 }
 
-template<class T>
-inline bool open_hash<T>::insert(const HTLibrary::record<T>& entry)
+template <typename K, typename V, typename H>
+inline bool open_hash<K, V, H>::insert(const HTLibrary::record<K, V>& entry)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
 
-	int actualIndex = hash(entry._key);
+	int actualIndex = hasher(entry._key) % _data.size();
 	int index = get_free_index(entry._key);
 
 	if (index == -1)
@@ -149,8 +151,8 @@ inline bool open_hash<T>::insert(const HTLibrary::record<T>& entry)
 	return true;
 }
 
-template<class T>
-inline bool open_hash<T>::remove(int key)
+template <typename K, typename V, typename H>
+inline bool open_hash<K, V, H>::remove(const K& key)
 {
 	int index = find_item(key);
 
@@ -163,8 +165,8 @@ inline bool open_hash<T>::remove(int key)
 	return true;
 }
 
-template<class T>
-inline bool open_hash<T>::find(int key, HTLibrary::record<T>& result) const
+template <typename K, typename V, typename H>
+inline bool open_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& result) const
 {
 	int index = find_item(key);
 
@@ -176,43 +178,29 @@ inline bool open_hash<T>::find(int key, HTLibrary::record<T>& result) const
 	return true;
 }
 
-template<class T>
-inline bool open_hash<T>::is_present(int key) const
+template <typename K, typename V, typename H>
+inline bool open_hash<K, V, H>::is_present(const K& key) const
 {
-	HTLibrary::record<T> res;
+	HTLibrary::record<K, V> res(0);
 
 	return find(key, res);
 }
 
-template<class T>
-inline void open_hash<T>::swap(open_hash& other)
+template <typename K, typename V, typename H>
+inline void open_hash<K, V, H>::swap(open_hash& other)
 {
 	std::swap(resolution, other.resolution);
 	std::swap(_data, other._data);
 	std::swap(total_records, other.total_records);
-	std::swap(knuth_alpha, other.knuth_alpha);
-	std::swap(prime, other.prime);
 	std::swap(numCollisions, other.numCollisions);
 	std::swap(status, other.status);
 }
 
-template<class T>
-inline constexpr int open_hash<T>::hash(int key) const
+template <typename K, typename V, typename H>
+inline int open_hash<K, V, H>::find_item(const K& key) const
 {
-	return (key * knuth_alpha >> 32) % _data.size();
-}
-
-template<class T>
-inline constexpr int open_hash<T>::hash2(int key) const
-{
-	return (prime - (key % prime)) % _data.size();
-}
-
-template<class T>
-inline int open_hash<T>::find_item(int key) const
-{
-	int index = hash(key);
-	int index2 = hash2(key);
+	int index = hasher(key) % _data.size();
+	int index2 = hasher2(key) % _data.size();
 	int finalIndex = index;
 	int i = 0;
 
@@ -228,11 +216,11 @@ inline int open_hash<T>::find_item(int key) const
 	return -1;
 }
 
-template<class T>
-inline int open_hash<T>::get_free_index(int key)
+template <typename K, typename V, typename H>
+inline int open_hash<K, V, H>::get_free_index(const K& key)
 {
-	int index = hash(key);
-	int index2 = hash2(key);
+	int index = hasher(key) % _data.size();
+	int index2 = hasher2(key) % _data.size();
 	int finalIndex = index;
 	int i = 0;
 
@@ -243,16 +231,16 @@ inline int open_hash<T>::get_free_index(int key)
 
 		++numCollisions;
 
-		finalIndex =  resolution(++i, { index, index2 }) % _data.size();
+		finalIndex = resolution(++i, { index, index2 }) % _data.size();
 	}
 
 	return finalIndex;
 }
 
-template<class T>
-inline void open_hash<T>::expand_table()
+template <typename K, typename V, typename H>
+inline void open_hash<K, V, H>::expand_table()
 {
-	Vector<HTLibrary::record<T>> tempTable(compute_capacity());
+	Vector<HTLibrary::record<K, V>> tempTable(compute_capacity());
 	Vector<BucketStatus> tempStatus(tempTable.capacity());
 
 	_data.swap(tempTable);
@@ -266,8 +254,8 @@ inline void open_hash<T>::expand_table()
 	}
 }
 
-template<class TT>
-inline std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h)
+template <typename T, typename U>
+inline std::ostream& operator<<(std::ostream& outs, const open_hash<T, U>& h)
 {
 	auto NumDigits = [](int i)
 	{
@@ -279,16 +267,16 @@ inline std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h)
 		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]"
 			<< " ";
 
-		if (h.status[i] == open_hash<TT>::BucketStatus::OCCUPIED)
+		if (h.status[i] == open_hash<T, U>::BucketStatus::OCCUPIED)
 		{
 			outs << h._data[i] <<
-				"(" << std::setfill('0') << std::setw(NumDigits(h._data.size())) 
+				"(" << std::setfill('0') << std::setw(NumDigits(h._data.size()))
 				<< h._data[i].actualIndex << ")";
 
 			if (h._data[i].actualIndex != i)
 				outs << "*";
 		}
-		if (h.status[i] == open_hash<TT>::BucketStatus::DELETED)
+		if (h.status[i] == open_hash<T, U>::BucketStatus::DELETED)
 			outs << "------";
 
 		outs << std::endl;
@@ -296,3 +284,4 @@ inline std::ostream& operator<<(std::ostream& outs, const open_hash<TT>& h)
 
 	return outs;
 }
+

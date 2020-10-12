@@ -10,61 +10,60 @@
 #include "Vector.h"
 #include "HTLibrary.h"
 
-template <class T>
+template <typename K, typename V, typename H = HTLibrary::Hash<K>>
 class chained_hash
 {
 public:
 	//CTOR
-	chained_hash(int n = 10, long long knuth = 2654435761);
+	chained_hash(int n = 10);
 
 	//insert entry
-	bool insert(const HTLibrary::record<T> &entry);
+	bool insert(const HTLibrary::record<K, V> &entry);
 	//remove this key
-	bool remove(int key);
+	bool remove(const K& key);
 	//result <- record with key
-	bool find(int key, HTLibrary::record<T> &result) const;
+	bool find(const K& key, HTLibrary::record<K, V> &result) const;
 	//is this key present in table?
-	bool is_present(int key) const;
+	bool is_present(const K& key) const;
 	//number of keys in the table
 	constexpr int size() const { return total_records; }
 	constexpr bool empty() const { return !total_records; }
 
 	//print entire table with keys, etc.
-	template <class TT>
+	template <typename T, typename U>
 	friend std::ostream &operator<<(std::ostream &outs,
-									const chained_hash<TT> &h);
+									const chained_hash<T, U> &h);
 
 private:
 	//hash function
-	constexpr int hash(int key) const;
+	H hasher;
+
 	//find this key in the table
-	typename List<HTLibrary::record<T>>::Iterator find_node(int key) const;
+	typename List<HTLibrary::record<K, V>>::Iterator find_node(const K& key) const;
 	constexpr double load_factor() const { return (double)total_records / _data.size(); }
 	constexpr int compute_capacity() const { return HTLibrary::next_prime(_data.size()); }
 	void expand_table();
 
 	//table chains
-	std::vector<List<HTLibrary::record<T>>> _data;
+	std::vector<List<HTLibrary::record<K, V>>> _data;
 	//number of keys in the table
 	int total_records;
-	long long knuth_alpha;
 };
 
-template <class T>
-inline chained_hash<T>::chained_hash(int n, long long knuth) :
+template <typename K, typename V, typename H>
+inline chained_hash<K, V, H>::chained_hash(int n) :
 	total_records(0),
-	_data(HTLibrary::get_prime(n)),
-	knuth_alpha(knuth)
+	_data(HTLibrary::get_prime(n))
 {
 }
 
-template <class T>
-inline bool chained_hash<T>::insert(const HTLibrary::record<T> &entry)
+template <typename K, typename V, typename H>
+inline bool chained_hash<K, V, H>::insert(const HTLibrary::record<K, V> &entry)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
 
-	int index = hash(entry._key);
+	int index = hasher(entry._key) % _data.size();
 
 	if (_data[index].Search(entry))
 		return false;
@@ -75,10 +74,10 @@ inline bool chained_hash<T>::insert(const HTLibrary::record<T> &entry)
 	return true;
 }
 
-template <class T>
-inline bool chained_hash<T>::remove(int key)
+template <typename K, typename V, typename H>
+inline bool chained_hash<K, V, H>::remove(const K& key)
 {
-	int index = hash(key);
+	int index = hasher(key) % _data.size();
 	auto it = find_node(key);
 
 	if (!it)
@@ -90,10 +89,10 @@ inline bool chained_hash<T>::remove(int key)
 	return true;
 }
 
-template <class T>
-inline bool chained_hash<T>::find(int key, HTLibrary::record<T> &result) const
+template <typename K, typename V, typename H>
+inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V> &result) const
 {
-	int index = hash(key);
+	int index = hasher(key) % _data.size();
 	auto it = find_node(key);
 
 	if (!it)
@@ -104,32 +103,26 @@ inline bool chained_hash<T>::find(int key, HTLibrary::record<T> &result) const
 	return true;
 }
 
-template <class T>
-inline bool chained_hash<T>::is_present(int key) const
+template <typename K, typename V, typename H>
+inline bool chained_hash<K, V, H>::is_present(const K& key) const
 {
-	HTLibrary::record<T> res;
+	HTLibrary::record<K, V> res(0);
 
 	return find(key, res);
 }
 
-template <class T>
-inline constexpr int chained_hash<T>::hash(int key) const
+template <typename K, typename V, typename H>
+inline typename List<HTLibrary::record<K, V>>::Iterator chained_hash<K, V, H>::find_node(const K& key) const
 {
-	return (key * knuth_alpha >> 32) % _data.size();
+	int index = hasher(key) % _data.size();
+
+	return _data[index].Search(HTLibrary::record<K, V>(key));
 }
 
-template <class T>
-inline typename List<HTLibrary::record<T>>::Iterator chained_hash<T>::find_node(int key) const
+template <typename K, typename V, typename H>
+inline void chained_hash<K, V, H>::expand_table()
 {
-	int index = hash(key);
-
-	return _data[index].Search(HTLibrary::record<T>(key));
-}
-
-template <class T>
-inline void chained_hash<T>::expand_table()
-{
-	std::vector<List<HTLibrary::record<T>>> tempTable(compute_capacity());
+	std::vector<List<HTLibrary::record<K, V>>> tempTable(compute_capacity());
 
 	_data.swap(tempTable);
 	total_records = 0;
@@ -139,15 +132,15 @@ inline void chained_hash<T>::expand_table()
 			insert(item);
 }
 
-template <class TT>
-inline std::ostream &operator<<(std::ostream &outs, const chained_hash<TT> &h)
+template <typename T, typename U>
+inline std::ostream &operator<<(std::ostream &outs, const chained_hash<T, U> &h)
 {
 	auto NumDigits = [](int i) 
 	{
 		return i > 0 ? (int)log10((double)i) + 1 : 1;
 	};
 
-	for (int i = 0; i < h._data.size(); ++i)
+	for (unsigned int i = 0; i < h._data.size(); ++i)
 	{
 		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]"
 			 << " " << h._data[i] << std::endl;
