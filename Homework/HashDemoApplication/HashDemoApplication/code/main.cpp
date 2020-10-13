@@ -29,14 +29,14 @@ int main()
     {
         std::cout << "-------  INTERACTIVE TESTS ---------------------------" << std::endl;
         open_hash<int, int> open(dh);
-        test_hash_table_interactive(open, "open_hash_table");
+        test_hash_table_interactive(open, "open_hash");
     }
 
     if (INTERACTIVE_CHAINED)
     {
         std::cout << "-------  INTERACTIVE TESTS ---------------------------" << std::endl;
         chained_hash<int, int> chained;
-        test_hash_table_interactive(chained, "chained_hash_table");
+        test_hash_table_interactive(chained, "chained_hash");
     }
 
     if (RANDOM_CHAINED)
@@ -44,7 +44,7 @@ int main()
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Chained Hash Table . . . . . . . . . . .;
         chained_hash<int, int> c_table;
-        test_hash_table_random(c_table, 2500, "chained_hash_table<int, int>");
+        test_hash_table_random(c_table, 2500, "chained_hash<int, int>");
         std::cout << c_table << std::endl;
     }
 
@@ -53,7 +53,7 @@ int main()
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Simple Hash Table . . . . . . . . . . .;
         open_hash<int, int> h_table(dh);
-        test_hash_table_random(h_table, 500, "hash_table<int, int>");
+        test_hash_table_random(h_table, 500, "open_hash<int, int>");
         std::cout << h_table << std::endl;
     }
 
