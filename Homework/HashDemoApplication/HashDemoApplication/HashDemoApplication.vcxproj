@@ -27,6 +27,8 @@
     <ClInclude Include="code\LinkedListLibrary.h" />
     <ClInclude Include="code\OpenHash.h" />
     <ClInclude Include="code\Vector.h" />
+    <ClInclude Include="code\z_output.h" />
+    <ClInclude Include="code\z_work_report.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\main.cpp" />
