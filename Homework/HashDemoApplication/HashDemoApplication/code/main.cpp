@@ -44,7 +44,7 @@ int main()
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Chained Hash Table . . . . . . . . . . .;
         chained_hash<int, int> c_table;
-        test_hash_table_random(c_table, 2500, "chained_hash_table<record>");
+        test_hash_table_random(c_table, 2500, "chained_hash_table<int, int>");
         std::cout << c_table << std::endl;
     }
 
@@ -53,7 +53,7 @@ int main()
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Simple Hash Table . . . . . . . . . . .;
         open_hash<int, int> h_table(dh);
-        test_hash_table_random(h_table, 500, "hash_table<record>");
+        test_hash_table_random(h_table, 500, "hash_table<int, int>");
         std::cout << h_table << std::endl;
     }
 
