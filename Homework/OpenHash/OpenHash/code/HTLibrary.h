@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include "HTConstants.h"
 
 namespace HTLibrary
@@ -52,6 +54,17 @@ namespace HTLibrary
 		{
 			const long long knuth_alpha = 2654435761;
 
+			return std::abs(key * knuth_alpha >> 32);
+		}
+	};
+
+	template <>
+	struct Hash<std::size_t>
+	{
+		std::size_t operator()(std::size_t key) const
+		{
+			const long long knuth_alpha = 2654435761;
+
 			return key * knuth_alpha >> 32;
 		}
 	};
@@ -77,6 +90,17 @@ namespace HTLibrary
 	struct Hash2<int>
 	{
 		int operator()(int key) const
+		{
+			int prime = 7;
+
+			return std::abs(prime - (key % prime));
+		}
+	};
+
+	template <>
+	struct Hash2<std::size_t>
+	{
+		std::size_t operator()(std::size_t key) const
 		{
 			int prime = 7;
 
