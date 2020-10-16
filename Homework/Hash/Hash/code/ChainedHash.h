@@ -14,15 +14,127 @@ template <typename K, typename V, typename H = HTLibrary::Hash<K>>
 class chained_hash
 {
 public:
+	class Iterator
+	{
+	private:
+		template <typename T>
+		class Proxy
+		{
+		public:
+			Proxy(const T& value)
+				: value(value)
+			{
+
+			}
+
+			T* operator->()
+			{
+				return std::addressof(value);
+			}
+
+		private:
+			T value;
+		};
+
+	public:
+		Iterator()
+		{
+
+		}
+
+		Iterator(typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecIt,
+			typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecItEnd)
+			: vecIt(vecIt), vecItEnd(vecItEnd)
+		{
+
+			listIt = (*vecIt).begin();
+
+			while (this->vecIt != this->vecItEnd && listIt == (*this->vecIt).end())
+			{
+				++this->vecIt;
+				listIt = (*this->vecIt).begin();
+			}
+		}
+
+		Iterator(const Iterator& other)
+			: vecIt(other.vecIt), listIt(other.listIt),
+			vecItEnd(other.vecItEnd)
+		{
+
+		}
+
+		Iterator& operator++()
+		{
+			if (++listIt == (*vecIt).end())
+			{
+				while (vecIt != vecItEnd && listIt == (*vecIt).end())
+				{
+					++vecIt;
+					listIt = (*vecIt).begin();
+				}
+			}
+
+			return *this;
+		}
+
+		Iterator operator++(int)
+		{
+			Iterator temp(*this);
+			operator++();
+
+			return temp;
+		}
+
+		bool operator==(const Iterator& rhs) const
+		{
+			return vecIt == rhs.vecIt && listIt == rhs.listIt &&
+				vecItEnd == rhs.vecItEnd;
+		}
+
+		bool operator!=(const Iterator& rhs) const
+		{
+			return vecIt != rhs.vecIt || listIt != rhs.listIt ||
+				vecItEnd != rhs.vecItEnd;
+		}
+
+		HTLibrary::record<K, V>& operator*()
+		{
+			return *listIt;
+		}
+
+		const HTLibrary::record<K, V>& operator*() const
+		{
+			return *listIt;
+		}
+
+		HTLibrary::record<K, V>* operator->()
+		{
+			return Proxy<HTLibrary::record<K, V>>(*listIt);
+		}
+
+		HTLibrary::record<K, V>* operator->() const
+		{
+			return Proxy<HTLibrary::record<K, V>>(*listIt);
+		}
+
+	private:
+		typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecIt;
+		typename List<HTLibrary::record<K, V>>::Iterator listIt;
+		typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecItEnd;
+	};
+
 	//CTOR
 	chained_hash(int n = 10);
+
+	Iterator begin();
+	Iterator end();
 
 	//insert entry
 	bool insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
-	bool find(const K& key, HTLibrary::record<K, V>& result) const;
+	bool find(const K& key, HTLibrary::record<K, V>*& result) const;
 	//is this key present in table?
 	bool is_present(const K& key) const;
 	//number of keys in the table
@@ -55,6 +167,21 @@ inline chained_hash<K, V, H>::chained_hash(int n) :
 	_data(HTLibrary::get_prime(n))
 {
 
+}
+
+template<typename K, typename V, typename H>
+inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::begin()
+{
+	return Iterator(_data.begin(), _data.end());
+}
+
+template<typename K, typename V, typename H>
+inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::end()
+{
+	if (empty())
+		return Iterator(_data.begin(), _data.end());
+
+	return Iterator(_data.end(), _data.end());
 }
 
 template <typename K, typename V, typename H>
@@ -91,7 +218,7 @@ inline bool chained_hash<K, V, H>::remove(const K& key)
 }
 
 template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& result) const
+inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>*& result) const
 {
 	int index = hasher(key) % _data.size();
 	auto it = find_node(key);
@@ -99,7 +226,7 @@ inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& r
 	if (!it)
 		return false;
 
-	result = *it;
+	result = it.operator->();
 
 	return true;
 }

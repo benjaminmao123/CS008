@@ -103,6 +103,12 @@ public:
             return temp;
         }
 
+        //casting operator: true if _ptr not NULL
+        operator bool() const
+        {
+            return ptr;
+        }
+
     private:
         T *ptr;
     };
