@@ -44,7 +44,7 @@ private:
 	void expand_table();
 
 	//table chains
-	std::vector<List<HTLibrary::record<K, V>>> _data;
+	Vector<List<HTLibrary::record<K, V>>> _data;
 	//number of keys in the table
 	int total_records;
 };
@@ -122,7 +122,7 @@ inline typename List<HTLibrary::record<K, V>>::Iterator chained_hash<K, V, H>::f
 template <typename K, typename V, typename H>
 inline void chained_hash<K, V, H>::expand_table()
 {
-	std::vector<List<HTLibrary::record<K, V>>> tempTable(compute_capacity());
+	Vector<List<HTLibrary::record<K, V>>> tempTable(compute_capacity());
 
 	_data.swap(tempTable);
 	total_records = 0;

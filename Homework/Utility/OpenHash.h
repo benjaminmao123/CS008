@@ -65,9 +65,9 @@ public:
 	}
 };
 
-template <typename K, typename V, typename H = HTLibrary::Hash<K>, 
+template <typename K, typename V, typename H = HTLibrary::Hash<K>,
 	typename H2 = HTLibrary::Hash2<K>>
-class open_hash
+	class open_hash
 {
 public:
 	//CTOR
