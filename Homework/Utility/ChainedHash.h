@@ -18,7 +18,7 @@ public:
 	chained_hash(int n = 10);
 
 	//insert entry
-	bool insert(const HTLibrary::record<K, V>& entry);
+	bool insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
@@ -58,12 +58,13 @@ inline chained_hash<K, V, H>::chained_hash(int n) :
 }
 
 template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::insert(const HTLibrary::record<K, V>& entry)
+inline bool chained_hash<K, V, H>::insert(const K& key, const V& value)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
 
-	int index = hasher(entry._key) % _data.size();
+	int index = hasher(key) % _data.size();
+	HTLibrary::record<K, V> entry(key, value);
 
 	if (_data[index].Search(entry))
 		return false;
@@ -129,7 +130,7 @@ inline void chained_hash<K, V, H>::expand_table()
 
 	for (const auto& list : tempTable)
 		for (const auto& item : list)
-			insert(item);
+			insert(item._key, item._value);
 }
 
 template <typename T, typename U>

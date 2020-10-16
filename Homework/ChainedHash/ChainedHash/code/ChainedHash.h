@@ -18,11 +18,11 @@ public:
 	chained_hash(int n = 10);
 
 	//insert entry
-	bool insert(const HTLibrary::record<K, V> &entry);
+	bool insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
-	bool find(const K& key, HTLibrary::record<K, V> &result) const;
+	bool find(const K& key, HTLibrary::record<K, V>& result) const;
 	//is this key present in table?
 	bool is_present(const K& key) const;
 	//number of keys in the table
@@ -31,7 +31,7 @@ public:
 
 	//print entire table with keys, etc.
 	template <typename T, typename U>
-	friend std::ostream &operator<<(std::ostream &outs, const chained_hash<T, U> &h);
+	friend std::ostream& operator<<(std::ostream& outs, const chained_hash<T, U>& h);
 
 private:
 	//hash function
@@ -44,7 +44,7 @@ private:
 	void expand_table();
 
 	//table chains
-	std::vector<List<HTLibrary::record<K, V>>> _data;
+	Vector<List<HTLibrary::record<K, V>>> _data;
 	//number of keys in the table
 	int total_records;
 };
@@ -54,15 +54,17 @@ inline chained_hash<K, V, H>::chained_hash(int n) :
 	total_records(0),
 	_data(HTLibrary::get_prime(n))
 {
+
 }
 
 template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::insert(const HTLibrary::record<K, V> &entry)
+inline bool chained_hash<K, V, H>::insert(const K& key, const V& value)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
 
-	int index = hasher(entry._key) % _data.size();
+	int index = hasher(key) % _data.size();
+	HTLibrary::record<K, V> entry(key, value);
 
 	if (_data[index].Search(entry))
 		return false;
@@ -89,7 +91,7 @@ inline bool chained_hash<K, V, H>::remove(const K& key)
 }
 
 template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V> &result) const
+inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>& result) const
 {
 	int index = hasher(key) % _data.size();
 	auto it = find_node(key);
@@ -121,20 +123,20 @@ inline typename List<HTLibrary::record<K, V>>::Iterator chained_hash<K, V, H>::f
 template <typename K, typename V, typename H>
 inline void chained_hash<K, V, H>::expand_table()
 {
-	std::vector<List<HTLibrary::record<K, V>>> tempTable(compute_capacity());
+	Vector<List<HTLibrary::record<K, V>>> tempTable(compute_capacity());
 
 	_data.swap(tempTable);
 	total_records = 0;
 
-	for (const auto &list : tempTable)
-		for (const auto &item : list)
-			insert(item);
+	for (const auto& list : tempTable)
+		for (const auto& item : list)
+			insert(item._key, item._value);
 }
 
 template <typename T, typename U>
-inline std::ostream &operator<<(std::ostream &outs, const chained_hash<T, U> &h)
+inline std::ostream& operator<<(std::ostream& outs, const chained_hash<T, U>& h)
 {
-	auto NumDigits = [](int i) 
+	auto NumDigits = [](int i)
 	{
 		return i > 0 ? (int)log10((double)i) + 1 : 1;
 	};
@@ -142,7 +144,7 @@ inline std::ostream &operator<<(std::ostream &outs, const chained_hash<T, U> &h)
 	for (unsigned int i = 0; i < h._data.size(); ++i)
 	{
 		outs << "[" << std::setfill('0') << std::setw(NumDigits(h._data.size())) << i << "]"
-			 << " " << h._data[i] << std::endl;
+			<< " " << h._data[i] << std::endl;
 	}
 
 	return outs;

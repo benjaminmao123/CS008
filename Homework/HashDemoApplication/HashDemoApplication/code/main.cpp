@@ -88,7 +88,7 @@ void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& typ
 			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
-			ht.insert(rec);
+			ht.insert(key, value);
 			break;
 		}
 		case 'i':
@@ -103,7 +103,7 @@ void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& typ
 			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
-			ht.insert(rec);
+			ht.insert(key, value);
 			break;
 		}
 		case 'd':
@@ -181,7 +181,7 @@ void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& 
 			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
-			ht.insert(rec);
+			ht.insert(key, value);
 			break;
 		}
 		case 'i':
@@ -196,7 +196,7 @@ void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& 
 			HTLibrary::record<int, int> rec(key, value);
 			std::cout << "Insert: " << rec << std::endl;
 
-			ht.insert(rec);
+			ht.insert(key, value);
 			break;
 		}
 		case 'd':
@@ -260,7 +260,7 @@ void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std:
 		records.push_back(HTLibrary::record<int, int>(dist(rd), dist(rd)));
 
 	for (const auto& i : records)
-		ht.insert(i);
+		ht.insert(i._key, i._value);
 
 	std::cout << "********************************************************************************" << std::endl;
 	std::cout << "R A N D O M   H A S H   T E S T : " << type << std::endl;
@@ -301,7 +301,7 @@ void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const s
 		records.push_back(HTLibrary::record<int, int>(dist(rd), dist(rd)));
 
 	for (const auto& i : records)
-		ht.insert(i);
+		ht.insert(i._key, i._value);
 
 	std::cout << "********************************************************************************" << std::endl;
 	std::cout << "R A N D O M   H A S H   T E S T : " << type << std::endl;

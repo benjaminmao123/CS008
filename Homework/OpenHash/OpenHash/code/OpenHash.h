@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma once
+
 #include <iostream>
 #include <cmath>
 #include <functional>
@@ -72,7 +74,7 @@ public:
 	open_hash(const ResolutionFunction& res, int n = 10);
 
 	//insert entry
-	bool insert(const HTLibrary::record<K, V>& entry);
+	bool insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
@@ -131,10 +133,12 @@ inline open_hash<K, V, H, H2>::open_hash(const ResolutionFunction& res, int n) :
 }
 
 template <typename K, typename V, typename H, typename H2>
-inline bool open_hash<K, V, H, H2>::insert(const HTLibrary::record<K, V>& entry)
+inline bool open_hash<K, V, H, H2>::insert(const K& key, const V& value)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
+
+	HTLibrary::record<K, V> entry(key, value);
 
 	int actualIndex = hasher(entry._key) % _data.size();
 	int index = get_free_index(entry._key);
@@ -249,7 +253,7 @@ inline void open_hash<K, V, H, H2>::expand_table()
 	for (int i = 0; i < tempTable.size(); ++i)
 	{
 		if (tempStatus[i] == BucketStatus::OCCUPIED)
-			insert(tempTable[i]);
+			insert(tempTable[i]._key, tempTable[i]._value);
 	}
 }
 
