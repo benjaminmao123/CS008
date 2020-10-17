@@ -16,8 +16,9 @@
 
 template <typename K, typename V>
 bool operator<(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second);
-void quickSort(Vector<HTLibrary::record<std::string, int>>& arr, int low, int high);
-void printWordFrequencies(chained_hash<std::string, int>& ht, unsigned int n);
+template <typename T>
+void quickSort(T& arr, int low, int high);
+void printWordFrequencies(chained_hash<std::string, int>& ht, int n);
 
 int main()
 {
@@ -45,9 +46,19 @@ int main()
 	return 0;
 }
 
-void quickSort(Vector<HTLibrary::record<std::string, int>>& arr, int low, int high)
+template<typename K, typename V>
+bool operator<(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second)
 {
-	auto partition = [](Vector<HTLibrary::record<std::string, int>>& arr, int low, int high)
+	if (first._value == second._value)
+		return first._key < second._key;
+
+	return first._value > second._value;
+}
+
+template <typename T>
+void quickSort(T& arr, int low, int high)
+{
+	auto partition = [](T& arr, int low, int high)
 	{
 		auto pivot = arr[high];
 		int i = (low - 1);
@@ -72,7 +83,7 @@ void quickSort(Vector<HTLibrary::record<std::string, int>>& arr, int low, int hi
 	}
 }
 
-void printWordFrequencies(chained_hash<std::string, int>& ht, unsigned int n)
+void printWordFrequencies(chained_hash<std::string, int>& ht, int n)
 {
 	Vector<HTLibrary::record<std::string, int>> vec;
 
@@ -83,20 +94,11 @@ void printWordFrequencies(chained_hash<std::string, int>& ht, unsigned int n)
 
 	std::cout << "Top " << n << " words: " << std::endl;
 
-	for (unsigned int i = 0; i < n && i < vec.size(); ++i)
+	for (int i = 0; i < n && i < vec.size(); ++i)
 		std::cout << i + 1 << ". " << vec[i] << std::endl;
 
 	std::cout << "\nLast " << n << " words: " << std::endl;
 
-	for (unsigned int i = 0; i < n && i < vec.size(); ++i)
+	for (int i = 0; i < n && i < vec.size(); ++i)
 		std::cout << i + 1 << ". " << vec.pop_back() << std::endl;
-}
-
-template<typename K, typename V>
-bool operator<(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second)
-{
-	if (first._value == second._value)
-		return first._key < second._key;
-
-	return first._value > second._value;
 }
