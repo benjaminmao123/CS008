@@ -85,6 +85,11 @@ void quickSort(T& arr, int low, int high)
 
 void printWordFrequencies(chained_hash<std::string, int>& ht, int n)
 {
+	auto NumDigits = [](int i)
+	{
+		return i > 0 ? (int)log10((double)i) + 1 : 1;
+	};
+
 	Vector<HTLibrary::record<std::string, int>> vec;
 
 	for (const auto& i : ht)
@@ -95,10 +100,22 @@ void printWordFrequencies(chained_hash<std::string, int>& ht, int n)
 	std::cout << "Top " << n << " words: " << std::endl;
 
 	for (int i = 0; i < n && i < vec.size(); ++i)
-		std::cout << i + 1 << ". " << vec[i] << std::endl;
+	{
+		std::cout << std::setfill('0') << std::setw(NumDigits(n)) << i + 1;
+		std::cout << std::setfill(' ') << ". " << std::setw(10) << std::right << vec[i]._key;
+		std::cout << std::setw(10) << std::right << vec[i]._value << std::endl;
+	}
 
 	std::cout << "\nLast " << n << " words: " << std::endl;
 
-	for (int i = 0; i < n && i < vec.size(); ++i)
-		std::cout << i + 1 << ". " << vec.pop_back() << std::endl;
+	int i;
+
+	for (i = 0; i < vec.size() - n; ++i);
+
+	for (int j = 0; i < vec.size(); ++i, ++j)
+	{
+		std::cout << std::setfill('0') << std::setw(NumDigits(n)) << j + 1;
+		std::cout << std::setfill(' ') << ". " << std::setw(15) << std::right << vec[i]._key;
+		std::cout << std::setw(10) << std::right << vec[i]._value << std::endl;
+	}
 }
