@@ -24,7 +24,7 @@ int main()
 void Test()
 {
 	char input = '\0';
-	chained_hash<int> ht;
+	chained_hash<int, int> ht;
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 1000);
@@ -42,7 +42,7 @@ void Test()
 			std::cout << "Insert: " << "(" << key << ", " 
 				      << value << ")" << std::endl;
 
-			ht.insert(HTLibrary::record<int>(key, value));
+			ht.insert(key, value);
 			break;
 		}
 		case 'i':
@@ -55,7 +55,7 @@ void Test()
 			std::cin >> value;
 			std::cout << "Insert: " << "(" << key << ", "
 				<< value << ")" << std::endl;
-			ht.insert(HTLibrary::record<int>(key, value));
+			ht.insert(key, value);
 			break;
 		}
 		case 'd':

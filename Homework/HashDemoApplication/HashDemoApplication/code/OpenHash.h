@@ -71,16 +71,16 @@ class open_hash
 {
 public:
 	//CTOR
-	open_hash(const ResolutionFunction& res, int n = 10);
+	open_hash(const ResolutionFunction& res = DoubleHashing(), int n = 10);
 
 	//insert entry
 	bool insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
-	bool find(const K& key, HTLibrary::record<K, V>& result) const;
+	bool find(const K& key, HTLibrary::record<K, V>*& result);
 	//is this key present in table?
-	bool is_present(const K& key) const;
+	bool is_present(const K& key);
 	//number of keys in the table
 	constexpr int size() const { return total_records; }
 	constexpr bool empty() const { return !total_records; }
@@ -169,22 +169,22 @@ inline bool open_hash<K, V, H, H2>::remove(const K& key)
 }
 
 template <typename K, typename V, typename H, typename H2>
-inline bool open_hash<K, V, H, H2>::find(const K& key, HTLibrary::record<K, V>& result) const
+inline bool open_hash<K, V, H, H2>::find(const K& key, HTLibrary::record<K, V>*& result)
 {
 	int index = find_item(key);
 
 	if (index == -1)
 		return false;
 
-	result = _data[index];
+	result = &_data.at(index);
 
 	return true;
 }
 
 template <typename K, typename V, typename H, typename H2>
-inline bool open_hash<K, V, H, H2>::is_present(const K& key) const
+inline bool open_hash<K, V, H, H2>::is_present(const K& key)
 {
-	HTLibrary::record<K, V> res;
+	HTLibrary::record<K, V>* res = nullptr;
 
 	return find(key, res);
 }

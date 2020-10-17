@@ -21,14 +21,10 @@ int main()
     const bool INTERACTIVE_OPEN = true;
     const bool INTERACTIVE_CHAINED = true;
 
-	LinearProbing lp;
-	QuadraticProbing qp;
-	DoubleHashing dh;
-
     if (INTERACTIVE_OPEN)
     {
         std::cout << "-------  INTERACTIVE TESTS ---------------------------" << std::endl;
-        open_hash<int, int> open(dh);
+        open_hash<int, int> open;
         test_hash_table_interactive(open, "open_hash");
     }
 
@@ -52,7 +48,7 @@ int main()
     {
         //----------- RANDOM TEST ------------------------------
         //. . . . . .  Simple Hash Table . . . . . . . . . . .;
-        open_hash<int, int> h_table(dh);
+        open_hash<int, int> h_table;
         test_hash_table_random(h_table, 500, "open_hash<int, int>");
         std::cout << h_table << std::endl;
     }
@@ -127,10 +123,10 @@ void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& typ
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			HTLibrary::record<int, int> rec(0);
+			HTLibrary::record<int, int>* rec = nullptr;
 
 			if (ht.find(key, rec))
-				std::cout << "Found: " << rec << std::endl;
+				std::cout << "Found: " << *rec << std::endl;
 			else
 				std::cout << key << " not found." << std::endl;
 			break;

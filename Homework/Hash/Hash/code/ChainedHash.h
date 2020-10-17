@@ -21,11 +21,9 @@ public:
 		class Proxy
 		{
 		public:
-			Proxy(const T& value)
-				: value(value)
-			{
-
-			}
+			Proxy(const T& value) :
+				value(value)
+			{ }
 
 			T* operator->()
 			{
@@ -37,10 +35,7 @@ public:
 		};
 
 	public:
-		Iterator()
-		{
-
-		}
+		Iterator() { }
 
 		Iterator(typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecIt,
 			typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecItEnd)
@@ -56,12 +51,11 @@ public:
 			}
 		}
 
-		Iterator(const Iterator& other)
-			: vecIt(other.vecIt), listIt(other.listIt),
+		Iterator(const Iterator& other) :
+			vecIt(other.vecIt), 
+			listIt(other.listIt),
 			vecItEnd(other.vecItEnd)
-		{
-
-		}
+		{ }
 
 		Iterator& operator++()
 		{
