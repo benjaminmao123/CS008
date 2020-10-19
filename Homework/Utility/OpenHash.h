@@ -86,6 +86,9 @@ public:
 	constexpr bool empty() const { return !total_records; }
 	constexpr int get_collisions() const { return numCollisions; }
 
+	V& operator[](const K& key);
+	const V& operator[](const K& key) const;
+
 	void swap(open_hash& other);
 
 	//print entire table with keys, etc.
@@ -184,9 +187,37 @@ inline bool open_hash<K, V, H, H2>::find(const K& key, HTLibrary::record<K, V>*&
 template <typename K, typename V, typename H, typename H2>
 inline bool open_hash<K, V, H, H2>::is_present(const K& key)
 {
-	HTLibrary::record<K, V>* res = nullptr;
+	HTLibrary::record<K, V>* res;
 
 	return find(key, res);
+}
+
+template<typename K, typename V, typename H, typename H2>
+inline V& open_hash<K, V, H, H2>::operator[](const K& key)
+{
+	HTLibrary::record<K, V>* res;
+
+	if (!find(key, res))
+	{
+		insert(key, V());
+		find(key, res);
+	}
+
+	return res->_value;
+}
+
+template<typename K, typename V, typename H, typename H2>
+inline const V& open_hash<K, V, H, H2>::operator[](const K& key) const
+{
+	HTLibrary::record<K, V>* res;
+
+	if (!find(key, res))
+	{
+		insert(key, V());
+		find(key, res);
+	}
+
+	return res->_value;
 }
 
 template <typename K, typename V, typename H, typename H2>

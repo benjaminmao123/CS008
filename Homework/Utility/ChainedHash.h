@@ -21,10 +21,9 @@ public:
 		class Proxy
 		{
 		public:
-			Proxy(const T& value)
-				: value(value)
+			Proxy(const T& value) :
+				value(value)
 			{
-
 			}
 
 			T* operator->()
@@ -37,10 +36,7 @@ public:
 		};
 
 	public:
-		Iterator()
-		{
-
-		}
+		Iterator() {}
 
 		Iterator(typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecIt,
 			typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecItEnd)
@@ -56,11 +52,11 @@ public:
 			}
 		}
 
-		Iterator(const Iterator& other)
-			: vecIt(other.vecIt), listIt(other.listIt),
+		Iterator(const Iterator& other) :
+			vecIt(other.vecIt),
+			listIt(other.listIt),
 			vecItEnd(other.vecItEnd)
 		{
-
 		}
 
 		Iterator& operator++()
@@ -141,6 +137,9 @@ public:
 	constexpr int size() const { return total_records; }
 	constexpr bool empty() const { return !total_records; }
 
+	V& operator[](const K& key);
+	const V& operator[](const K& key) const;
+
 	//print entire table with keys, etc.
 	template <typename T, typename U>
 	friend std::ostream& operator<<(std::ostream& outs, const chained_hash<T, U>& h);
@@ -191,10 +190,12 @@ inline bool chained_hash<K, V, H>::insert(const K& key, const V& value)
 		expand_table();
 
 	int index = hasher(key) % _data.size();
-	HTLibrary::record<K, V> entry(key, value);
+	HTLibrary::record<K, V>* res = nullptr;
 
-	if (_data[index].Search(entry))
+	if (find(key, res))
 		return false;
+
+	HTLibrary::record<K, V> entry(key, value);
 
 	_data[index].InsertAfter(entry, _data[index].begin());
 	++total_records;
@@ -220,7 +221,6 @@ inline bool chained_hash<K, V, H>::remove(const K& key)
 template <typename K, typename V, typename H>
 inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>*& result) const
 {
-	int index = hasher(key) % _data.size();
 	auto it = find_node(key);
 
 	if (!it)
@@ -234,9 +234,37 @@ inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>*& 
 template <typename K, typename V, typename H>
 inline bool chained_hash<K, V, H>::is_present(const K& key) const
 {
-	HTLibrary::record<K, V> res;
+	HTLibrary::record<K, V>* res;
 
 	return find(key, res);
+}
+
+template<typename K, typename V, typename H>
+inline V& chained_hash<K, V, H>::operator[](const K& key)
+{
+	HTLibrary::record<K, V>* res;
+
+	if (!find(key, res))
+	{
+		insert(key, V());
+		find(key, res);
+	}
+
+	return res->_value;
+}
+
+template<typename K, typename V, typename H>
+inline const V& chained_hash<K, V, H>::operator[](const K& key) const
+{
+	HTLibrary::record<K, V>* res;
+
+	if (!find(key, res))
+	{
+		insert(key, V());
+		find(key, res);
+	}
+
+	return res->_value;
 }
 
 template <typename K, typename V, typename H>

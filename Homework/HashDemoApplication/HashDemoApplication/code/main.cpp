@@ -3,7 +3,6 @@
 #include <cctype>
 #include <string>
 #include <typeinfo>
-#include <unordered_map>
 
 #include "ChainedHash.h"
 #include "OpenHash.h"
@@ -15,7 +14,6 @@ void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const s
 
 int main()
 {
-    std::cout << std::endl << std::endl << std::endl << "----------------------" << std::endl << std::endl << std::endl;
     const bool RANDOM_CHAINED = true;
     const bool RANDOM_OPEN = true;
     const bool INTERACTIVE_OPEN = true;
@@ -65,7 +63,7 @@ void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& typ
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 1000);
 
-	std::cout << typeid(ht).name() << std::endl;
+	std::cout << "int:int" << std::endl;
 
 	while (input != 'x')
 	{
@@ -158,7 +156,7 @@ void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& 
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(0, 1000);
 
-	std::cout << typeid(ht).name() << std::endl;
+	std::cout << "int:int" << std::endl;
 
 	while (input != 'x')
 	{
@@ -216,7 +214,7 @@ void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& 
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			HTLibrary::record<int, int> rec(0);
+			HTLibrary::record<int, int>* rec;
 
 			if (ht.find(key, rec))
 				std::cout << "Found: " << rec << std::endl;
@@ -253,10 +251,11 @@ void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std:
 	Vector<HTLibrary::record<int, int>> records;
 
 	for (int i = 0; i < numElements; ++i)
-		records.push_back(HTLibrary::record<int, int>(dist(rd), dist(rd)));
-
-	for (const auto& i : records)
-		ht.insert(i._key, i._value);
+	{
+		HTLibrary::record<int, int> rec(dist(rd), dist(rd));
+		records.push_back(rec);
+		ht.insert(rec._key, rec._value);
+	}
 
 	std::cout << "********************************************************************************" << std::endl;
 	std::cout << "R A N D O M   H A S H   T E S T : " << type << std::endl;
@@ -280,7 +279,7 @@ void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std:
 			++notFoundRecords;
 	}
 
-	std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << std::endl;
+	std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
 
 	std::cout << "------------------ END RANDOM TEST ----------------------" << std::endl;
 }
@@ -294,10 +293,11 @@ void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const s
 	Vector<HTLibrary::record<int, int>> records;
 
 	for (int i = 0; i < numElements; ++i)
-		records.push_back(HTLibrary::record<int, int>(dist(rd), dist(rd)));
-
-	for (const auto& i : records)
-		ht.insert(i._key, i._value);
+	{
+		HTLibrary::record<int, int> rec(dist(rd), dist(rd));
+		records.push_back(rec);
+		ht.insert(rec._key, rec._value);
+	}
 
 	std::cout << "********************************************************************************" << std::endl;
 	std::cout << "R A N D O M   H A S H   T E S T : " << type << std::endl;
@@ -321,7 +321,7 @@ void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const s
 			++notFoundRecords;
 	}
 
-	std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << std::endl;
+	std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
 
 	std::cout << "------------------ END RANDOM TEST ----------------------" << std::endl;
 }
