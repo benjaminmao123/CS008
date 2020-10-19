@@ -57,6 +57,12 @@
     <ClInclude Include="code\z_work_report.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="code\Heap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\PriorityQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\main.cpp">

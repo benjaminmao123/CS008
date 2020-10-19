@@ -4,6 +4,7 @@
 #include <cmath>
 #include <functional>
 #include <iomanip>
+#include <memory>
 
 #include "IteratedList.h"
 #include "HTConstants.h"
@@ -16,39 +17,22 @@ class chained_hash
 public:
 	class Iterator
 	{
-	private:
-		template <typename T>
-		class Proxy
-		{
-		public:
-			Proxy(const T& value) :
-				value(value)
-			{
-			}
-
-			T* operator->()
-			{
-				return std::addressof(value);
-			}
-
-		private:
-			T value;
-		};
-
 	public:
 		Iterator() {}
 
 		Iterator(typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecIt,
-			typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecItEnd)
-			: vecIt(vecIt), vecItEnd(vecItEnd)
+			typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecItEnd,
+			typename List<HTLibrary::record<K, V>>::Iterator listIt =
+			typename List<HTLibrary::record<K, V>>::Iterator())
+			: vecIt(vecIt), vecItEnd(vecItEnd), listIt(listIt)
 		{
+			if (this->listIt == (*this->vecIt).end())
+				this->listIt = (*this->vecIt).begin();
 
-			listIt = (*vecIt).begin();
-
-			while (this->vecIt != this->vecItEnd && listIt == (*this->vecIt).end())
+			while (this->vecIt != this->vecItEnd && this->listIt == (*this->vecIt).end())
 			{
 				++this->vecIt;
-				listIt = (*this->vecIt).begin();
+				this->listIt = (*this->vecIt).begin();
 			}
 		}
 
@@ -61,13 +45,12 @@ public:
 
 		Iterator& operator++()
 		{
-			if (++listIt == (*vecIt).end())
+			++listIt;
+
+			while (vecIt != vecItEnd && listIt == (*vecIt).end())
 			{
-				while (vecIt != vecItEnd && listIt == (*vecIt).end())
-				{
-					++vecIt;
-					listIt = (*vecIt).begin();
-				}
+				++vecIt;
+				listIt = (*vecIt).begin();
 			}
 
 			return *this;
@@ -105,12 +88,12 @@ public:
 
 		HTLibrary::record<K, V>* operator->()
 		{
-			return Proxy<HTLibrary::record<K, V>>(*listIt);
+			return listIt.operator->();
 		}
 
-		HTLibrary::record<K, V>* operator->() const
+		const HTLibrary::record<K, V>* operator->() const
 		{
-			return Proxy<HTLibrary::record<K, V>>(*listIt);
+			return listIt.operator->();
 		}
 
 	private:
@@ -126,7 +109,7 @@ public:
 	Iterator end();
 
 	//insert entry
-	bool insert(const K& key, const V& value);
+	Iterator insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
@@ -184,7 +167,7 @@ inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::end()
 }
 
 template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::insert(const K& key, const V& value)
+inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::insert(const K& key, const V& value)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
@@ -193,14 +176,14 @@ inline bool chained_hash<K, V, H>::insert(const K& key, const V& value)
 	HTLibrary::record<K, V>* res = nullptr;
 
 	if (find(key, res))
-		return false;
+		return end();
 
 	HTLibrary::record<K, V> entry(key, value);
 
 	_data[index].InsertAfter(entry, _data[index].begin());
 	++total_records;
 
-	return true;
+	return Iterator(_data.begin() + index, _data.end(), _data[index].LastNode());
 }
 
 template <typename K, typename V, typename H>

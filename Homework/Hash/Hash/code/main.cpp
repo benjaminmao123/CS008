@@ -13,12 +13,11 @@
 
 #include "FTokenizer.h"
 #include "ChainedHash.h"
+#include "PriorityQueue.h"
 
 template <typename K, typename V>
-bool operator<(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second);
-template <typename T>
-void quickSort(T& arr, int low, int high);
-void printWordFrequencies(chained_hash<std::string, int>& ht, int n);
+bool operator>(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second);
+void printWordFrequencies(PQueue<HTLibrary::record<std::string, int>>& pq, int n);
 
 int main()
 {
@@ -32,22 +31,27 @@ int main()
 
 		if (t.type_string() == "ALPHA")
 		{
-			HTLibrary::record<std::string, int>* res = nullptr;
+			auto it = ht.find(t.token_str());
 
-			if (!ht.find(t.token_str(), res))
+			if (!it)
 				ht.insert(t.token_str(), 1);
 			else
-				++res->_value;
+				++it->_value;
 		}
 	}
 
-	printWordFrequencies(ht, 100);
+	PQueue<HTLibrary::record<std::string, int>> pq;
+
+	for (const auto& i : ht)
+		pq.insert(i);
+
+	printWordFrequencies(pq, 100);
 
 	return 0;
 }
 
 template<typename K, typename V>
-bool operator<(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second)
+bool operator>(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, V>& second)
 {
 	if (first._value == second._value)
 		return first._key < second._key;
@@ -55,35 +59,7 @@ bool operator<(const HTLibrary::record<K, V>& first, const HTLibrary::record<K, 
 	return first._value > second._value;
 }
 
-template <typename T>
-void quickSort(T& arr, int low, int high)
-{
-	auto partition = [](T& arr, int low, int high)
-	{
-		auto pivot = arr[high];
-		int i = (low - 1);
-
-		for (int j = low; j <= high - 1; ++j)
-		{
-			if (arr[j] < pivot)
-				std::swap(arr[++i], arr[j]);
-		}
-
-		std::swap(arr[i + 1], arr[high]);
-
-		return (i + 1);
-	};
-
-	if (low < high)
-	{
-		int pi = partition(arr, low, high);
-
-		quickSort(arr, low, pi - 1);
-		quickSort(arr, pi + 1, high);
-	}
-}
-
-void printWordFrequencies(chained_hash<std::string, int>& ht, int n)
+void printWordFrequencies(PQueue<HTLibrary::record<std::string, int>>& pq, int n)
 {
 	auto NumDigits = [](int i)
 	{
@@ -92,10 +68,8 @@ void printWordFrequencies(chained_hash<std::string, int>& ht, int n)
 
 	Vector<HTLibrary::record<std::string, int>> vec;
 
-	for (const auto& i : ht)
-		vec.push_back(i);
-
-	quickSort(vec, 0, vec.size() - 1);
+	while (!pq.is_empty())
+		vec.push_back(pq.pop());
 
 	std::cout << "Top " << n << " words: " << std::endl;
 

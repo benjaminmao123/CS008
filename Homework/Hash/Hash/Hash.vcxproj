@@ -142,10 +142,12 @@
     <ClInclude Include="code\ChainedHash.h" />
     <ClInclude Include="code\FTConstants.h" />
     <ClInclude Include="code\FTokenizer.h" />
+    <ClInclude Include="code\Heap.h" />
     <ClInclude Include="code\HTConstants.h" />
     <ClInclude Include="code\HTLibrary.h" />
     <ClInclude Include="code\IteratedList.h" />
     <ClInclude Include="code\LinkedListLibrary.h" />
+    <ClInclude Include="code\PriorityQueue.h" />
     <ClInclude Include="code\SMConstants.h" />
     <ClInclude Include="code\SMLibrary.h" />
     <ClInclude Include="code\STokenizer.h" />

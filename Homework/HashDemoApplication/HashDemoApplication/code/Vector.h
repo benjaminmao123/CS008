@@ -79,7 +79,7 @@ public:
             return *this;
         }
 
-        Iterator operator--(int offset)
+        Iterator operator--(int)
         {
             Iterator temp(*this);
             operator--();
