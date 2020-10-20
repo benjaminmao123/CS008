@@ -21,7 +21,7 @@ void printWordFrequencies(PQueue<HTLibrary::record<std::string, int>>& pq, int n
 
 int main()
 {
-	FTokenizer ftk("code/solitude2.txt");
+	FTokenizer ftk("code/solitude.txt");
 	chained_hash<std::string, int> ht;
 
 	while (ftk.more())
