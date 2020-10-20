@@ -121,10 +121,10 @@ void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& typ
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			HTLibrary::record<int, int>* rec = nullptr;
+			auto it = ht.find(key);
 
-			if (ht.find(key, rec))
-				std::cout << "Found: " << *rec << std::endl;
+			if (it)
+				std::cout << "Found: " << *it << std::endl;
 			else
 				std::cout << key << " not found." << std::endl;
 			break;
@@ -214,10 +214,10 @@ void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& 
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			HTLibrary::record<int, int>* rec;
+			auto it = ht.find(key);
 
-			if (ht.find(key, rec))
-				std::cout << "Found: " << rec << std::endl;
+			if (it)
+				std::cout << "Found: " << *it << std::endl;
 			else
 				std::cout << key << " not found." << std::endl;
 			break;

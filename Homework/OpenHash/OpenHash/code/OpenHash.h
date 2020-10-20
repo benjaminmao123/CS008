@@ -69,16 +69,110 @@ template <typename K, typename V, typename H = HTLibrary::Hash<K>,
 	typename H2 = HTLibrary::Hash2<K>>
 class open_hash
 {
+private:
+	enum class BucketStatus
+	{
+		EMPTY,
+		OCCUPIED,
+		DELETED
+	};
+
 public:
+	class Iterator
+	{
+	public:
+		Iterator() {}
+
+		Iterator(typename Vector<HTLibrary::record<K, V>>::Iterator vecIt, 
+			typename Vector<BucketStatus>::Iterator bIt)
+			: vecIt(vecIt), bIt(bIt)
+		{
+			
+		}
+
+		Iterator(const Iterator& other) :
+			vecIt(other.vecIt),
+			bIt(other.bIt)
+		{
+		}
+
+		Iterator& operator++()
+		{
+			++bIt;
+			++vecIt;
+
+			while ((vecIt && bIt) && (*bIt == BucketStatus::EMPTY || *bIt == BucketStatus::DELETED))
+			{
+				++bIt;
+				++vecIt;
+			}
+
+			return *this;
+		}
+
+		Iterator operator++(int)
+		{
+			Iterator temp(*this);
+			operator++();
+
+			return temp;
+		}
+
+		bool operator==(const Iterator& rhs) const
+		{
+			return vecIt == rhs.vecIt && bIt == rhs.bIt;
+		}
+
+		bool operator!=(const Iterator& rhs) const
+		{
+			return vecIt != rhs.vecIt || bIt != rhs.bIt;
+		}
+
+		HTLibrary::record<K, V>& operator*()
+		{
+			return *vecIt;
+		}
+
+		const HTLibrary::record<K, V>& operator*() const
+		{
+			return *vecIt;
+		}
+
+		HTLibrary::record<K, V>* operator->()
+		{
+			return vecIt.operator->();
+		}
+
+		const HTLibrary::record<K, V>* operator->() const
+		{
+			return vecIt.operator->();
+		}
+
+		operator bool() const
+		{
+			return (vecIt && bIt) && 
+				(*bIt != BucketStatus::EMPTY && *bIt != BucketStatus::DELETED);
+		}
+
+	private:
+		typename Vector<HTLibrary::record<K, V>>::Iterator vecIt;
+		typename Vector<BucketStatus>::Iterator bIt;
+	};
+
 	//CTOR
 	open_hash(const ResolutionFunction& res = DoubleHashing(), int n = 10);
 
+	Iterator begin();
+	Iterator end();
+	Iterator cbegin() const;
+	Iterator cend() const;
+
 	//insert entry
-	bool insert(const K& key, const V& value);
+	Iterator insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
-	bool find(const K& key, HTLibrary::record<K, V>*& result);
+	Iterator find(const K& key);
 	//is this key present in table?
 	bool is_present(const K& key);
 	//number of keys in the table
@@ -96,13 +190,6 @@ public:
 	friend std::ostream& operator<<(std::ostream& outs, const open_hash<T, U>& h);
 
 private:
-	enum class BucketStatus
-	{
-		EMPTY,
-		OCCUPIED,
-		DELETED
-	};
-
 	//hash function
 	H hasher;
 	H2 hasher2;
@@ -135,8 +222,32 @@ inline open_hash<K, V, H, H2>::open_hash(const ResolutionFunction& res, int n) :
 
 }
 
+template<typename K, typename V, typename H, typename H2>
+inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::begin()
+{
+	return Iterator(_data.begin(), status.begin());
+}
+
+template<typename K, typename V, typename H, typename H2>
+inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::end()
+{
+	return Iterator(_data.end(), status.end());
+}
+
+template<typename K, typename V, typename H, typename H2>
+inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::cbegin() const
+{
+	return Iterator(_data.cbegin(), status.cbegin());
+}
+
+template<typename K, typename V, typename H, typename H2>
+inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::cend() const
+{
+	return Iterator(_data.cend(), status.cend());
+}
+
 template <typename K, typename V, typename H, typename H2>
-inline bool open_hash<K, V, H, H2>::insert(const K& key, const V& value)
+inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::insert(const K& key, const V& value)
 {
 	if (load_factor() >= 0.75)
 		expand_table();
@@ -146,15 +257,12 @@ inline bool open_hash<K, V, H, H2>::insert(const K& key, const V& value)
 	int actualIndex = hasher(entry._key) % _data.size();
 	int index = get_free_index(entry._key);
 
-	if (index == -1)
-		return false;
-
 	_data[index] = entry;
 	_data[index].actualIndex = actualIndex;
 	status[index] = BucketStatus::OCCUPIED;
 	++total_records;
 
-	return true;
+	return Iterator(_data.begin() + index, status.begin() + index);
 }
 
 template <typename K, typename V, typename H, typename H2>
@@ -162,7 +270,7 @@ inline bool open_hash<K, V, H, H2>::remove(const K& key)
 {
 	int index = find_item(key);
 
-	if (index == -1)
+	if (index < 0)
 		return false;
 
 	status[index] = BucketStatus::DELETED;
@@ -172,52 +280,42 @@ inline bool open_hash<K, V, H, H2>::remove(const K& key)
 }
 
 template <typename K, typename V, typename H, typename H2>
-inline bool open_hash<K, V, H, H2>::find(const K& key, HTLibrary::record<K, V>*& result)
+inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::find(const K& key)
 {
 	int index = find_item(key);
 
-	if (index == -1)
-		return false;
+	if (index < 0)
+		return end();
 
-	result = &_data.at(index);
-
-	return true;
+	return Iterator(_data.begin() + index, status.begin() + index);
 }
 
 template <typename K, typename V, typename H, typename H2>
 inline bool open_hash<K, V, H, H2>::is_present(const K& key)
 {
-	HTLibrary::record<K, V>* res;
-
-	return find(key, res);
+	return find(key);
 }
 
 template<typename K, typename V, typename H, typename H2>
 inline V& open_hash<K, V, H, H2>::operator[](const K& key)
 {
-	HTLibrary::record<K, V>* res;
+	auto it = find(key);
 
-	if (!find(key, res))
-	{
-		insert(key, V());
-		find(key, res);
-	}
+	if (!it)
+		return insert(key, V())->_value;
 
-	return res->_value;
+	return it->_value;
 }
 
 template<typename K, typename V, typename H, typename H2>
 inline const V& open_hash<K, V, H, H2>::operator[](const K& key) const
 {
-	HTLibrary::record<K, V>* res;
+	auto it = find(key);
 
-	if (!find(key, res))
-	{
-		insert(key, V());
-		find(key, res);
-	}
+	if (!it)
+		return insert(key, V())->_value;
 
-	return res->_value;
+	return it->_value;
 }
 
 template <typename K, typename V, typename H, typename H2>
@@ -261,7 +359,7 @@ inline int open_hash<K, V, H, H2>::get_free_index(const K& key)
 	while (status[finalIndex] == BucketStatus::OCCUPIED)
 	{
 		if (_data[finalIndex]._key == key)
-			return -1;
+			return finalIndex;
 
 		++numCollisions;
 

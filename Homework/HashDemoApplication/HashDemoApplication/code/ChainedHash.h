@@ -96,6 +96,11 @@ public:
 			return listIt.operator->();
 		}
 
+		operator bool() const
+		{
+			return vecIt != vecItEnd || listIt != (*vecIt).end();
+		}
+
 	private:
 		typename Vector<List<HTLibrary::record<K, V>>>::Iterator vecIt;
 		typename List<HTLibrary::record<K, V>>::Iterator listIt;
@@ -107,13 +112,15 @@ public:
 
 	Iterator begin();
 	Iterator end();
+	Iterator cbegin() const;
+	Iterator cend() const;
 
 	//insert entry
 	Iterator insert(const K& key, const V& value);
 	//remove this key
 	bool remove(const K& key);
 	//result <- record with key
-	bool find(const K& key, HTLibrary::record<K, V>*& result) const;
+	Iterator find(const K& key) const;
 	//is this key present in table?
 	bool is_present(const K& key) const;
 	//number of keys in the table
@@ -166,6 +173,21 @@ inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::end()
 	return Iterator(_data.end(), _data.end());
 }
 
+template<typename K, typename V, typename H>
+inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::cbegin() const
+{
+	return Iterator(_data.cbegin(), _data.cend());
+}
+
+template<typename K, typename V, typename H>
+inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::cend() const
+{
+	if (empty())
+		return Iterator(_data.cbegin(), _data.cend());
+
+	return Iterator(_data.cend(), _data.cend());
+}
+
 template <typename K, typename V, typename H>
 inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::insert(const K& key, const V& value)
 {
@@ -173,10 +195,10 @@ inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::insert(co
 		expand_table();
 
 	int index = hasher(key) % _data.size();
-	HTLibrary::record<K, V>* res = nullptr;
+	auto it = find(key);
 
-	if (find(key, res))
-		return end();
+	if (it)
+		return it;
 
 	HTLibrary::record<K, V> entry(key, value);
 
@@ -202,52 +224,34 @@ inline bool chained_hash<K, V, H>::remove(const K& key)
 }
 
 template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::find(const K& key, HTLibrary::record<K, V>*& result) const
+inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::find(const K& key) const
 {
 	auto it = find_node(key);
 
 	if (!it)
-		return false;
+		return cend();
 
-	result = it.operator->();
+	int index = hasher(key);
 
-	return true;
+	return Iterator(_data.cbegin() + index, _data.cend(), it);
 }
 
 template <typename K, typename V, typename H>
 inline bool chained_hash<K, V, H>::is_present(const K& key) const
 {
-	HTLibrary::record<K, V>* res;
-
-	return find(key, res);
+	return find(key);
 }
 
 template<typename K, typename V, typename H>
 inline V& chained_hash<K, V, H>::operator[](const K& key)
 {
-	HTLibrary::record<K, V>* res;
-
-	if (!find(key, res))
-	{
-		insert(key, V());
-		find(key, res);
-	}
-
-	return res->_value;
+	return insert(key, V())->_value;
 }
 
 template<typename K, typename V, typename H>
 inline const V& chained_hash<K, V, H>::operator[](const K& key) const
 {
-	HTLibrary::record<K, V>* res;
-
-	if (!find(key, res))
-	{
-		insert(key, V());
-		find(key, res);
-	}
-
-	return res->_value;
+	return insert(key, V())->_value;
 }
 
 template <typename K, typename V, typename H>

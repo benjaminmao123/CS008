@@ -239,37 +239,19 @@ inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::find(cons
 template <typename K, typename V, typename H>
 inline bool chained_hash<K, V, H>::is_present(const K& key) const
 {
-	HTLibrary::record<K, V>* res;
-
-	return find(key, res);
+	return find(key);
 }
 
 template<typename K, typename V, typename H>
 inline V& chained_hash<K, V, H>::operator[](const K& key)
 {
-	HTLibrary::record<K, V>* res;
-
-	if (!find(key, res))
-	{
-		insert(key, V());
-		find(key, res);
-	}
-
-	return res->_value;
+	return insert(key, V())->_value;
 }
 
 template<typename K, typename V, typename H>
 inline const V& chained_hash<K, V, H>::operator[](const K& key) const
 {
-	HTLibrary::record<K, V>* res;
-
-	if (!find(key, res))
-	{
-		insert(key, V());
-		find(key, res);
-	}
-
-	return res->_value;
+	return insert(key, V())->_value;
 }
 
 template <typename K, typename V, typename H>
