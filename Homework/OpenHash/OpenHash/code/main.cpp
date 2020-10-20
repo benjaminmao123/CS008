@@ -79,7 +79,7 @@ void Test()
 			std::cout << "Search: ";
 			std::cin >> item;
 
-			if (ht.is_present(item))
+			if (ht.find(item))
 				std::cout << "Found: " << item << std::endl;
 			else
 				std::cout << item << " not found." << std::endl;

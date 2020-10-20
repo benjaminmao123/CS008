@@ -79,7 +79,7 @@ public:
             return *this;
         }
 
-        Iterator operator--(int offset)
+        Iterator operator--(int)
         {
             Iterator temp(*this);
             operator--();
@@ -101,6 +101,12 @@ public:
             temp.ptr -= offset;
 
             return temp;
+        }
+
+        //casting operator: true if _ptr not NULL
+        operator bool() const
+        {
+            return ptr;
         }
 
     private:
@@ -472,8 +478,14 @@ inline int Vector<T>::index_of(const T &item)
 template<typename T>
 inline void Vector<T>::set_size(int size)
 {
+    if (size <= 0)
+        return;
+
     while (size >= cap)
         set_capacity(cap * 2);
+
+    while (size <= cap / 4)
+        set_capacity(cap / 4);
 
     sz = size;
 }

@@ -134,7 +134,7 @@ void test_hash_table_interactive(open_hash<int, int>& ht, const std::string& typ
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			if (ht.is_present(key))
+			if (ht.find(key))
 				std::cout << "Found: " << key << std::endl;
 			else
 				std::cout << key << " not found." << std::endl;
@@ -227,7 +227,7 @@ void test_hash_table_interactive(chained_hash<int, int>& ht, const std::string& 
 			std::cout << "Find: ";
 			std::cin >> key;
 
-			if (ht.is_present(key))
+			if (ht.find(key))
 				std::cout << "Found: " << key << std::endl;
 			else
 				std::cout << key << " not found." << std::endl;
@@ -250,11 +250,31 @@ void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std:
 
 	Vector<HTLibrary::record<int, int>> records;
 
-	for (int i = 0; i < numElements; ++i)
 	{
-		HTLibrary::record<int, int> rec(dist(rd), dist(rd));
-		records.push_back(rec);
-		ht.insert(rec._key, rec._value);
+		auto contains = [&](int key)
+		{
+			for (const auto& i : records)
+			{
+				if (i._key == key)
+					return true;
+			}
+
+			return false;
+		};
+
+		int i = 0;
+
+		while (i < numElements)
+		{
+			int key = dist(rd), val = dist(rd);
+
+			if (!contains(key))
+			{
+				records.push_back(HTLibrary::record<int, int>(key, val));
+				ht.insert(key, val);
+				++i;
+			}
+		}
 	}
 
 	std::cout << "********************************************************************************" << std::endl;
@@ -273,13 +293,37 @@ void test_hash_table_random(open_hash<int, int>& ht, int numElements, const std:
 	{
 		int key = records[dist2(rd)]._key;
 
-		if (ht.is_present(key))
+		if (ht.find(key))
 			++foundRecords;
 		else
 			++notFoundRecords;
 	}
 
-	std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
+	if (foundRecords == searchSize)
+		std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
+	else
+		std::cout << "EXISTING KEYS LOOKUP : NOT VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
+
+	std::cout << "- - - - - - - - - Search for non-existent keys ----------------" << std::endl;
+	std::cout << "Search for nonexistent keys : " << numElements / 2 << " keys to be tested : " << std::endl;
+
+	foundRecords = 0, notFoundRecords = 0;
+	std::uniform_int_distribution<> dist3(10001, 20000);
+
+	for (int i = 0; i < searchSize; ++i)
+	{
+		int key = dist3(rd);
+
+		if (ht.find(key))
+			++foundRecords;
+		else
+			++notFoundRecords;
+	}
+
+	if (notFoundRecords == searchSize)
+		std::cout << "NONEXISTENT KEYS LOOKUP : VERIFIED. NONEXISTENT KEYS EXAMINED : " << notFoundRecords << "/" << searchSize << std::endl;
+	else
+		std::cout << "NONEXISTENT KEYS LOOKUP : NOT VERIFIED. NONEXISTENT KEYS EXAMINED : " << notFoundRecords << "/" << searchSize << std::endl;
 
 	std::cout << "------------------ END RANDOM TEST ----------------------" << std::endl;
 }
@@ -292,12 +336,33 @@ void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const s
 
 	Vector<HTLibrary::record<int, int>> records;
 
-	for (int i = 0; i < numElements; ++i)
 	{
-		HTLibrary::record<int, int> rec(dist(rd), dist(rd));
-		records.push_back(rec);
-		ht.insert(rec._key, rec._value);
+		auto contains = [&](int key)
+		{
+			for (const auto& i : records)
+			{
+				if (i._key == key)
+					return true;
+			}
+
+			return false;
+		};
+
+		int i = 0;
+
+		while (i < numElements)
+		{
+			int key = dist(rd), val = dist(rd);
+
+			if (!contains(key))
+			{
+				records.push_back(HTLibrary::record<int, int>(key, val));
+				ht.insert(key, val);
+				++i;
+			}
+		}
 	}
+
 
 	std::cout << "********************************************************************************" << std::endl;
 	std::cout << "R A N D O M   H A S H   T E S T : " << type << std::endl;
@@ -309,19 +374,42 @@ void test_hash_table_random(chained_hash<int, int>& ht, int numElements, const s
 
 	int foundRecords = 0, notFoundRecords = 0;
 	int searchSize = numElements / 2;
-	std::uniform_int_distribution<> dist2(0, searchSize);
 
 	for (int i = 0; i < searchSize; ++i)
 	{
-		int key = records[dist2(rd)]._key;
+		int key = records[i]._key;
 
-		if (ht.is_present(key))
+		if (ht.find(key))
 			++foundRecords;
 		else
 			++notFoundRecords;
 	}
 
-	std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
+	if (foundRecords == searchSize)
+		std::cout << "EXISTING KEYS LOOKUP : VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
+	else
+		std::cout << "EXISTING KEYS LOOKUP : NOT VERIFIED. EXISTING KEYS EXAMINED : " << foundRecords << "/" << searchSize << std::endl;
+
+	std::cout << "- - - - - - - - - Search for non-existent keys ----------------" << std::endl;
+	std::cout << "Search for nonexistent keys : " << numElements / 2 << " keys to be tested : " << std::endl;
+
+	foundRecords = 0, notFoundRecords = 0;
+	std::uniform_int_distribution<> dist3(10001, 20000);
+
+	for (int i = 0; i < searchSize; ++i)
+	{
+		int key = dist3(rd);
+
+		if (ht.find(key))
+			++foundRecords;
+		else
+			++notFoundRecords;
+	}
+
+	if (notFoundRecords == searchSize)
+		std::cout << "NONEXISTENT KEYS LOOKUP : VERIFIED. NONEXISTENT KEYS EXAMINED : " << notFoundRecords << "/" << searchSize << std::endl;
+	else
+		std::cout << "NONEXISTENT KEYS LOOKUP : NOT VERIFIED. NONEXISTENT KEYS EXAMINED : " << notFoundRecords << "/" << searchSize << std::endl;
 
 	std::cout << "------------------ END RANDOM TEST ----------------------" << std::endl;
 }

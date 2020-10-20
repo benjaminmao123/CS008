@@ -22,10 +22,10 @@ public:
 	{
 	public:
 		//default ctor
-		Iterator() { _ptr = NULL; }
+		Iterator() : _ptr(nullptr) {}
 
 		//Point Iterator to where p is pointing to
-		Iterator(LinkedListLibrary::node<ITEM_TYPE>* p) : _ptr(p) { }
+		Iterator(LinkedListLibrary::node<ITEM_TYPE>* p) : _ptr(p) {}
 
 		//dereference operator
 		ITEM_TYPE& operator*()
@@ -51,7 +51,7 @@ public:
 		//casting operator: true if _ptr not NULL
 		operator bool() const
 		{
-			return _ptr != nullptr;
+			return _ptr;
 		}
 
 		//true if left != right
@@ -303,7 +303,7 @@ inline void List<ITEM_TYPE>::Print() const
 template <class ITEM_TYPE>
 inline typename List<ITEM_TYPE>::Iterator List<ITEM_TYPE>::Search(const ITEM_TYPE& key) const
 {
-	if (_tail_ptr->_item == key)
+	if (_tail_ptr && _tail_ptr->_item == key)
 		return LastNode();
 
 	return Iterator(LinkedListLibrary::SearchList(_head_ptr, key));

@@ -77,6 +77,33 @@ private:
 		DELETED
 	};
 
+	template <typename K, typename V, typename H, typename H2>
+	class Proxy
+	{
+	public:
+		Proxy(open_hash<K, V, H, H2>& ht, K key) : ht(ht), key(key) {}
+
+		operator V() const
+		{
+			auto it = ht.find(key);
+
+			if (it)
+				return it->_value;
+			else
+				throw std::invalid_argument("Key does not exist.");
+		}
+
+		Proxy& operator=(const V& value)
+		{
+			ht.insert(key, value);
+			return *this;
+		}
+
+	private:
+		open_hash<K, V, H, H2>& ht;
+		K key;
+	};
+
 public:
 	class Iterator
 	{
@@ -173,15 +200,13 @@ public:
 	bool remove(const K& key);
 	//result <- record with key
 	Iterator find(const K& key);
-	//is this key present in table?
-	bool is_present(const K& key);
 	//number of keys in the table
 	constexpr int size() const { return total_records; }
 	constexpr bool empty() const { return !total_records; }
 	constexpr int get_collisions() const { return numCollisions; }
 
-	V& operator[](const K& key);
-	const V& operator[](const K& key) const;
+	Proxy<K, V, H, H2> operator[](const K& key);
+	Proxy<K, V, H, H2> operator[](const K& key) const;
 
 	void swap(open_hash& other);
 
@@ -290,32 +315,16 @@ inline typename open_hash<K, V, H, H2>::Iterator open_hash<K, V, H, H2>::find(co
 	return Iterator(_data.begin() + index, status.begin() + index);
 }
 
-template <typename K, typename V, typename H, typename H2>
-inline bool open_hash<K, V, H, H2>::is_present(const K& key)
+template<typename K, typename V, typename H, typename H2>
+inline open_hash<K, V, H, H2>::Proxy<K, V, H, H2> open_hash<K, V, H, H2>::operator[](const K& key)
 {
-	return find(key);
+	return Proxy<K, V, H, H2>(*this, key);
 }
 
 template<typename K, typename V, typename H, typename H2>
-inline V& open_hash<K, V, H, H2>::operator[](const K& key)
+inline open_hash<K, V, H, H2>::Proxy<K, V, H, H2> open_hash<K, V, H, H2>::operator[](const K& key) const
 {
-	auto it = find(key);
-
-	if (!it)
-		return insert(key, V())->_value;
-
-	return it->_value;
-}
-
-template<typename K, typename V, typename H, typename H2>
-inline const V& open_hash<K, V, H, H2>::operator[](const K& key) const
-{
-	auto it = find(key);
-
-	if (!it)
-		return insert(key, V())->_value;
-
-	return it->_value;
+	return Proxy<K, V, H, H2>(*this, key);
 }
 
 template <typename K, typename V, typename H, typename H2>

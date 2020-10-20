@@ -14,6 +14,34 @@
 template <typename K, typename V, typename H = HTLibrary::Hash<K>>
 class chained_hash
 {
+private:
+	template <typename K, typename V, typename H>
+	class Proxy
+	{
+	public:
+		Proxy(chained_hash<K, V, H>& ht, K key) : ht(ht), key(key) {}
+
+		operator V() const
+		{
+			auto it = ht.find(key);
+
+			if (it)
+				return it->_value;
+			else 
+				throw std::invalid_argument("Key does not exist.");
+		}
+
+		Proxy& operator=(const V& value)
+		{
+			ht.insert(key, value);
+			return *this;
+		}
+
+	private:
+		chained_hash<K, V, H>& ht;
+		K key;
+	};
+
 public:
 	class Iterator
 	{
@@ -121,14 +149,12 @@ public:
 	bool remove(const K& key);
 	//result <- record with key
 	Iterator find(const K& key) const;
-	//is this key present in table?
-	bool is_present(const K& key) const;
 	//number of keys in the table
 	constexpr int size() const { return total_records; }
 	constexpr bool empty() const { return !total_records; }
 
-	V& operator[](const K& key);
-	const V& operator[](const K& key) const;
+	Proxy<K, V, H> operator[](const K& key);
+	Proxy<K, V, H> operator[](const K& key) const;
 
 	//print entire table with keys, etc.
 	template <typename T, typename U>
@@ -236,22 +262,16 @@ inline typename chained_hash<K, V, H>::Iterator chained_hash<K, V, H>::find(cons
 	return Iterator(_data.cbegin() + index, _data.cend(), it);
 }
 
-template <typename K, typename V, typename H>
-inline bool chained_hash<K, V, H>::is_present(const K& key) const
+template<typename K, typename V, typename H>
+inline chained_hash<K, V, H>::Proxy<K, V, H> chained_hash<K, V, H>::operator[](const K& key)
 {
-	return find(key);
+	return Proxy<K, V, H>(*this, key);
 }
 
 template<typename K, typename V, typename H>
-inline V& chained_hash<K, V, H>::operator[](const K& key)
+inline chained_hash<K, V, H>::Proxy<K, V, H> chained_hash<K, V, H>::operator[](const K& key) const
 {
-	return insert(key, V())->_value;
-}
-
-template<typename K, typename V, typename H>
-inline const V& chained_hash<K, V, H>::operator[](const K& key) const
-{
-	return insert(key, V())->_value;
+	return Proxy<K, V, H>(*this, key);
 }
 
 template <typename K, typename V, typename H>
