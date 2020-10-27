@@ -138,12 +138,12 @@ bool BPTreeLibrary::is_le(const T data[], int n, const T& item)
 template<typename T>
 std::ostream& BPTreeLibrary::operator<<(std::ostream& outs, const Vector<T>& list)
 {
-    // TODO: insert return statement here
+    return outs;
 }
 
 template<typename T>
 Vector<T>& BPTreeLibrary::operator+=(Vector<T>& list, const T& addme)
 {
-    // TODO: insert return statement here
+    return list;
 }
 
