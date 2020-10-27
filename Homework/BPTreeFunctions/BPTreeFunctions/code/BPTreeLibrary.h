@@ -1,0 +1,149 @@
+#pragma once
+
+#include <iostream>
+
+#include "Vector.h"
+
+namespace BPTreeLibrary
+{
+    template <class T>
+    T maximal(const T& a, const T& b); //return the larger of the two items
+
+    template <class T>
+    void swap(T& a, T& b); //swap the two items
+
+    template <class T>
+    int index_of_maximal(T data[ ], int n); //return index of the largest item in data
+
+    template <class T>
+    void ordered_insert(T data[ ], int& n, T entry); //insert entry into the sorted array
+                                                     //data with length n
+
+    template <class T>
+    int first_ge(const T data[ ], int n, const T& entry); //return the first element in data that is
+                                                          //not less than entry
+
+    template <class T>
+    void attach_item(T data[ ], int& n, const T& entry); //append entry to the right of data
+
+    template <class T>
+    void insert_item(T data[ ], int i, int& n, T entry); //insert entry at index i in data
+
+    template <class T>
+    void detach_item(T data[ ], int& n, T& entry); //remove the last element in data and place
+                                                   //it in entry
+
+    template <class T>
+    void delete_item(T data[ ], int i, int& n, T& entry); //delete item at index i and place it in entry
+
+    template <class T>
+    void merge(T data1[ ], int& n1, T data2[ ], int& n2); //append data2 to the right of data1
+
+    template <class T>
+    void split(T data1[ ], int& n1, T data2[ ], int& n2); //move n/2 elements from the right of data1
+                                                          //and move to data2
+
+    template <class T>
+    void copy_array(T dest[], const T src[],
+                    int& dest_size, int src_size); //copy src[] into dest[]
+
+    template <class T>
+    void print_array(const T data[], int n, int pos = -1); //print array data
+
+    template <class T>
+    bool is_gt(const T data[], int n, const T& item); //item > all data[i]
+
+    template <class T>
+    bool is_le(const T data[], int n, const T& item); //item <= all data[i]
+
+    //-------------- Vector Extra operators: ---------------------
+
+    template <typename T>
+    std::ostream& operator<<(std::ostream& outs, const Vector<T>& list); //print vector list
+
+    template <typename T>
+    Vector<T>& operator+=(Vector<T>& list, const T& addme);
+}
+
+template<class T>
+T BPTreeLibrary::maximal(const T& a, const T& b)
+{
+    return T();
+}
+
+template<class T>
+void BPTreeLibrary::swap(T& a, T& b)
+{ }
+
+template<class T>
+int BPTreeLibrary::index_of_maximal(T data[], int n)
+{
+    return 0;
+}
+
+template<class T>
+void BPTreeLibrary::ordered_insert(T data[], int& n, T entry)
+{ }
+
+template<class T>
+int BPTreeLibrary::first_ge(const T data[], int n, const T & entry)
+{
+    return 0;
+}
+
+template<class T>
+void BPTreeLibrary::attach_item(T data[], int& n, const T& entry)
+{ }
+
+template<class T>
+void BPTreeLibrary::insert_item(T data[], int i, int& n, T entry)
+{ }
+
+template<class T>
+void BPTreeLibrary::detach_item(T data[], int& n, T & entry)
+{ }
+
+template<class T>
+void BPTreeLibrary::delete_item(T data[], int i, int& n, T & entry)
+{ }
+
+template<class T>
+void BPTreeLibrary::merge(T data1[], int& n1, T data2[], int& n2)
+{ }
+
+template<class T>
+void BPTreeLibrary::split(T data1[], int& n1, T data2[], int& n2)
+{ }
+
+template<class T>
+void BPTreeLibrary::copy_array(T dest[], const T src[], int& dest_size, int src_size)
+{ }
+
+template<class T>
+void BPTreeLibrary::print_array(const T data[], int n, int pos)
+{ }
+
+template<class T>
+bool BPTreeLibrary::is_gt(const T data[], int n, const T & item)
+{
+    return false;
+}
+
+template<class T>
+bool BPTreeLibrary::is_le(const T data[], int n, const T& item)
+{
+    return false;
+}
+
+template<typename T>
+std::ostream& BPTreeLibrary::operator<<(std::ostream& outs, const Vector<T>& list)
+{
+    // TODO: insert return statement here
+}
+
+template<typename T>
+Vector<T>& BPTreeLibrary::operator+=(Vector<T>& list, const T& addme)
+{
+    // TODO: insert return statement here
+}
+
